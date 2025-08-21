@@ -1,0 +1,10 @@
+{
+  "message": "API测试成功",
+  "timestamp": "2025-08-19T11:30:00.000Z",
+  "data": {
+    "user": "测试用户",
+    "id": 12345,
+    "status": "active"
+  },
+  "success": true
+}
