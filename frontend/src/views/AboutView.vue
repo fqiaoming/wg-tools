@@ -110,12 +110,25 @@
             <!-- GitHub -->
             <div class="contact-item">
               <el-link href="https://github.com/fqiaoming/wg-tools.git" type="primary" target="_blank" class="contact-link">
-                <div class="contact-icon github-icon">
-                  <el-icon><Link /></el-icon>
+                <div class="contact-icon douyin-icon">
+                  <img src="@/assets/github.png"/>
                 </div>
                 <div class="contact-text">
-                  <div class="contact-title">GitHub</div>
-                  <div class="contact-detail">官网地址</div>
+                  <div class="contact-title">项目名:WG-Tools</div>
+                  <div class="contact-detail">项目说明:开发者工具箱</div>
+                </div>
+              </el-link>
+            </div>
+
+            <!-- CSDN -->
+            <div class="contact-item">
+              <el-link href="https://blog.csdn.net/qq_42055933" type="primary" target="_blank" class="contact-link">
+                <div class="contact-icon douyin-icon">
+                  <img src="@/assets/csdn.png"/>
+                </div>
+                <div class="contact-text">
+                  <div class="contact-title">用户昵称: 默语佬</div>
+                  <div class="contact-detail">用户ID: qq_42055933</div>
                 </div>
               </el-link>
             </div>
