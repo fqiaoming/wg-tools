@@ -9,57 +9,57 @@
     <!-- 控制面板 -->
     <div class="control-panel">
       <div class="upload-section">
-        <div class="upload-group">
+          <div class="upload-group">
           <el-button @click="downloadNameSample" size="small" type="primary">
-            下载班级名单示例
-          </el-button>
-          <el-upload
+              下载班级名单示例
+            </el-button>
+            <el-upload
             ref="nameListUpload"
             :auto-upload="false"
-            :show-file-list="false"
-            accept=".txt,.csv,.xlsx"
+              :show-file-list="false"
+              accept=".txt,.csv,.xlsx"
             :on-change="handleNameListUpload"
-            action=""
-          >
+              action=""
+            >
             <el-button size="small" type="info">
-              上传班级名单
-            </el-button>
-          </el-upload>
-        </div>
-        <div class="upload-group">
+                上传班级名单
+              </el-button>
+            </el-upload>
+          </div>
+          <div class="upload-group">
           <el-button @click="downloadGradeSample" size="small" type="primary">
-            下载成绩名次示例
-          </el-button>
-          <el-upload
+              下载成绩名次示例
+            </el-button>
+            <el-upload
             ref="gradeListUpload"
             :auto-upload="false"
-            :show-file-list="false"
-            accept=".txt,.csv,.xlsx"
+              :show-file-list="false"
+              accept=".txt,.csv,.xlsx"
             :on-change="handleGradeListUpload"
-            action=""
-          >
+              action=""
+            >
             <el-button size="small" type="info">
-              上传成绩名次
-            </el-button>
-          </el-upload>
+                上传成绩名次
+              </el-button>
+            </el-upload>
+          </div>
         </div>
-      </div>
 
       <div class="settings-section">
         <div class="setting-group">
-          <label>行数:</label>
+            <label>行数:</label>
           <el-input-number v-model="rows" :min="1" :max="10" size="small" />
-        </div>
+          </div>
         <div class="setting-group">
-          <label>列数:</label>
+            <label>列数:</label>
           <el-input-number v-model="cols" :min="1" :max="12" size="small" />
-        </div>
+          </div>
         <div class="setting-group">
           <el-button @click="updateGrid" size="small" type="success">
-            更新布局
-          </el-button>
+              更新布局
+            </el-button>
+          </div>
         </div>
-      </div>
 
       <div class="arrangement-section">
         <label>排座方式:</label>
@@ -95,7 +95,7 @@
         <el-checkbox v-model="showRank" @change="toggleRankDisplay">
           展示名次
         </el-checkbox>
-      </div>
+        </div>
 
       <div class="export-section">
         <el-button @click="exportSeatingChart" size="small" type="danger">
@@ -245,7 +245,7 @@ const parseGradeList = (content: string, fileName: string): Grade[] => {
           rank: parseInt(parts[1].trim()) || 0
         })
       }
-    } else {
+      } else {
       const parts = line.trim().split(/\s+/)
       if (parts.length >= 2) {
         grades.push({
@@ -270,8 +270,8 @@ const handleNameListUpload = async (file: any) => {
       arrangeSeats('random')
     } else {
       checkReadyState()
-    }
-  } catch (error) {
+      }
+    } catch (error) {
     ElMessage.error('名单文件读取失败：' + (error as Error).message)
   }
 }
@@ -289,7 +289,7 @@ const handleGradeListUpload = async (file: any) => {
         rank: grade.rank
       }))
       arrangeSeats('balance')
-    } else {
+  } else {
       mergeStudentData()
       arrangeSeats('balance')
     }
@@ -344,7 +344,7 @@ const randomArrangement = (): (number | null)[] => {
   
   const availablePositions = Array.from({length: studentCount}, (_, i) => i)
   
-  students.value.slice(0, studentCount).forEach((student, index) => {
+  students.value.slice(0, studentCount).forEach((_, index) => {
     const randomIndex = Math.floor(Math.random() * availablePositions.length)
     const position = availablePositions.splice(randomIndex, 1)[0]
     positions[position] = index
@@ -391,7 +391,6 @@ const gradeZoneArrangement = (): (number | null)[] => {
   // 按座位位置分区：前30%座位给优等生，中50%座位给中等生，后20%座位给差等生
   const excellentSeatCount = Math.floor(studentCount * 0.3)
   const middleSeatCount = Math.floor(studentCount * 0.5)
-  const poorSeatCount = studentCount - excellentSeatCount - middleSeatCount
   
   const allSeatPositions = Array.from({length: studentCount}, (_, i) => i)
   const excellentSeatPositions = allSeatPositions.slice(0, excellentSeatCount)
