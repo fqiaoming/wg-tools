@@ -223,7 +223,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import {
   ChatLineRound,
@@ -236,13 +236,13 @@ import {
   Share,
   Delete,
   Download,
-  TrendCharts,
-  Briefcase,
-  MagicStick,
-  Coffee,
-  Moon,
-  Sunrise,
-  Monitor
+  // TrendCharts,
+  // Briefcase,
+  // MagicStick,
+  // Coffee,
+  // Moon,
+  // Sunrise,
+  // Monitor
 } from '@element-plus/icons-vue'
 
 // 语录数据类型
@@ -368,16 +368,15 @@ const getCategoryName = (key: string) => {
 }
 
 // 获取标签类型
-const getCategoryTagType = (category: string) => {
-  const types: Record<string, string> = {
+const getCategoryTagType = (category: string): 'primary' | 'success' | 'warning' | 'info' | 'danger' | undefined => {
+  const types: Record<string, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     inspire: 'danger',
     work: 'primary',
     life: 'success',
     philosophy: 'warning',
-    funny: 'info',
-    moyu: ''
+    funny: 'info'
   }
-  return types[category] || ''
+  return types[category] || undefined
 }
 
 // 生成语录
@@ -560,7 +559,8 @@ const loadFavorites = () => {
 }
 
 // 格式化日期
-const formatDate = (timestamp: number) => {
+const formatDate = (timestamp: number | undefined) => {
+  if (!timestamp) return '未知时间'
   const date = new Date(timestamp)
   return date.toLocaleDateString()
 }

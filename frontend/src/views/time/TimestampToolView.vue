@@ -198,7 +198,7 @@ import {
   ArrowRight,
   ArrowLeft
 } from '@element-plus/icons-vue'
-import { timeTool, type ToolResponse } from '../../utils/localTools'
+import { timeTool } from '../../utils/localTools'
 
 // 当前时间戳
 const currentTimestamp = ref('')

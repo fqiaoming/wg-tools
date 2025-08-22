@@ -339,7 +339,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import {
   Document,
@@ -520,12 +520,12 @@ const decodeFromUnicode = (encoded: string, format: string): string => {
   try {
     switch (format) {
       case 'unicode':
-        return encoded.replace(/\\u([0-9a-fA-F]{4})/g, (match, hex) => 
+        return encoded.replace(/\\u([0-9a-fA-F]{4})/g, (_match, hex) => 
           String.fromCodePoint(parseInt(hex, 16))
         )
       
       case 'unicode16':
-        return encoded.replace(/U\+([0-9a-fA-F]+)/g, (match, hex) => 
+        return encoded.replace(/U\+([0-9a-fA-F]+)/g, (_match, hex) => 
           String.fromCodePoint(parseInt(hex, 16))
         )
       
@@ -540,12 +540,12 @@ const decodeFromUnicode = (encoded: string, format: string): string => {
         ).join('')
       
       case 'html':
-        return encoded.replace(/&#(\d+);/g, (match, dec) => 
+        return encoded.replace(/&#(\d+);/g, (_match, dec) => 
           String.fromCodePoint(parseInt(dec, 10))
         )
       
       case 'css':
-        return encoded.replace(/\\([0-9a-fA-F]+)\s?/g, (match, hex) => 
+        return encoded.replace(/\\([0-9a-fA-F]+)\s?/g, (_match, hex) => 
           String.fromCodePoint(parseInt(hex, 16))
         )
       

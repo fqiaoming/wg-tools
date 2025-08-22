@@ -1537,7 +1537,7 @@ public static long power(long base, int exp) {
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { 
   CaretTop, 
   ArrowLeft, 
@@ -1558,8 +1558,8 @@ import {
 const navCollapsed = ref(false)
 const showMobileNav = ref(false)
 const searchQuery = ref('')
-const searchResults = ref([])
-const searchSuggestions = ref([])
+const searchResults = ref<string[]>([])
+const searchSuggestions = ref<string[]>([])
 
 // 搜索建议数据
 const suggestions = [

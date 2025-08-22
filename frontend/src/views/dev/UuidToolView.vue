@@ -253,7 +253,7 @@ import {
   UserFilled,
   DataAnalysis
 } from '@element-plus/icons-vue'
-import { uuidTool, type ToolResponse } from '../../utils/localTools'
+import { uuidTool } from '../../utils/localTools'
 
 const mode = ref<'single' | 'batch'>('single')
 const loading = ref(false)

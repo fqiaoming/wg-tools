@@ -140,16 +140,22 @@
                   <span class="menu-icon">☕</span>Java 常用语法
                 </el-menu-item>
             </el-sub-menu>
-            <el-sub-menu index="/life">
-              <template #title>🏠 生活工具</template>
-              <el-menu-item index="/life/bmi-calculator" data-category="life">
+            <el-sub-menu index="/utility">
+              <template #title>🛠️ 实用工具</template>
+              <el-menu-item index="/utility/bmi-calculator" data-category="utility">
                 <span class="menu-icon">⚖️</span>BMI计算器
               </el-menu-item>
-              <el-menu-item index="/life/mortgage-calculator" data-category="life">
+              <el-menu-item index="/utility/mortgage-calculator" data-category="utility">
                 <span class="menu-icon">🏡</span>房贷计算器
               </el-menu-item>
-              <el-menu-item index="/life/age-calculator" data-category="life">
+              <el-menu-item index="/utility/age-calculator" data-category="utility">
                 <span class="menu-icon">🎂</span>年龄计算器
+              </el-menu-item>
+              <el-menu-item index="/utility/classroom-seating" data-category="utility">
+                <span class="menu-icon">🏫</span>班级座次表
+              </el-menu-item>
+              <el-menu-item index="/utility/student-rollcall" data-category="utility">
+                <span class="menu-icon">📢</span>学生点名器
               </el-menu-item>
             </el-sub-menu>
             <el-sub-menu 
@@ -388,18 +394,26 @@
           </div>
           
           <div class="mobile-menu-category">
-            <div class="mobile-category-title">🏠 生活工具</div>
-            <div class="mobile-menu-item" @click="handleMobileMenuClick('/life/bmi-calculator')">
+            <div class="mobile-category-title">🛠️ 实用工具</div>
+            <div class="mobile-menu-item" @click="handleMobileMenuClick('/utility/bmi-calculator')">
               <span class="mobile-menu-icon">⚖️</span>
               <span>BMI计算器</span>
             </div>
-            <div class="mobile-menu-item" @click="handleMobileMenuClick('/life/mortgage-calculator')">
+            <div class="mobile-menu-item" @click="handleMobileMenuClick('/utility/mortgage-calculator')">
               <span class="mobile-menu-icon">🏡</span>
               <span>房贷计算器</span>
             </div>
-            <div class="mobile-menu-item" @click="handleMobileMenuClick('/life/age-calculator')">
+            <div class="mobile-menu-item" @click="handleMobileMenuClick('/utility/age-calculator')">
               <span class="mobile-menu-icon">🎂</span>
               <span>年龄计算器</span>
+            </div>
+            <div class="mobile-menu-item" @click="handleMobileMenuClick('/utility/classroom-seating')">
+              <span class="mobile-menu-icon">🏫</span>
+              <span>班级座次表</span>
+            </div>
+            <div class="mobile-menu-item" @click="handleMobileMenuClick('/utility/student-rollcall')">
+              <span class="mobile-menu-icon">📢</span>
+              <span>学生点名器</span>
             </div>
           </div>
           
@@ -464,7 +478,7 @@ const route = useRoute()
 const navMenuRef = ref()
 const showMoreMenu = ref(false)
 const isMobile = ref(false)
-const hiddenMenuItems = ref([])
+const hiddenMenuItems = ref<{path: string, title: string}[]>([])
 const mobileMenuOpen = ref(false)
 
 // 计算属性：过滤隐藏的菜单项
@@ -485,7 +499,7 @@ const menuItems = [
   { path: '/time', title: '⏰ 时间工具', priority: 5 },
   { path: '/security', title: '🔒 安全工具', priority: 6 },
   { path: '/docs', title: '📚 文档', priority: 7 },
-  { path: '/life', title: '🏠 生活工具', priority: 8 },
+  { path: '/utility', title: '🛠️ 实用工具', priority: 8 },
   { path: '/entertainment', title: '🎮 娱乐工具', priority: 9 },
   { path: '/about', title: '关于', priority: 10 }
 ]
@@ -520,7 +534,6 @@ const checkNavWidth = () => {
   }
   
   if (hideItemsCount > 0) {
-    const visibleItems = menuItems.slice(0, -hideItemsCount)
     hiddenMenuItems.value = menuItems.slice(-hideItemsCount).map(item => ({
       path: item.path,
       title: item.title
@@ -890,11 +903,11 @@ onUnmounted(() => {
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
 }
 
-:deep(.el-menu--popup .el-menu-item[data-category="life"]) {
+:deep(.el-menu--popup .el-menu-item[data-category="utility"]) {
   background: linear-gradient(135deg, rgba(20, 184, 166, 0.05) 0%, rgba(13, 148, 136, 0.05) 100%);
 }
 
-:deep(.el-menu--popup .el-menu-item[data-category="life"]:hover) {
+:deep(.el-menu--popup .el-menu-item[data-category="utility"]:hover) {
   background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important;
 }
 

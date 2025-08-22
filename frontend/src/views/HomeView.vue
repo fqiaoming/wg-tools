@@ -267,10 +267,10 @@
           </div>
         </el-tab-pane>
         
-        <el-tab-pane label="生活工具" name="life">
+        <el-tab-pane label="🛠️ 实用工具" name="utility">
           <div class="tools-grid">
             <div
-              v-for="tool in getToolsByCategory('life')"
+              v-for="tool in getToolsByCategory('utility')"
               :key="tool.path"
               class="tool-item"
               :style="{ '--tool-color': tool.color || '#06b6d4' }"
@@ -305,15 +305,7 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import {
-  Search,
-  DocumentCopy,
-  Files,
-  Box,
-  Timer,
-  Monitor,
-  VideoPlay,
-  Trophy,
-  ChatLineRound
+  Search
 } from '@element-plus/icons-vue'
 
 const router = useRouter()
@@ -579,10 +571,14 @@ const tools = ref([
         { name: '贪吃蛇游戏', description: '经典街机游戏，支持多种难度和主题，考验反应速度', icon: 'Trophy', path: '/entertainment/snake', category: 'entertainment', tags: ['游戏', '贪吃蛇', '休闲', '娱乐'], color: 'linear-gradient(135deg, #10b981 0%, #059669 100%)' },
         { name: '励志语录生成器', description: '随机生成励志、搞笑、哲理语录，支持分类和收藏', icon: 'ChatLineRound', path: '/entertainment/quotes', category: 'entertainment', tags: ['语录', '励志', '哲理', '摸鱼'], color: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' },
         
-        // 生活工具
-                 { name: 'BMI计算器', description: '计算身体质量指数，评估体重健康状况，提供健康建议', icon: 'DataAnalysis', path: '/life/bmi-calculator', category: 'life', tags: ['健康', 'BMI', '体重', '计算'], color: 'linear-gradient(135deg, #10b981 0%, #059669 100%)' },
-         { name: '房贷计算器', description: '房贷月供计算，支持等额本息、等额本金两种还款方式', icon: 'Money', path: '/life/mortgage-calculator', category: 'life', tags: ['房贷', '计算器', '月供', '利率'], color: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' },
-         { name: '年龄计算器', description: '精确计算年龄、生肖、星座，支持生日提醒和倒计时', icon: 'Calendar', path: '/life/age-calculator', category: 'life', tags: ['年龄', '生肖', '星座', '生日'], color: 'linear-gradient(135deg, #ec4899 0%, #db2777 100%)' }
+        // 实用工具
+        { name: 'BMI计算器', description: '计算身体质量指数，评估体重健康状况，提供健康建议', icon: 'DataAnalysis', path: '/utility/bmi-calculator', category: 'utility', tags: ['健康', 'BMI', '体重', '计算'], color: 'linear-gradient(135deg, #10b981 0%, #059669 100%)' },
+        { name: '房贷计算器', description: '房贷月供计算，支持等额本息、等额本金两种还款方式', icon: 'Money', path: '/utility/mortgage-calculator', category: 'utility', tags: ['房贷', '计算器', '月供', '利率'], color: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' },
+        { name: '年龄计算器', description: '精确计算年龄、生肖、星座，支持生日提醒和倒计时', icon: 'Calendar', path: '/utility/age-calculator', category: 'utility', tags: ['年龄', '生肖', '星座', '生日'], color: 'linear-gradient(135deg, #ec4899 0%, #db2777 100%)' },
+        
+        // 教师工具
+        { name: '班级座次表', description: '智能座位安排系统，支持随机排座、成绩分区、优差搭配等多种方式', icon: 'School', path: '/utility/classroom-seating', category: 'utility', tags: ['教学', '座位', '班级', '管理'], color: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' },
+        { name: '学生点名器', description: '智能随机点名工具，支持批量导入名单、统计分析、音效动画', icon: 'Bell', path: '/utility/student-rollcall', category: 'utility', tags: ['教学', '点名', '随机', '课堂'], color: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)' }
       ])
 
 // 搜索过滤

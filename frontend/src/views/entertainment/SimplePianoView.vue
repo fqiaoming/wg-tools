@@ -2,6 +2,25 @@
   <div class="page-container">
     <div class="app-content">
       <div class="component-autopiano">
+         <!-- 钢琴选项 -->
+        <div class="piano-options">
+          <div class="option-item-wrap">
+            <div class="option-item">
+              <label class="label">
+                显示按键提示
+                <input type="checkbox" id="keyname" v-model="showKeyNames"> 
+                <i></i>
+              </label>
+            </div>
+            <div class="option-item">
+              <label class="label">
+                显示音名
+                <input type="checkbox" id="notename" v-model="showNoteNames"> 
+                <i></i>
+              </label>
+            </div>
+          </div>
+        </div>
         <!-- 钢琴键盘 -->
         <div class="piano-scroll-wrap">
           <div class="piano-wrap visible">
@@ -54,25 +73,7 @@
           </div>
         </div>
 
-        <!-- 钢琴选项 -->
-        <div class="piano-options">
-          <div class="option-item-wrap">
-            <div class="option-item">
-              <label class="label">
-                显示按键提示
-                <input type="checkbox" id="keyname" v-model="showKeyNames"> 
-                <i></i>
-              </label>
-            </div>
-            <div class="option-item">
-              <label class="label">
-                显示音名
-                <input type="checkbox" id="notename" v-model="showNoteNames"> 
-                <i></i>
-              </label>
-            </div>
-          </div>
-        </div>
+       
       </div>
 
       <!-- 按键教程区域 - 紧挨着钢琴 -->
@@ -253,23 +254,36 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, nextTick, watch } from 'vue'
 
+// 类型定义
+interface Song {
+  id: number
+  name: string
+  difficulty: number
+  category: string
+  notes: { note: string; sentence: number; isLastInSentence: boolean }[]
+  lyrics?: string
+  score: string
+  author?: string
+  authorLink?: string
+}
+
 // 响应式数据
 const pressedKeys = ref(new Set<string>())
 const showKeyNames = ref(true)
 const showNoteNames = ref(false)
 
 // 曲子演奏相关
-const currentSong = ref(null)
+const currentSong = ref<Song | null>(null)
 const currentNoteIndex = ref(0)
 
 // DOM引用
-const notesDisplayRef = ref(null)
+const notesDisplayRef = ref<HTMLElement | null>(null)
 
 // 音频缓存 - 使用简单的HTML5 Audio
 const audioCache = new Map<string, HTMLAudioElement>()
 
 // 钢琴键位映射 - 根据图片文件列表，正确分配白键(a开头)和黑键(b开头)
-const noteToFile = {
+const noteToFile: Record<string, string> = {
   // 白键按钢琴顺序映射a开头文件
   'C2': 'a49.mp3',   // 第1个白键 -> 1键
   'D2': 'a50.mp3',   // 第2个白键 -> 2键
@@ -416,7 +430,7 @@ const blackKeyGroups = ref([
 ])
 
 // 将曲库.js中的content字符串转换为带分句信息的notes数组
-const parseContentToNotes = (content: string): any[] => {
+const parseContentToNotes = (content: string): { note: string; sentence: number; isLastInSentence: boolean }[] => {
   // 按 <br> 标签分句，保留每句的完整性
   const sentences = content
     .replace(/\n/g, ' ') // 移除换行符
@@ -425,17 +439,24 @@ const parseContentToNotes = (content: string): any[] => {
     .split(/<br\/?>/g) // 按 <br> 分句
     .filter(sentence => sentence.trim()) // 移除空句子
   
-  const result = []
+  const result: { note: string; sentence: number; isLastInSentence: boolean }[] = []
   
   sentences.forEach((sentence, sentenceIndex) => {
     // 清理每句内容
     const cleanSentence = sentence
       .replace(/~/g, ' ') // 将 ~ 替换为空格（延音符号）
+      .replace(/</g, '') // 移除所有 < 字符
+      .replace(/>/g, '') // 移除所有 > 字符
+      .replace(/\//g, '') // 移除所有 / 字符
+      .replace(/br/g, '') // 移除残留的 br 文本
       .replace(/\s+/g, ' ') // 合并多个空格
       .trim()
     
     // 将句子拆分为音符
-    const notes = cleanSentence.split('').filter(char => char !== ' ')
+    const notes = cleanSentence.split('').filter(char => {
+      // 只保留有效的音符字符（字母、数字、部分符号）
+      return char !== ' ' && /[a-zA-Z0-9()^~]/.test(char)
+    })
     
     // 添加音符到结果数组，标记句子信息
     notes.forEach((note, noteIndex) => {
@@ -763,7 +784,7 @@ const expertSongs = computed(() =>
   )
 )
 
-const allSongs = computed(() => songList.value)
+// const allSongs = computed(() => songList.value)
 
 // 滚动到当前音符
 const scrollToCurrentNote = () => {
@@ -903,12 +924,12 @@ const playNoteFromScore = (noteBinding: string, index: number) => {
 // 将曲谱音符映射到钢琴键位
 const mapScoreNoteToKey = (scoreNote: string) => {
   // 数字音符映射（简谱）
-  const numberMap = {
+  const numberMap: Record<string, string> = {
     '1': 'C2', '2': 'D2', '3': 'E2', '4': 'F2', '5': 'G2', '6': 'A2', '7': 'B2'
   }
   
   // 字母音符映射（键盘按键） - 支持大小写
-  const letterMap = {
+  const letterMap: Record<string, string> = {
     'Q': 'F3', 'W': 'G3', 'E': 'A3', 'R': 'B3', 'T': 'C4', 'Y': 'D4', 'U': 'E4',
     'I': 'F4', 'O': 'G4', 'P': 'A4', 'A': 'B4', 'S': 'C5', 'D': 'D5', 'F': 'E5',
     'G': 'F5', 'H': 'G5', 'J': 'A5', 'K': 'B5', 'L': 'C6', 'Z': 'D6', 'X': 'E6',
@@ -1082,6 +1103,7 @@ onUnmounted(() => {
   position: relative;
   padding: 20px;
   z-index: 1;
+  padding-top: 70px;
 }
 
 .component-autopiano {
@@ -1098,7 +1120,7 @@ onUnmounted(() => {
 
 .piano-wrap {
   width: 90%;
-  margin: 20px auto;
+  margin: 10px auto;
   box-shadow: 
     0 25px 50px -12px rgba(0, 0, 0, 0.8),
     0 0 40px rgba(120, 119, 198, 0.3),
@@ -1297,8 +1319,8 @@ onUnmounted(() => {
 /* 钢琴选项样式 */
 .piano-options {
   width: 90%;
-  height: 50px;
-  margin: 10px auto 15px;
+  height: 30px;
+  margin: 0px auto 15px;
   padding: 0;
   position: relative;
 }
@@ -1320,6 +1342,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   gap: 10px;
+  color:#fff;
 }
 
 .option-item .label > input {
@@ -1363,7 +1386,7 @@ onUnmounted(() => {
 /* 按键教程区域样式 */
 .piano-guide-section {
   width: 90%;
-  margin: 20px auto;
+  margin: 10px auto;
   background: linear-gradient(145deg, 
     rgba(30, 30, 46, 0.95) 0%, 
     rgba(26, 26, 46, 0.9) 100%
@@ -1434,36 +1457,37 @@ onUnmounted(() => {
 .guide-content {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
 }
 
 .current-note-display {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px;
+  gap: 8px;
+
 }
 
 .note-hint {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 6px; /* 减少内部间距 */
   background: linear-gradient(135deg, 
     rgba(120, 119, 198, 0.9) 0%, 
     rgba(255, 119, 198, 0.8) 100%
   );
-  padding: 20px 30px;
-  border-radius: 12px;
+  padding: 12px 20px; /* 减少内边距 */
+  border-radius: 10px;
   box-shadow: 
-    0 10px 30px rgba(0, 0, 0, 0.3),
+    0 6px 20px rgba(0, 0, 0, 0.2), /* 减少阴影 */
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .hint-label {
   color: white;
-  font-size: 16px;
+  font-size: 14px; /* 稍微减小字体 */
   font-weight: 500;
   opacity: 0.9;
 }
@@ -1473,12 +1497,12 @@ onUnmounted(() => {
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-size: 48px;
+  font-size: 36px; /* 减小字体大小 */
   font-weight: 800;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  padding: 15px 25px;
-  border: 3px solid rgba(255, 255, 255, 0.3);
-  border-radius: 12px;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  padding: 10px 18px; /* 减小内边距 */
+  border: 2px solid rgba(255, 255, 255, 0.3); /* 减小边框 */
+  border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
 }
@@ -1487,22 +1511,22 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px; /* 减少间距 */
   width: 100%;
-  max-width: 400px;
+  max-width: 300px; /* 减小宽度 */
 }
 
 .progress-text {
   color: rgba(255, 255, 255, 0.8);
-  font-size: 14px;
+  font-size: 12px; /* 减小字体大小 */
   font-weight: 500;
 }
 
 .progress-bar {
   width: 100%;
-  height: 8px;
+  height: 6px; /* 减小进度条高度 */
   background: rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
+  border-radius: 3px;
   overflow: hidden;
 }
 
@@ -1546,17 +1570,17 @@ onUnmounted(() => {
 .note-sequence {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px; /* 减少间距 */
+  margin-top: 5px; /* 减少上边距 */
 }
 
 .sequence-title, .lyrics-title {
   color: rgba(255, 255, 255, 0.9);
-  font-size: 16px;
+  font-size: 14px; /* 减小标题字体 */
   font-weight: 600;
 }
 
 .notes-display-container {
-  max-height: 120px;
   overflow-y: auto;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;

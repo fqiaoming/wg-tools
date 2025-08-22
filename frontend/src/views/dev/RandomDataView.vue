@@ -419,7 +419,7 @@ const typeConfigs = reactive({
     types: ['province', 'city', 'district']
   },
   date: {
-    range: [new Date('2020-01-01'), new Date()],
+    range: [new Date('2020-01-01'), new Date()] as [Date, Date],
     format: 'YYYY-MM-DD'
   }
 })

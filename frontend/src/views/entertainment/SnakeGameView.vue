@@ -201,7 +201,7 @@
               v-for="(name, value) in difficultyNames"
               :key="value"
               :label="name"
-              :value="parseInt(value)"
+              :value="parseInt(value as unknown as string)"
             />
           </el-select>
         </div>

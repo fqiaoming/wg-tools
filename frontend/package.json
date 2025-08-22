@@ -22,7 +22,8 @@
     "qrcode": "^1.5.3",
     "tone": "^15.1.22",
     "vue": "^3.4.15",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.6",

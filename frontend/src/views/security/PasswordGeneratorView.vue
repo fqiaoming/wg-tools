@@ -221,7 +221,7 @@ import {
   Key,
   InfoFilled
 } from '@element-plus/icons-vue'
-import { passwordTool, type ToolResponse } from '../../utils/newTools'
+import { passwordTool } from '../../utils/newTools'
 
 const loading = ref(false)
 const passwordLength = ref(12)

@@ -134,7 +134,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import {
   Key,
@@ -142,7 +142,7 @@ import {
   CopyDocument,
   InfoFilled
 } from '@element-plus/icons-vue'
-import { hashTool, type ToolResponse } from '../../utils/newTools'
+import { hashTool } from '../../utils/newTools'
 
 const loading = ref(false)
 const inputText = ref('')

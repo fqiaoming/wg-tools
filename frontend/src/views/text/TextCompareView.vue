@@ -348,7 +348,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import {
   Files,
@@ -532,7 +532,7 @@ const formatUnifiedDiff = () => {
   // 这里应该解析diff结果并格式化为HTML
   // 简化示例，实际需要更复杂的diff解析
   const lines = compareResult.value.result.split('\n')
-  return lines.map(line => {
+  return lines.map((line: string) => {
     if (line.startsWith('+')) {
       return `<div class="diff-line added">${escapeHtml(line)}</div>`
     } else if (line.startsWith('-')) {
@@ -553,7 +553,7 @@ const formatSplitDiff = (side: 'left' | 'right') => {
   const leftLines: string[] = []
   const rightLines: string[] = []
   
-  lines.forEach(line => {
+  lines.forEach((line: string) => {
     if (line.startsWith('-') && side === 'left') {
       leftLines.push(`<div class="diff-line deleted">${escapeHtml(line.substring(1))}</div>`)
     } else if (line.startsWith('+') && side === 'right') {
@@ -573,7 +573,7 @@ const formatInlineDiff = () => {
   if (!compareResult.value?.result) return ''
   
   const lines = compareResult.value.result.split('\n')
-  return lines.map(line => {
+  return lines.map((line: string) => {
     if (line.startsWith('+')) {
       return `<div class="diff-line added-inline">+ ${escapeHtml(line.substring(1))}</div>`
     } else if (line.startsWith('-')) {

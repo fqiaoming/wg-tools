@@ -99,7 +99,7 @@
           <el-tag
             v-for="category in categories"
             :key="category.key"
-            :type="activeCategory === category.key ? 'primary' : ''"
+            :type="activeCategory === category.key ? 'primary' : undefined"
             @click="activeCategory = category.key"
             style="cursor: pointer; margin-right: 8px; margin-bottom: 8px;"
           >
@@ -739,8 +739,8 @@ const getCategoryName = (category: string) => {
   return categories.find(c => c.key === category)?.name || category
 }
 
-const getCategoryType = (category: string) => {
-  const types: Record<string, string> = {
+const getCategoryType = (category: string): 'primary' | 'success' | 'warning' | 'info' | 'danger' | undefined => {
+  const types: Record<string, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     file: 'primary',
     system: 'success',
     process: 'warning',
@@ -748,7 +748,7 @@ const getCategoryType = (category: string) => {
     text: 'danger',
     permission: 'primary'
   }
-  return types[category] || ''
+  return types[category] || undefined
 }
 
 const copyCommand = async (command: string) => {

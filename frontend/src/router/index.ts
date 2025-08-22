@@ -346,14 +346,14 @@ const router = createRouter({
       }
     },
     
-    // 生活工具
+    // 实用工具
     {
-      path: '/life',
-      name: 'life',
-      redirect: '/life/bmi-calculator'
+      path: '/utility',
+      name: 'utility',
+      redirect: '/utility/bmi-calculator'
     },
     {
-      path: '/life/bmi-calculator',
+      path: '/utility/bmi-calculator',
       name: 'bmi-calculator',
       component: () => import('../views/life/BmiCalculatorView.vue'),
       meta: {
@@ -361,7 +361,7 @@ const router = createRouter({
       }
     },
     {
-      path: '/life/mortgage-calculator',
+      path: '/utility/mortgage-calculator',
       name: 'mortgage-calculator',
       component: () => import('../views/life/MortgageCalculatorView.vue'),
       meta: {
@@ -369,11 +369,27 @@ const router = createRouter({
       }
     },
     {
-      path: '/life/age-calculator',
+      path: '/utility/age-calculator',
       name: 'age-calculator',
       component: () => import('../views/life/AgeCalculatorView.vue'),
       meta: {
         title: '年龄计算器 - WG-Tools'
+      }
+    },
+    {
+      path: '/utility/classroom-seating',
+      name: 'classroom-seating',
+      component: () => import('../views/utility/ClassroomSeatingView.vue'),
+      meta: {
+        title: '班级座次表管理系统 - WG-Tools'
+      }
+    },
+    {
+      path: '/utility/student-rollcall',
+      name: 'student-rollcall',
+      component: () => import('../views/utility/StudentRollCallView.vue'),
+      meta: {
+        title: '学生点名器 - WG-Tools'
       }
     },
 
@@ -389,7 +405,7 @@ const router = createRouter({
 })
 
 // 路由守卫，设置页面标题
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _from, next) => {
   document.title = to.meta.title as string || 'WG-Tools - 在线开发者工具箱'
   next()
 })

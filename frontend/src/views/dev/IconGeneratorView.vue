@@ -360,7 +360,7 @@ import {
   CopyDocument,
   InfoFilled
 } from '@element-plus/icons-vue'
-import { iconGeneratorTool, type ToolResponse } from '../../utils/newTools'
+// import { iconGeneratorTool, type ToolResponse } from '../../utils/newTools'
 
 const loading = ref(false)
 const iconDataUrl = ref('')

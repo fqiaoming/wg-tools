@@ -736,7 +736,7 @@ export const unicodeTool = {
   decode: (input: string): ToolResponse => {
     const startTime = Date.now()
     try {
-      const result = input.replace(/\\u([0-9a-fA-F]{4})/g, (match, hex) => {
+      const result = input.replace(/\\u([0-9a-fA-F]{4})/g, (_match, hex) => {
         return String.fromCharCode(parseInt(hex, 16))
       })
       

@@ -243,7 +243,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, nextTick, onMounted, onUnmounted } from 'vue'
+import { ref, nextTick, onMounted, onUnmounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import {
   Edit,
@@ -261,7 +261,7 @@ import {
   Download,
   Plus
 } from '@element-plus/icons-vue'
-import { markdownTool, type ToolResponse } from '../../utils/newTools'
+import { markdownTool } from '../../utils/newTools'
 
 const markdownContent = ref('')
 const htmlContent = ref('')

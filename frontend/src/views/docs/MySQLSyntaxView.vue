@@ -115,7 +115,7 @@
           <el-tag
             v-for="category in categories"
             :key="category.key"
-            :type="activeCategory === category.key ? 'primary' : ''"
+            :type="activeCategory === category.key ? 'primary' : undefined"
             @click="activeCategory = category.key"
             style="cursor: pointer; margin-right: 8px; margin-bottom: 8px;"
           >
@@ -415,7 +415,7 @@
 import { ref, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 import {
-  DataAnalysis as DatabaseOutlined,
+  // DataAnalysis, // as DatabaseOutlined,
   Search,
   CopyDocument,
   Star,
@@ -634,8 +634,8 @@ const getCategoryName = (category: string) => {
   return categories.find(c => c.key === category)?.name || category
 }
 
-const getCategoryType = (category: string) => {
-  const types: Record<string, string> = {
+const getCategoryType = (category: string): 'primary' | 'success' | 'warning' | 'info' | 'danger' | undefined => {
+  const types: Record<string, 'primary' | 'success' | 'warning' | 'info' | 'danger'> = {
     select: 'primary',
     insert: 'success',
     update: 'warning',
@@ -644,7 +644,7 @@ const getCategoryType = (category: string) => {
     function: 'primary',
     index: 'warning'
   }
-  return types[category] || ''
+  return types[category] || undefined
 }
 
 const copySyntax = async (syntax: string) => {
