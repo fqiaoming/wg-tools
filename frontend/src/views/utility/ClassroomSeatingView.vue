@@ -1,172 +1,151 @@
 <template>
-  <div class="classroom-seating-container">
-    <!-- 工具标题 -->
-    <div class="tool-header">
-      <h1 class="tool-title">
-        <el-icon class="title-icon"><School /></el-icon>
-        班级座次表管理系统
-      </h1>
-      <p class="tool-description">智能排座，优化班级管理效率</p>
-    </div>
+  <div class="classroom-seating">
+    <!-- 开发者信息 -->
+    <header class="developer-info">
+      <h1>班级座次表</h1>
+      <div class="developer-tag">开发者：WG科技</div>
+    </header>
 
     <!-- 控制面板 -->
     <div class="control-panel">
-      <!-- 文件上传区域 -->
-      <el-card class="upload-section" shadow="hover">
-        <template #header>
-          <span class="card-title">📋 数据导入</span>
-        </template>
-        <div class="upload-groups">
-          <div class="upload-group">
-            <el-button @click="downloadNameSample" type="info" plain>
-              <el-icon><Download /></el-icon>
-              下载班级名单示例
+      <div class="upload-section">
+        <div class="upload-group">
+          <el-button @click="downloadNameSample" size="small" type="primary">
+            下载班级名单示例
+          </el-button>
+          <el-upload
+            ref="nameListUpload"
+            :auto-upload="false"
+            :show-file-list="false"
+            accept=".txt,.csv,.xlsx"
+            :on-change="handleNameListUpload"
+            action=""
+          >
+            <el-button size="small" type="info">
+              上传班级名单
             </el-button>
-            <el-upload
-              :before-upload="handleNameListUpload"
-              :show-file-list="false"
-              accept=".txt,.csv,.xlsx"
-              action=""
-            >
-              <el-button type="primary">
-                <el-icon><Upload /></el-icon>
-                上传班级名单
-              </el-button>
-            </el-upload>
-          </div>
-          <div class="upload-group">
-            <el-button @click="downloadGradeSample" type="info" plain>
-              <el-icon><Download /></el-icon>
-              下载成绩名次示例
-            </el-button>
-            <el-upload
-              :before-upload="handleGradeListUpload"
-              :show-file-list="false"
-              accept=".txt,.csv,.xlsx"
-              action=""
-            >
-              <el-button type="success">
-                <el-icon><Upload /></el-icon>
-                上传成绩名次
-              </el-button>
-            </el-upload>
-          </div>
+          </el-upload>
         </div>
-      </el-card>
-
-      <!-- 设置区域 -->
-      <el-card class="settings-section" shadow="hover">
-        <template #header>
-          <span class="card-title">⚙️ 布局设置</span>
-        </template>
-        <div class="settings-grid">
-          <div class="setting-item">
-            <label>行数:</label>
-            <el-input-number v-model="rows" :min="1" :max="10" size="large" />
-          </div>
-          <div class="setting-item">
-            <label>列数:</label>
-            <el-input-number v-model="cols" :min="1" :max="12" size="large" />
-          </div>
-          <div class="setting-item">
-            <el-button @click="updateGrid" type="warning" size="large">
-              <el-icon><Refresh /></el-icon>
-              更新布局
+        <div class="upload-group">
+          <el-button @click="downloadGradeSample" size="small" type="primary">
+            下载成绩名次示例
+          </el-button>
+          <el-upload
+            ref="gradeListUpload"
+            :auto-upload="false"
+            :show-file-list="false"
+            accept=".txt,.csv,.xlsx"
+            :on-change="handleGradeListUpload"
+            action=""
+          >
+            <el-button size="small" type="info">
+              上传成绩名次
             </el-button>
-          </div>
+          </el-upload>
         </div>
-      </el-card>
+      </div>
 
-      <!-- 排座方式 -->
-      <el-card class="arrangement-section" shadow="hover">
-        <template #header>
-          <span class="card-title">🎯 排座方式</span>
-        </template>
+      <div class="settings-section">
+        <div class="setting-group">
+          <label>行数:</label>
+          <el-input-number v-model="rows" :min="1" :max="10" size="small" />
+        </div>
+        <div class="setting-group">
+          <label>列数:</label>
+          <el-input-number v-model="cols" :min="1" :max="12" size="small" />
+        </div>
+        <div class="setting-group">
+          <el-button @click="updateGrid" size="small" type="success">
+            更新布局
+          </el-button>
+        </div>
+      </div>
+
+      <div class="arrangement-section">
+        <label>排座方式:</label>
         <div class="arrangement-buttons">
-          <el-button @click="randomArrange" type="primary" size="large">
-            <el-icon><Refresh /></el-icon>
+          <el-button 
+            @click="arrangeSeats('random')" 
+            size="small" 
+            :type="currentArrangement === 'random' ? 'primary' : 'default'"
+          >
             随机排座
           </el-button>
-          <el-button @click="gradeArrange" type="success" size="large">
-            <el-icon><Trophy /></el-icon>
+          <el-button 
+            @click="arrangeSeats('grade')" 
+            size="small" 
+            :type="currentArrangement === 'grade' ? 'primary' : 'default'"
+          >
             成绩分区
           </el-button>
-          <el-button @click="balanceArrange" type="info" size="large">
-            <el-icon><Refresh /></el-icon>
+          <el-button 
+            @click="arrangeSeats('balance')" 
+            size="small" 
+            :type="currentArrangement === 'balance' ? 'primary' : 'default'"
+          >
             优差搭配
           </el-button>
         </div>
-      </el-card>
+      </div>
 
-      <!-- 显示选项 -->
-      <el-card class="display-options" shadow="hover">
-        <template #header>
-          <span class="card-title">👁️ 显示选项</span>
-        </template>
-        <div class="option-checks">
-          <el-checkbox v-model="showColor" size="large">展示颜色</el-checkbox>
-          <el-checkbox v-model="showRank" size="large">展示名次</el-checkbox>
-        </div>
-      </el-card>
+      <div class="display-options">
+        <el-checkbox v-model="showColor" @change="toggleColorDisplay">
+          展示颜色
+        </el-checkbox>
+        <el-checkbox v-model="showRank" @change="toggleRankDisplay">
+          展示名次
+        </el-checkbox>
+      </div>
 
-      <!-- 导出功能 -->
-      <el-card class="export-section" shadow="hover">
-        <template #header>
-          <span class="card-title">📤 导出功能</span>
-        </template>
-        <el-button @click="exportSeating" type="danger" size="large">
-          <el-icon><Document /></el-icon>
+      <div class="export-section">
+        <el-button @click="exportSeatingChart" size="small" type="danger">
           导出座位图
         </el-button>
-      </el-card>
+      </div>
     </div>
 
     <!-- 提示信息 -->
     <el-alert
-      v-if="infoMessage"
       :title="infoMessage"
       type="info"
       :closable="false"
-      class="info-alert"
+      style="margin-bottom: 20px;"
     />
 
     <!-- 座位表网格 -->
     <div class="classroom-container">
-      <div class="classroom-header">
-        <h3>🏫 教室座位布局</h3>
-        <div class="blackboard">黑板</div>
-      </div>
       <div 
         class="classroom-grid" 
-        :style="{ 
-          gridTemplateColumns: `repeat(${cols}, 1fr)`,
-          gridTemplateRows: `repeat(${rows}, 1fr)`
-        }"
+        :style="gridStyle"
+        @dragover="handleDragOver"
+        @drop="handleDrop"
       >
         <div
           v-for="(seat, index) in seats"
           :key="index"
-          class="seat-cell"
-          :class="{ 'has-student': seat.student }"
-          @drop="handleDrop($event, index)"
-          @dragover.prevent
-          @dragenter.prevent
+          :class="getSeatClass(seat)"
+          :draggable="seat.student ? true : false"
+          :data-position="index"
+          :data-student-id="seat.student?.id"
+          @dragstart="handleDragStart($event, seat, index)"
+          @dragend="handleDragEnd"
+          @dragenter="handleDragEnter"
+          @dragleave="handleDragLeave"
+          @dragover="handleDragOver"
+          @drop="handleDrop"
         >
-          <div
-            v-if="seat.student"
-            class="student-card"
-            :class="getStudentCardClass(seat.student)"
-            draggable="true"
-            @dragstart="handleDragStart($event, seat.student, index)"
-          >
+          <template v-if="seat.student">
             <div class="student-name">{{ seat.student.name }}</div>
-            <div v-if="showRank && seat.student.rank" class="student-rank">
-              第{{ seat.student.rank }}名
+            <div 
+              v-if="showRank && seat.student.rank" 
+              class="student-rank"
+            >
+              名次: {{ seat.student.rank }}
             </div>
-          </div>
-          <div v-else class="empty-seat">
+          </template>
+          <template v-else>
             空座位
-          </div>
+          </template>
         </div>
       </div>
     </div>
@@ -174,521 +153,884 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { ElMessage } from 'element-plus'
-import {
-  School,
-  Download,
-  Upload,
-  Refresh,
-  Trophy,
-  Document
-} from '@element-plus/icons-vue'
-import * as XLSX from 'xlsx'
-
-// 数据接口定义
-interface Student {
-  name: string
-  rank?: number
-  grade?: number
-}
-
-interface Seat {
-  student: Student | null
-}
 
 // 响应式数据
 const students = ref<Student[]>([])
-const grades = ref<any[]>([])
+const grades = ref<Grade[]>([])
 const rows = ref(6)
 const cols = ref(8)
 const showRank = ref(true)
 const showColor = ref(true)
-const seats = ref<Seat[]>([])
+const currentArrangement = ref('random')
 const infoMessage = ref('请先上传班级名单和成绩信息，设置教室布局后开始排座。')
+const seats = ref<Seat[]>([])
+const draggedSeat = ref<{ seat: Seat; index: number } | null>(null)
+
+// 类型定义
+interface Student {
+  id: number
+  name: string
+  rank?: number
+}
+
+interface Grade {
+  name: string
+  rank: number
+}
+
+interface Seat {
+  student?: Student
+  zone?: 'front' | 'middle' | 'back'
+}
 
 // 计算属性
-const totalSeats = computed(() => rows.value * cols.value)
+const gridStyle = computed(() => ({
+  gridTemplateColumns: `repeat(${cols.value}, 1fr)`,
+  gridTemplateRows: `repeat(${rows.value}, 1fr)`
+}))
 
-// 初始化座位
-const initializeSeats = () => {
-  seats.value = Array.from({ length: totalSeats.value }, () => ({ student: null }))
-}
-
-// 更新网格
-const updateGrid = () => {
-  initializeSeats()
-  if (students.value.length > 0) {
-    randomArrange()
-  }
-  ElMessage.success('布局已更新')
-}
-
-// 处理名单上传
-const handleNameListUpload = (file: File) => {
-  const reader = new FileReader()
-  reader.onload = (e) => {
-    try {
-      const content = e.target?.result as string
-      if (file.name.endsWith('.xlsx') || file.name.endsWith('.xls')) {
-        const workbook = XLSX.read(content, { type: 'binary' })
-        const firstSheet = workbook.Sheets[workbook.SheetNames[0]]
-        const data = XLSX.utils.sheet_to_json(firstSheet, { header: 1 }) as string[][]
-        students.value = data.reduce((acc, val) => acc.concat(val), []).filter(name => name && name.trim()).map(name => ({ name: name.trim() }))
-      } else {
-        // 处理txt/csv文件
-        const names = content.split(/[\n,]/).filter(name => name && name.trim()).map(name => name.trim())
-        students.value = names.map(name => ({ name }))
-      }
-      
-      if (students.value.length > 0) {
-        infoMessage.value = `已导入 ${students.value.length} 名学生，可以开始排座了！`
-        ElMessage.success(`成功导入 ${students.value.length} 名学生`)
-      }
-    } catch (error) {
-      ElMessage.error('文件解析失败，请检查文件格式')
-    }
-  }
-  
-  if (file.name.endsWith('.xlsx') || file.name.endsWith('.xls')) {
-    reader.readAsBinaryString(file)
-  } else {
+// 文件处理方法
+const readFile = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = (e) => resolve(e.target?.result as string)
+    reader.onerror = () => reject(new Error('文件读取失败'))
     reader.readAsText(file, 'UTF-8')
-  }
-  
-  return false // 阻止默认上传行为
+  })
 }
 
-// 处理成绩上传
-const handleGradeListUpload = (file: File) => {
-  const reader = new FileReader()
-  reader.onload = (e) => {
-    try {
-      const content = e.target?.result as string
-      let gradeData: any[] = []
-      
-      if (file.name.endsWith('.xlsx') || file.name.endsWith('.xls')) {
-        const workbook = XLSX.read(content, { type: 'binary' })
-        const firstSheet = workbook.Sheets[workbook.SheetNames[0]]
-        gradeData = XLSX.utils.sheet_to_json(firstSheet) as any[]
-      } else {
-        // 处理txt/csv文件
-        const lines = content.split('\n').filter(line => line.trim())
-        gradeData = lines.map((line, index) => {
-          const parts = line.split(/[,\t]/)
-          return {
-            name: parts[0]?.trim(),
-            rank: parseInt(parts[1]) || index + 1,
-            grade: parseFloat(parts[2]) || 0
-          }
+const parseStudentList = (content: string, fileName: string): Student[] => {
+  const lines = content.trim().split('\n')
+  const students: Student[] = []
+  
+  if (fileName.endsWith('.csv')) {
+    lines.forEach((line, index) => {
+      const parts = line.split(',')
+      if (parts.length > 0 && parts[0].trim()) {
+        students.push({
+          id: index + 1,
+          name: parts[0].trim(),
+          rank: undefined
         })
       }
-      
-      // 合并成绩数据到学生信息
-      gradeData.forEach(gradeItem => {
-        const student = students.value.find(s => s.name === gradeItem.name)
-        if (student) {
-          student.rank = gradeItem.rank
-          student.grade = gradeItem.grade
-        }
-      })
-      
-      grades.value = gradeData
-      ElMessage.success(`成功导入 ${gradeData.length} 条成绩数据`)
-    } catch (error) {
-      ElMessage.error('成绩文件解析失败，请检查文件格式')
+    })
+  } else {
+    lines.forEach((line, index) => {
+      const name = line.trim()
+      if (name) {
+        students.push({
+          id: index + 1,
+          name: name,
+          rank: undefined
+        })
+      }
+    })
+  }
+  
+  return students
+}
+
+const parseGradeList = (content: string, fileName: string): Grade[] => {
+  const lines = content.trim().split('\n')
+  const grades: Grade[] = []
+  
+  lines.forEach(line => {
+    if (fileName.endsWith('.csv')) {
+      const parts = line.split(',')
+      if (parts.length >= 2) {
+        grades.push({
+          name: parts[0].trim(),
+          rank: parseInt(parts[1].trim()) || 0
+        })
+      }
+    } else {
+      const parts = line.trim().split(/\s+/)
+      if (parts.length >= 2) {
+        grades.push({
+          name: parts[0],
+          rank: parseInt(parts[1]) || 0
+        })
+      }
+    }
+  })
+  
+  return grades
+}
+
+// 文件上传处理
+const handleNameListUpload = async (file: any) => {
+  try {
+    const content = await readFile(file.raw)
+    students.value = parseStudentList(content, file.name)
+    updateInfoMessage(`已上传 ${students.value.length} 名学生信息`)
+    
+    if (grades.value.length === 0) {
+      arrangeSeats('random')
+    } else {
+      checkReadyState()
+    }
+  } catch (error) {
+    ElMessage.error('名单文件读取失败：' + (error as Error).message)
+  }
+}
+
+const handleGradeListUpload = async (file: any) => {
+  try {
+    const content = await readFile(file.raw)
+    grades.value = parseGradeList(content, file.name)
+    updateInfoMessage(`已上传 ${grades.value.length} 名学生成绩信息`)
+    
+    if (students.value.length === 0) {
+      students.value = grades.value.map((grade, index) => ({
+        id: index + 1,
+        name: grade.name,
+        rank: grade.rank
+      }))
+      arrangeSeats('balance')
+    } else {
+      mergeStudentData()
+      arrangeSeats('balance')
+    }
+  } catch (error) {
+    ElMessage.error('成绩文件读取失败：' + (error as Error).message)
+  }
+}
+
+const checkReadyState = () => {
+  if (students.value.length > 0 && grades.value.length > 0) {
+    mergeStudentData()
+    updateInfoMessage(`数据准备完成，共 ${students.value.length} 名学生，点击排座方式开始排座`)
+  }
+}
+
+const mergeStudentData = () => {
+  students.value.forEach(student => {
+    const gradeData = grades.value.find(grade => grade.name === student.name)
+    if (gradeData) {
+      student.rank = gradeData.rank
+    }
+  })
+  
+  students.value.sort((a, b) => (a.rank || 999) - (b.rank || 999))
+}
+
+// 网格管理
+const createGrid = () => {
+  const totalSeats = rows.value * cols.value
+  seats.value = Array.from({ length: totalSeats }, () => ({}))
+}
+
+const updateGrid = () => {
+  createGrid()
+  if (students.value.length > 0) {
+    arrangeSeats(currentArrangement.value)
+  }
+}
+
+// 排座算法
+const shuffleArray = <T>(array: T[]): void => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]]
+  }
+}
+
+const randomArrangement = (): (number | null)[] => {
+  const totalSeats = rows.value * cols.value
+  const positions = new Array(totalSeats).fill(null)
+  const studentCount = Math.min(students.value.length, totalSeats)
+  
+  const availablePositions = Array.from({length: studentCount}, (_, i) => i)
+  
+  students.value.slice(0, studentCount).forEach((student, index) => {
+    const randomIndex = Math.floor(Math.random() * availablePositions.length)
+    const position = availablePositions.splice(randomIndex, 1)[0]
+    positions[position] = index
+  })
+  
+  return positions
+}
+
+const assignStudentsToSeats = (positions: (number | null)[], studentsToAssign: Student[], seatPositions: number[]) => {
+  const shuffledSeats = [...seatPositions]
+  shuffleArray(shuffledSeats)
+  
+  studentsToAssign.forEach((student, index) => {
+    if (index < shuffledSeats.length) {
+      const position = shuffledSeats[index]
+      // 在全局学生数组中查找该学生的索引
+      const studentIndex = students.value.findIndex(s => s.id === student.id)
+      if (studentIndex !== -1) {
+        positions[position] = studentIndex
+      }
+    }
+  })
+}
+
+const gradeZoneArrangement = (): (number | null)[] => {
+  const positions = new Array(rows.value * cols.value).fill(null)
+  const studentsWithRank = students.value.filter(s => s.rank).sort((a, b) => a.rank! - b.rank!)
+  
+  if (studentsWithRank.length === 0) {
+    return randomArrangement()
+  }
+  
+  const totalSeats = rows.value * cols.value
+  const studentCount = Math.min(students.value.length, totalSeats)
+  
+  // 按名次分组学生：前30%名次为优等生，中50%名次为中等生，后20%名次为差等生
+  const excellentStudentCount = Math.floor(studentsWithRank.length * 0.3)
+  const middleStudentCount = Math.floor(studentsWithRank.length * 0.5)
+  
+  const excellentStudents = studentsWithRank.slice(0, excellentStudentCount)
+  const middleStudents = studentsWithRank.slice(excellentStudentCount, excellentStudentCount + middleStudentCount)
+  const poorStudents = studentsWithRank.slice(excellentStudentCount + middleStudentCount)
+  
+  // 按座位位置分区：前30%座位给优等生，中50%座位给中等生，后20%座位给差等生
+  const excellentSeatCount = Math.floor(studentCount * 0.3)
+  const middleSeatCount = Math.floor(studentCount * 0.5)
+  const poorSeatCount = studentCount - excellentSeatCount - middleSeatCount
+  
+  const allSeatPositions = Array.from({length: studentCount}, (_, i) => i)
+  const excellentSeatPositions = allSeatPositions.slice(0, excellentSeatCount)
+  const middleSeatPositions = allSeatPositions.slice(excellentSeatCount, excellentSeatCount + middleSeatCount)
+  const poorSeatPositions = allSeatPositions.slice(excellentSeatCount + middleSeatCount)
+  
+  assignStudentsToSeats(positions, excellentStudents, excellentSeatPositions)
+  assignStudentsToSeats(positions, middleStudents, middleSeatPositions)
+  assignStudentsToSeats(positions, poorStudents, poorSeatPositions)
+  
+  return positions
+}
+
+const balanceArrangement = (): (number | null)[] => {
+  const positions = new Array(rows.value * cols.value).fill(null)
+  const studentsWithRank = students.value.filter(s => s.rank)
+  
+  if (studentsWithRank.length === 0) {
+    return randomArrangement()
+  }
+  
+  const totalSeats = rows.value * cols.value
+  const studentCount = Math.min(students.value.length, totalSeats)
+  
+  const halfPoint = Math.floor(studentsWithRank.length / 2)
+  const excellentStudents = [...studentsWithRank.slice(0, halfPoint)]
+  const poorStudents = [...studentsWithRank.slice(halfPoint)]
+  
+  shuffleArray(excellentStudents)
+  shuffleArray(poorStudents)
+  
+  let positionIndex = 0
+  let excellentIndex = 0
+  let poorIndex = 0
+  
+  while (positionIndex < studentCount && (excellentIndex < excellentStudents.length || poorIndex < poorStudents.length)) {
+    if (excellentIndex < excellentStudents.length && positionIndex < studentCount) {
+      const student = excellentStudents[excellentIndex]
+      const studentIndex = students.value.findIndex(s => s.id === student.id)
+      positions[positionIndex++] = studentIndex
+      excellentIndex++
+    }
+    
+    if (poorIndex < poorStudents.length && positionIndex < studentCount) {
+      const student = poorStudents[poorIndex]
+      const studentIndex = students.value.findIndex(s => s.id === student.id)
+      positions[positionIndex++] = studentIndex
+      poorIndex++
     }
   }
   
-  if (file.name.endsWith('.xlsx') || file.name.endsWith('.xls')) {
-    reader.readAsBinaryString(file)
+  return positions
+}
+
+const arrangeSeats = (method: string) => {
+  currentArrangement.value = method
+  
+  if (students.value.length === 0) {
+    ElMessage.error('请先上传学生名单和成绩信息')
+    return
+  }
+  
+  createGrid()
+  
+  let positions: (number | null)[] = []
+  
+  switch (method) {
+    case 'random':
+      positions = randomArrangement()
+      break
+    case 'grade':
+      positions = gradeZoneArrangement()
+      break
+    case 'balance':
+      positions = balanceArrangement()
+      break
+  }
+  
+  positions.forEach((studentIndex, position) => {
+    if (studentIndex !== null && studentIndex < students.value.length) {
+      seats.value[position].student = students.value[studentIndex]
+      if (method === 'grade' && showColor.value) {
+        seats.value[position].zone = getStudentZone(students.value[studentIndex])
+      }
+    }
+  })
+  
+  updateInfoMessage(`已使用${getMethodName(method)}完成排座`)
+}
+
+// 辅助方法
+const getStudentZone = (student: Student): 'front' | 'middle' | 'back' => {
+  if (!student.rank) return 'middle'
+  
+  const studentsWithRank = students.value.filter(s => s.rank).sort((a, b) => a.rank! - b.rank!)
+  const totalWithRank = studentsWithRank.length
+  
+  const excellentThreshold = Math.floor(totalWithRank * 0.3)
+  const middleThreshold = Math.floor(totalWithRank * 0.8)
+  
+  const studentRankIndex = studentsWithRank.findIndex(s => s.id === student.id)
+  
+  if (studentRankIndex < excellentThreshold) {
+    return 'front'
+  } else if (studentRankIndex < middleThreshold) {
+    return 'middle'
   } else {
-    reader.readAsText(file, 'UTF-8')
+    return 'back'
   }
-  
-  return false
 }
 
-// 随机排座
-const randomArrange = () => {
-  if (students.value.length === 0) {
-    ElMessage.warning('请先上传班级名单')
-    return
+const getSeatClass = (seat: Seat): string => {
+  const classes = ['seat']
+  
+  if (seat.student) {
+    classes.push('student-card')
+    if (showColor.value && seat.zone) {
+      classes.push(`${seat.zone}-zone`)
+    }
+  } else {
+    classes.push('empty-seat')
   }
   
-  initializeSeats()
-  const shuffledStudents = [...students.value].sort(() => Math.random() - 0.5)
-  
-  for (let i = 0; i < Math.min(shuffledStudents.length, totalSeats.value); i++) {
-    seats.value[i].student = shuffledStudents[i]
-  }
-  
-  ElMessage.success('随机排座完成')
+  return classes.join(' ')
 }
 
-// 成绩分区排座
-const gradeArrange = () => {
-  if (students.value.length === 0) {
-    ElMessage.warning('请先上传班级名单')
-    return
+const getMethodName = (method: string): string => {
+  const names: Record<string, string> = {
+    'random': '随机排座',
+    'grade': '成绩分区',
+    'balance': '优差搭配'
   }
-  
-  initializeSeats()
-  const sortedStudents = [...students.value].sort((a, b) => (a.rank || 999) - (b.rank || 999))
-  
-  // 按成绩分区域排座，前排放优秀学生
-  for (let i = 0; i < Math.min(sortedStudents.length, totalSeats.value); i++) {
-    seats.value[i].student = sortedStudents[i]
-  }
-  
-  ElMessage.success('成绩分区排座完成')
+  return names[method] || '未知方式'
 }
 
-// 优差搭配排座
-const balanceArrange = () => {
-  if (students.value.length === 0) {
-    ElMessage.warning('请先上传班级名单')
-    return
-  }
-  
-  initializeSeats()
-  const sortedStudents = [...students.value].sort((a, b) => (a.rank || 999) - (b.rank || 999))
-  const half = Math.floor(sortedStudents.length / 2)
-  const goodStudents = sortedStudents.slice(0, half)
-  const averageStudents = sortedStudents.slice(half)
-  
-  // 优差搭配
-  const arrangedStudents: Student[] = []
-  for (let i = 0; i < Math.max(goodStudents.length, averageStudents.length); i++) {
-    if (goodStudents[i]) arrangedStudents.push(goodStudents[i])
-    if (averageStudents[i]) arrangedStudents.push(averageStudents[i])
-  }
-  
-  for (let i = 0; i < Math.min(arrangedStudents.length, totalSeats.value); i++) {
-    seats.value[i].student = arrangedStudents[i]
-  }
-  
-  ElMessage.success('优差搭配排座完成')
+const updateInfoMessage = (message: string) => {
+  infoMessage.value = message
 }
 
-// 获取学生卡片样式
-const getStudentCardClass = (student: Student) => {
-  if (!showColor.value || !student.rank) return ''
+// 显示控制
+const toggleColorDisplay = () => {
+  if (currentArrangement.value === 'grade') {
+    seats.value.forEach(seat => {
+      if (seat.student && showColor.value) {
+        seat.zone = getStudentZone(seat.student)
+      } else {
+        seat.zone = undefined
+      }
+    })
+  }
+}
+
+const toggleRankDisplay = () => {
+  // 响应式更新，无需额外操作
+}
+
+// 拖拽功能
+const handleDragStart = (event: DragEvent, seat: Seat, index: number) => {
+  if (seat.student) {
+    draggedSeat.value = { seat, index }
+    event.dataTransfer!.effectAllowed = 'move'
+    
+    // 添加拖拽样式
+    const target = event.target as HTMLElement
+    target.classList.add('dragging')
+  }
+}
+
+const handleDragEnd = () => {
+  // 移除拖拽样式
+  document.querySelectorAll('.dragging').forEach(el => {
+    el.classList.remove('dragging')
+  })
+  document.querySelectorAll('.drop-target').forEach(el => {
+    el.classList.remove('drop-target')
+  })
   
-  if (student.rank <= 10) return 'excellent'
-  if (student.rank <= 20) return 'good'
-  if (student.rank <= 30) return 'average'
-  return 'needs-improvement'
+  draggedSeat.value = null
 }
 
-// 拖拽相关
-const handleDragStart = (event: DragEvent, student: Student, seatIndex: number) => {
-  event.dataTransfer?.setData('text/plain', JSON.stringify({ student, seatIndex }))
-}
-
-const handleDrop = (event: DragEvent, targetIndex: number) => {
+const handleDragOver = (event: DragEvent) => {
   event.preventDefault()
-  const data = event.dataTransfer?.getData('text/plain')
-  if (!data) return
+  event.dataTransfer!.dropEffect = 'move'
+}
+
+const handleDragEnter = (event: DragEvent) => {
+  event.preventDefault()
+  event.stopPropagation()
+  const target = getDropTarget(event.target as HTMLElement)
+  if (target && target !== draggedSeat.value?.seat) {
+    target.classList.add('drop-target')
+  }
+}
+
+const handleDragLeave = (event: DragEvent) => {
+  event.stopPropagation()
+  const target = getDropTarget(event.target as HTMLElement)
+  if (target) {
+    // 只有当鼠标真正离开元素时才移除样式
+    const rect = target.getBoundingClientRect()
+    const x = event.clientX
+    const y = event.clientY
+    
+    if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom) {
+      target.classList.remove('drop-target')
+    }
+  }
+}
+
+// 获取正确的拖拽目标
+const getDropTarget = (element: HTMLElement): HTMLElement | null => {
+  // 如果点击的是座位元素本身
+  if (element.classList.contains('seat')) {
+    return element
+  }
   
-  const { student, seatIndex } = JSON.parse(data)
+  // 如果点击的是座位内的子元素（如姓名或名次），向上查找座位元素
+  let parent = element.parentElement
+  while (parent && !parent.classList.contains('classroom-grid')) {
+    if (parent.classList.contains('seat')) {
+      return parent
+    }
+    parent = parent.parentElement
+  }
   
-  // 交换座位
-  const targetStudent = seats.value[targetIndex].student
-  seats.value[seatIndex].student = targetStudent
-  seats.value[targetIndex].student = student
+  return null
+}
+
+const handleDrop = (event: DragEvent) => {
+  event.preventDefault()
+  event.stopPropagation()
   
-  ElMessage.success('座位调整完成')
+  const target = getDropTarget(event.target as HTMLElement)
+  if (!target || !draggedSeat.value) {
+    return
+  }
+  
+  const targetPosition = parseInt(target.dataset.position || '-1')
+  
+  if (targetPosition >= 0 && targetPosition < seats.value.length && targetPosition !== draggedSeat.value.index) {
+    const sourceIndex = draggedSeat.value.index
+    const targetSeat = seats.value[targetPosition]
+    
+    // 交换座位内容
+    const tempStudent = seats.value[sourceIndex].student
+    const tempZone = seats.value[sourceIndex].zone
+    
+    seats.value[sourceIndex].student = targetSeat.student
+    seats.value[sourceIndex].zone = targetSeat.zone
+    
+    seats.value[targetPosition].student = tempStudent
+    seats.value[targetPosition].zone = tempZone
+  }
+  
+  // 清除所有拖拽样式
+  document.querySelectorAll('.drop-target').forEach(el => {
+    el.classList.remove('drop-target')
+  })
 }
 
 // 导出功能
-const exportSeating = () => {
-  if (seats.value.every(seat => !seat.student)) {
-    ElMessage.warning('请先排座后再导出')
-    return
-  }
+const exportSeatingChart = () => {
+  const canvas = document.createElement('canvas')
+  const ctx = canvas.getContext('2d')!
   
-  // 创建座位数据
-  const seatingData = []
-  for (let row = 0; row < rows.value; row++) {
-    const rowData = []
-    for (let col = 0; col < cols.value; col++) {
-      const index = row * cols.value + col
-      const seat = seats.value[index]
-      rowData.push(seat.student ? `${seat.student.name}(${seat.student.rank || '无'})` : '空座位')
+  const cardWidth = 120
+  const cardHeight = 80
+  const gap = 10
+  const padding = 30
+  
+  canvas.width = cols.value * cardWidth + (cols.value - 1) * gap + 2 * padding
+  canvas.height = rows.value * cardHeight + (rows.value - 1) * gap + 2 * padding + 60
+  
+  ctx.fillStyle = '#ffffff'
+  ctx.fillRect(0, 0, canvas.width, canvas.height)
+  
+  ctx.fillStyle = '#333333'
+  ctx.font = 'bold 24px Arial'
+  ctx.textAlign = 'center'
+  ctx.fillText('班级座次表', canvas.width / 2, 40)
+  
+  ctx.font = '14px Arial'
+  ctx.fillStyle = '#666666'
+  ctx.fillText('开发者：WG科技', canvas.width / 2, canvas.height - 10)
+  
+  seats.value.forEach((seat, index) => {
+    const row = Math.floor(index / cols.value)
+    const col = index % cols.value
+    const x = padding + col * (cardWidth + gap)
+    const y = padding + 60 + row * (cardHeight + gap)
+    
+    if (seat.student) {
+      if (seat.zone === 'front') {
+        ctx.fillStyle = '#a7f3d0'
+      } else if (seat.zone === 'middle') {
+        ctx.fillStyle = '#fde68a'
+      } else if (seat.zone === 'back') {
+        ctx.fillStyle = '#fecaca'
+      } else {
+        ctx.fillStyle = '#ffeaa7'
+      }
+    } else {
+      ctx.fillStyle = '#f7fafc'
     }
-    seatingData.push(rowData)
-  }
+    
+    ctx.fillRect(x, y, cardWidth, cardHeight)
+    
+    ctx.strokeStyle = '#e2e8f0'
+    ctx.lineWidth = 1
+    ctx.strokeRect(x, y, cardWidth, cardHeight)
+    
+    ctx.fillStyle = '#2d3748'
+    ctx.textAlign = 'center'
+    
+    if (seat.student) {
+      ctx.font = 'bold 16px Arial'
+      ctx.fillText(seat.student.name, x + cardWidth / 2, y + cardHeight / 2 - 5)
+      
+      if (showRank.value && seat.student.rank) {
+        ctx.font = '12px Arial'
+        ctx.fillStyle = '#4a5568'
+        ctx.fillText(`名次: ${seat.student.rank}`, x + cardWidth / 2, y + cardHeight / 2 + 15)
+      }
+    } else {
+      ctx.font = '12px Arial'
+      ctx.fillStyle = '#a0aec0'
+      ctx.fillText('空座位', x + cardWidth / 2, y + cardHeight / 2)
+    }
+  })
   
-  // 导出为Excel
-  const worksheet = XLSX.utils.aoa_to_sheet(seatingData)
-  const workbook = XLSX.utils.book_new()
-  XLSX.utils.book_append_sheet(workbook, worksheet, '座位表')
-  XLSX.writeFile(workbook, `班级座位表_${new Date().toLocaleDateString()}.xlsx`)
+  const link = document.createElement('a')
+  link.download = '班级座次表.png'
+  link.href = canvas.toDataURL()
+  link.click()
   
-  ElMessage.success('座位表导出成功')
+  updateInfoMessage('座位图已导出下载')
 }
 
-// 下载示例文件
-const downloadNameSample = () => {
-  const sampleData = ['张三', '李四', '王五', '赵六', '孙七', '周八', '吴九', '郑十']
-  const content = sampleData.join('\n')
-  const blob = new Blob([content], { type: 'text/plain;charset=utf-8' })
+// 示例文件下载
+const downloadFile = (content: string, filename: string, mimeType: string) => {
+  const blob = new Blob([content], { type: mimeType })
   const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = '班级名单示例.txt'
-  a.click()
+  const link = document.createElement('a')
+  link.href = url
+  link.download = filename
+  link.style.display = 'none'
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
   URL.revokeObjectURL(url)
 }
 
+const downloadNameSample = () => {
+  const sampleData = `陈雨桐
+李沐轩
+王诗源
+张宇晴
+朱博文
+郑子昂
+刘思琪
+胡欣然
+马嘉怡
+许博轩
+罗雨涵
+邓紫萱
+高筱雨
+宋思源
+周逸飞
+林浩然
+孙梓涵
+何雨萱
+吴志超
+韩思雨
+彭雅欣
+冯嘉豪
+董雨辰
+蒋筱悦
+薛思洁
+陆嘉宇
+顾雨桐
+钱思远
+沈雨晨
+汪嘉欣`
+  
+  downloadFile(sampleData, '班级名单示例.txt', 'text/plain')
+  updateInfoMessage('班级名单示例文件已下载')
+}
+
 const downloadGradeSample = () => {
-  const sampleData = [
-    ['姓名', '名次', '成绩'],
-    ['张三', '1', '95'],
-    ['李四', '2', '92'],
-    ['王五', '3', '89'],
-    ['赵六', '4', '86']
-  ]
-  const worksheet = XLSX.utils.aoa_to_sheet(sampleData)
-  const workbook = XLSX.utils.book_new()
-  XLSX.utils.book_append_sheet(workbook, worksheet, '成绩示例')
-  XLSX.writeFile(workbook, '成绩名次示例.xlsx')
+  const sampleData = `陈雨桐 1
+李沐轩 2
+王诗源 3
+张宇晴 4
+朱博文 5
+郑子昂 6
+刘思琪 7
+胡欣然 8
+马嘉怡 9
+许博轩 10
+罗雨涵 11
+邓紫萱 12
+高筱雨 13
+宋思源 14
+周逸飞 15
+林浩然 16
+孙梓涵 17
+何雨萱 18
+吴志超 19
+韩思雨 20
+彭雅欣 21
+冯嘉豪 22
+董雨辰 23
+蒋筱悦 24
+薛思洁 25
+陆嘉宇 26
+顾雨桐 27
+钱思远 28
+沈雨晨 29
+汪嘉欣 30`
+  
+  downloadFile(sampleData, '成绩名次示例.txt', 'text/plain')
+  updateInfoMessage('成绩名次示例文件已下载')
 }
 
 // 初始化
-onMounted(() => {
-  initializeSeats()
-})
+createGrid()
 </script>
 
 <style scoped>
-.classroom-seating-container {
-  padding: 20px;
+.classroom-seating {
   max-width: 1400px;
   margin: 0 auto;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;
+  color: #333;
 }
 
-.tool-header {
+.developer-info {
   text-align: center;
   margin-bottom: 30px;
-  padding: 20px;
-  background: white;
-  border-radius: 15px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  color: white;
 }
 
-.tool-title {
-  font-size: 28px;
-  color: #2c3e50;
+.developer-info h1 {
+  font-size: 2.5em;
+  font-weight: 300;
   margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
-.title-icon {
-  font-size: 32px;
-  color: #3498db;
-}
-
-.tool-description {
-  color: #7f8c8d;
-  font-size: 16px;
+.developer-tag {
+  font-size: 1.1em;
+  opacity: 0.9;
+  font-weight: 300;
 }
 
 .control-panel {
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 25px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
-  margin-bottom: 30px;
-}
-
-.card-title {
-  font-weight: bold;
-  font-size: 16px;
-}
-
-.upload-groups {
-  display: flex;
-  flex-direction: column;
+  grid-template-columns: auto auto 1fr auto auto;
   gap: 15px;
+  align-items: center;
+}
+
+.upload-section, .settings-section, .arrangement-section, .display-options, .export-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
 }
 
 .upload-group {
   display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-.settings-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 15px;
-  align-items: end;
-}
-
-.setting-item {
-  display: flex;
   flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.setting-group {
+  display: flex;
+  align-items: center;
   gap: 8px;
 }
 
-.setting-item label {
-  font-weight: bold;
-  color: #2c3e50;
+.setting-group label {
+  font-weight: 500;
+  color: #555;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.arrangement-section {
+  justify-self: center;
+  flex: 1;
+  justify-content: center;
 }
 
 .arrangement-buttons {
   display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+  gap: 8px;
 }
 
-.option-checks {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
+.arrangement-section label {
+  font-weight: 500;
+  color: #555;
+  margin-right: 10px;
 }
 
-.info-alert {
-  margin-bottom: 20px;
+.display-options {
+  justify-self: end;
+}
+
+.export-section {
+  justify-self: end;
 }
 
 .classroom-container {
   background: white;
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-}
-
-.classroom-header {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.classroom-header h3 {
-  color: #2c3e50;
-  margin-bottom: 10px;
-}
-
-.blackboard {
-  background: #2c3e50;
-  color: white;
-  padding: 10px;
-  border-radius: 5px;
-  font-weight: bold;
-  display: inline-block;
-  margin-bottom: 20px;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  min-height: 400px;
 }
 
 .classroom-grid {
   display: grid;
-  gap: 10px;
-  max-width: 100%;
-}
-
-.seat-cell {
-  aspect-ratio: 1;
-  border: 2px dashed #bdc3c7;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
+  gap: 15px;
   justify-content: center;
-  min-height: 80px;
+  align-items: center;
+  min-height: 400px;
+}
+
+.seat {
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
   transition: all 0.3s ease;
-}
-
-.seat-cell.has-student {
-  border-style: solid;
-  border-color: #3498db;
-}
-
-.student-card {
-  width: 100%;
-  height: 100%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border: 2px solid transparent;
+  min-height: 80px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, #74b9ff, #0984e3);
-  color: white;
-  border-radius: 6px;
+  user-select: none;
+}
+
+.student-card {
+  background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
   cursor: move;
-  transition: all 0.3s ease;
-  padding: 8px;
-  text-align: center;
 }
 
 .student-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
-.student-card.excellent {
-  background: linear-gradient(135deg, #00b894, #00a085);
-}
-
-.student-card.good {
-  background: linear-gradient(135deg, #0984e3, #74b9ff);
-}
-
-.student-card.average {
-  background: linear-gradient(135deg, #fdcb6e, #e17055);
-}
-
-.student-card.needs-improvement {
-  background: linear-gradient(135deg, #fd79a8, #e84393);
-}
-
-.student-name {
-  font-weight: bold;
-  font-size: 14px;
-  margin-bottom: 4px;
-}
-
-.student-rank {
-  font-size: 12px;
-  opacity: 0.9;
+.student-card.dragging {
+  opacity: 0.7;
+  transform: rotate(5deg) scale(1.05);
+  z-index: 1000;
+  box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+  border: 2px solid #667eea;
 }
 
 .empty-seat {
-  color: #bdc3c7;
-  font-size: 12px;
-  text-align: center;
+  background: #f7fafc;
+  border: 2px dashed #cbd5e0;
+  color: #a0aec0;
+  font-size: 14px;
 }
 
-/* 响应式设计 */
+.drop-target {
+  border-color: #667eea !important;
+  background: rgba(102, 126, 234, 0.2) !important;
+  transform: scale(1.05);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+  transition: all 0.2s ease;
+}
+
+.front-zone {
+  background: linear-gradient(135deg, #a7f3d0 0%, #6ee7b7 100%) !important;
+}
+
+.middle-zone {
+  background: linear-gradient(135deg, #fde68a 0%, #fbbf24 100%) !important;
+}
+
+.back-zone {
+  background: linear-gradient(135deg, #fecaca 0%, #f87171 100%) !important;
+}
+
+.student-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 5px;
+}
+
+.student-rank {
+  font-size: 14px;
+  color: #4a5568;
+  font-weight: 500;
+}
+
 @media (max-width: 768px) {
   .control-panel {
     grid-template-columns: 1fr;
+    text-align: center;
+    gap: 12px;
   }
   
-  .upload-group {
-    flex-direction: column;
+  .upload-section, .settings-section, .arrangement-section, .display-options, .export-section {
+    justify-self: center;
   }
   
-  .arrangement-buttons {
-    flex-direction: column;
+  .classroom-container {
+    padding: 15px;
   }
   
   .classroom-grid {
-    gap: 5px;
+    gap: 10px;
   }
   
-  .seat-cell {
+  .seat {
+    padding: 10px;
     min-height: 60px;
   }
   
   .student-name {
-    font-size: 12px;
+    font-size: 14px;
   }
   
   .student-rank {
-    font-size: 10px;
+    font-size: 12px;
   }
 }
 </style>
