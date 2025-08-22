@@ -96,6 +96,9 @@
                 <el-menu-item index="/dev/cron" data-category="dev">
                   <span class="menu-icon">⏰</span>Cron表达式
                 </el-menu-item>
+                <el-menu-item index="/dev/variable-generator" data-category="dev">
+                  <span class="menu-icon">🔤</span>变量生成助手
+                </el-menu-item>
               </el-sub-menu>
 
               <el-sub-menu index="/time">
@@ -334,6 +337,10 @@
             <div class="mobile-menu-item" @click="handleMobileMenuClick('/dev/cron')">
               <span class="mobile-menu-icon">⏰</span>
               <span>Cron表达式</span>
+            </div>
+            <div class="mobile-menu-item" @click="handleMobileMenuClick('/dev/variable-generator')">
+              <span class="mobile-menu-icon">🔤</span>
+              <span>变量生成助手</span>
             </div>
           </div>
           

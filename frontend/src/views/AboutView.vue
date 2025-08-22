@@ -141,8 +141,22 @@
                   <img src="@/assets/dyIcon.png"/>
                 </div>
                 <div class="contact-text">
-                  <div class="contact-title">web阿伟_拥抱AI</div>
+                  <div class="contact-title">web阿伟</div>
                   <div class="contact-detail">抖音号: 65927791392</div>
+                </div>
+              </el-link>
+            </div>
+
+            <!-- 程序员阿亮抖音 -->
+            <div class="contact-item">
+              <el-link href="https://v.douyin.com/cFUq26lwn7I/" type="primary" target="_blank" class="contact-link">
+                <div class="contact-icon douyin-icon">
+                  <!--                  <el-icon><VideoCamera /></el-icon>-->
+                  <img src="@/assets/dyIcon.png"/>
+                </div>
+                <div class="contact-text">
+                  <div class="contact-title">程序员阿亮</div>
+                  <div class="contact-detail">抖音号: 63945748932</div>
                 </div>
               </el-link>
             </div>

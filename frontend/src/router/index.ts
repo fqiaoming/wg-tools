@@ -261,14 +261,22 @@ const router = createRouter({
       }
     },
     
-            {
-          path: '/dev/cron',
-          name: 'cron',
-          component: () => import('../views/dev/CronToolView.vue'),
-          meta: {
-            title: 'Cron表达式工具 - WG-Tools'
-          }
-        },
+                {
+      path: '/dev/cron',
+      name: 'cron',
+      component: () => import('../views/dev/CronToolView.vue'),
+      meta: {
+        title: 'Cron表达式工具 - WG-Tools'
+      }
+    },
+    {
+      path: '/dev/variable-generator',
+      name: 'variable-generator',
+      component: () => import('../views/dev/VariableGeneratorView.vue'),
+      meta: {
+        title: '变量生成助手 - WG-Tools'
+      }
+    },
 
         // 文档工具
         {

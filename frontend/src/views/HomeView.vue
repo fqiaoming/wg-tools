@@ -558,6 +558,15 @@ const tools = ref([
           category: 'dev',
           tags: ['Cron', '定时任务', '表达式', '调度']
         },
+        {
+          name: '变量生成助手',
+          description: '中文转英文变量名，支持多种编程命名格式',
+          icon: 'Document',
+          path: '/dev/variable-generator',
+          category: 'dev',
+          tags: ['变量', '命名', '翻译', '编程'],
+          color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+        },
 
         // 文档工具
         { name: 'Git 常用命令', description: 'Git版本控制常用命令参考手册', icon: 'Document', path: '/docs/git', category: 'docs', tags: ['Git', '版本控制', '命令', '文档'] },
