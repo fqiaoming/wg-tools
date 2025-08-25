@@ -4,9 +4,22 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WG-Tools - 在线开发者工具箱</title>
+    <title>%VITE_APP_TITLE%</title>
     <meta name="description" content="WG-Tools 是一个为开发者提供的在线工具集合网站，包含常用的开发、调试、转换等工具" />
     <meta name="keywords" content="在线工具,开发者工具,JSON格式化,Base64编码,正则表达式,二维码生成" />
+    
+    <!-- 百度统计 -->
+    <script>
+      if ('%VITE_ENABLE_ANALYTICS%' === 'true' && '%VITE_BAIDU_ANALYTICS_ID%') {
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?%VITE_BAIDU_ANALYTICS_ID%";
+          var s = document.getElementsByTagName("script")[0]; 
+          s.parentNode.insertBefore(hm, s);
+        })();
+      }
+    </script>
   </head>
   <body>
     <div id="app"></div>

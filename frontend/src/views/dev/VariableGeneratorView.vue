@@ -273,12 +273,12 @@ const translateText = async () => {
       // 使用后端返回的错误消息
       throw new Error(result.message || '翻译失败')
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error('Translation error:', error)
     ElMessage.error('翻译失败：' + (error.message || '请检查网络连接或稍后重试'))
     
     // 备用翻译结果
-    const backupTranslations = {
+    const backupTranslations: Record<string, string> = {
       '学生信息': 'Student Information',
       '用户管理': 'User Management', 
       '系统设置': 'System Settings',

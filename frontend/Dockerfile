@@ -1,0 +1,37 @@
+# 多阶段构建 Dockerfile
+# 构建阶段
+FROM node:18-alpine AS builder
+
+WORKDIR /app
+
+# 复制 package 文件
+COPY package*.json ./
+
+# 安装依赖
+RUN npm ci --only=production
+
+# 复制源代码
+COPY . .
+
+# 构建应用
+ARG BUILD_MODE=production
+RUN npm run build:${BUILD_MODE}
+
+# 生产阶段
+FROM nginx:alpine
+
+# 复制自定义 nginx 配置
+COPY ../nginx/nginx.conf /etc/nginx/nginx.conf
+
+# 复制构建产物
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# 创建非 root 用户
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nextjs -u 1001
+
+# 暴露端口
+EXPOSE 80
+
+# 启动 nginx
+CMD ["nginx", "-g", "daemon off;"]

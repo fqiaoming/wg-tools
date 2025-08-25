@@ -7,7 +7,12 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
+    "build:dev": "vue-tsc && vite build --mode development",
+    "build:staging": "vue-tsc && vite build --mode staging",
+    "build:prod": "vue-tsc && vite build --mode production",
     "preview": "vite preview",
+    "preview:staging": "vite preview --mode staging",
+    "preview:prod": "vite preview --mode production",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/"
   },
