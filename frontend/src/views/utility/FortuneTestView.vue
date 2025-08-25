@@ -347,26 +347,28 @@ const generateFortune = () => {
 }
 
 // 验证概率分配（开发调试用）
-const verifyProbability = () => {
-  const total = fortuneConfig.reduce((sum, fortune) => sum + fortune.rate, 0)
-  console.log('总概率:', total)
-  console.log('概率分配:', fortuneConfig.map(f => ({ level: f.level, rate: f.rate })))
-  
-  // 测试1000次的概率分布
-  const testResults = {}
-  for (let i = 0; i < 1000; i++) {
-    const result = generateFortune()
-    testResults[result.level] = (testResults[result.level] || 0) + 1
+// 在开发环境下可以在控制台手动调用此函数来验证概率分布
+if (import.meta.env.DEV) {
+  // @ts-ignore
+  window.verifyProbability = () => {
+    const total = fortuneConfig.reduce((sum, fortune) => sum + fortune.rate, 0)
+    console.log('总概率:', total)
+    console.log('概率分配:', fortuneConfig.map(f => ({ level: f.level, rate: f.rate })))
+    
+    // 测试1000次的概率分布
+    const testResults: Record<string, number> = {}
+    for (let i = 0; i < 1000; i++) {
+      const result = generateFortune()
+      testResults[result.level] = (testResults[result.level] || 0) + 1
+    }
+    
+    console.log('1000次测试结果分布:')
+    Object.entries(testResults).forEach(([level, count]) => {
+      const percentage = ((count / 1000) * 100).toFixed(1)
+      console.log(`${level}: ${count}次 (${percentage}%)`)
+    })
   }
-  
-  console.log('1000次测试结果分布:')
-  Object.entries(testResults).forEach(([level, count]) => {
-    const percentage = (((count as number) / 1000) * 100).toFixed(1)
-    console.log(`${level}: ${count}次 (${percentage}%)`)
-  })
 }
-
-// 开发环境下可以调用 verifyProbability() 来验证概率
 </script>
 
 <style scoped>
