@@ -178,6 +178,24 @@
               <el-menu-item index="/entertainment/quotes" data-category="entertainment">
                 <span class="menu-icon">💭</span>励志语录
               </el-menu-item>
+              <el-menu-item index="/entertainment/number-puzzle" data-category="entertainment">
+                <span class="menu-icon">🧩</span>数字华容道
+              </el-menu-item>
+              <el-menu-item index="/entertainment/whack-mole" data-category="entertainment">
+                <span class="menu-icon">🔨</span>打地鼠游戏
+              </el-menu-item>
+              <el-menu-item index="/entertainment/2048" data-category="entertainment">
+                <span class="menu-icon">🔢</span>2048数字合成
+              </el-menu-item>
+              <el-menu-item index="/entertainment/tetris" data-category="entertainment">
+                <span class="menu-icon">🧱</span>俄罗斯方块
+              </el-menu-item>
+              <el-menu-item index="/entertainment/flappy-bird" data-category="entertainment">
+                <span class="menu-icon">🐦</span>Flappy Bird
+              </el-menu-item>
+              <el-menu-item index="/entertainment/gem-crush" data-category="entertainment">
+                <span class="menu-icon">💎</span>宝石消除
+              </el-menu-item>
             </el-sub-menu>
             <el-menu-item 
               v-show="!isMobile && hiddenMenuItems.length < 2"
@@ -217,6 +235,12 @@
                 </el-menu-item>
                 <el-menu-item index="/entertainment/quotes">
                   <span class="menu-icon">💭</span>励志语录
+                </el-menu-item>
+                <el-menu-item index="/entertainment/number-puzzle">
+                  <span class="menu-icon">🧩</span>数字华容道
+                </el-menu-item>
+                <el-menu-item index="/entertainment/whack-mole">
+                  <span class="menu-icon">🔨</span>打地鼠游戏
                 </el-menu-item>
               </el-sub-menu>
             </el-sub-menu>
@@ -444,6 +468,30 @@
             <div class="mobile-menu-item" @click="handleMobileMenuClick('/entertainment/quotes')">
               <span class="mobile-menu-icon">💭</span>
               <span>励志语录</span>
+            </div>
+            <div class="mobile-menu-item" @click="handleMobileMenuClick('/entertainment/number-puzzle')">
+              <span class="mobile-menu-icon">🧩</span>
+              <span>数字华容道</span>
+            </div>
+            <div class="mobile-menu-item" @click="handleMobileMenuClick('/entertainment/whack-mole')">
+              <span class="mobile-menu-icon">🔨</span>
+              <span>打地鼠游戏</span>
+            </div>
+            <div class="mobile-menu-item" @click="handleMobileMenuClick('/entertainment/2048')">
+              <span class="mobile-menu-icon">🔢</span>
+              <span>2048数字合成</span>
+            </div>
+            <div class="mobile-menu-item" @click="handleMobileMenuClick('/entertainment/tetris')">
+              <span class="mobile-menu-icon">🧱</span>
+              <span>俄罗斯方块</span>
+            </div>
+            <div class="mobile-menu-item" @click="handleMobileMenuClick('/entertainment/flappy-bird')">
+              <span class="mobile-menu-icon">🐦</span>
+              <span>Flappy Bird</span>
+            </div>
+            <div class="mobile-menu-item" @click="handleMobileMenuClick('/entertainment/gem-crush')">
+              <span class="mobile-menu-icon">💎</span>
+              <span>宝石消除</span>
             </div>
           </div>
           

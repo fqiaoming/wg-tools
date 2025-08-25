@@ -579,6 +579,12 @@ const tools = ref([
         { name: '虚拟钢琴', description: '在线钢琴演奏，内置经典曲目教学，键盘按键支持', icon: 'VideoPlay', path: '/entertainment/piano', category: 'entertainment', tags: ['钢琴', '音乐', '演奏', '娱乐'], color: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)' },
         { name: '贪吃蛇游戏', description: '经典街机游戏，支持多种难度和主题，考验反应速度', icon: 'Trophy', path: '/entertainment/snake', category: 'entertainment', tags: ['游戏', '贪吃蛇', '休闲', '娱乐'], color: 'linear-gradient(135deg, #10b981 0%, #059669 100%)' },
         { name: '励志语录生成器', description: '随机生成励志、搞笑、哲理语录，支持分类和收藏', icon: 'ChatLineRound', path: '/entertainment/quotes', category: 'entertainment', tags: ['语录', '励志', '哲理', '摸鱼'], color: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' },
+        { name: '数字华容道', description: '经典数字拼图游戏，锻炼逻辑思维和空间想象力', icon: 'Grid', path: '/entertainment/number-puzzle', category: 'entertainment', tags: ['益智', '拼图', '华容道', '思维'], color: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' },
+                  { name: '打地鼠游戏', description: '经典反应训练游戏，考验手速和专注力，多种难度挑战', icon: 'Pointer', path: '/entertainment/whack-mole', category: 'entertainment', tags: ['反应', '手速', '训练', '挑战'], color: 'linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)' },
+          { name: '2048数字合成', description: '经典数字合成游戏，通过滑动合并相同数字，挑战2048', icon: 'Grid', path: '/entertainment/2048', category: 'entertainment', tags: ['数字', '合成', '策略', '益智'], color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
+          { name: '俄罗斯方块', description: '经典俄罗斯方块游戏，消除满行获得高分，挑战反应速度', icon: 'Grid', path: '/entertainment/tetris', category: 'entertainment', tags: ['方块', '消除', '经典', '反应'], color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
+          { name: 'Flappy Bird', description: '经典飞行躲避游戏，控制小鸟穿越管道，考验反应和节奏感', icon: 'Promotion', path: '/entertainment/flappy-bird', category: 'entertainment', tags: ['飞行', '躲避', '节奏', '反应'], color: 'linear-gradient(135deg, #74b9ff 0%, #0984e3 100%)' },
+        { name: '宝石消除', description: '经典三消游戏，交换相邻宝石形成消除，策略与运气的完美结合', icon: 'Guide', path: '/entertainment/gem-crush', category: 'entertainment', tags: ['三消', '消除', '策略', '宝石'], color: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 100%)' },
         
         // 实用工具
         { name: 'BMI计算器', description: '计算身体质量指数，评估体重健康状况，提供健康建议', icon: 'DataAnalysis', path: '/utility/bmi-calculator', category: 'utility', tags: ['健康', 'BMI', '体重', '计算'], color: 'linear-gradient(135deg, #10b981 0%, #059669 100%)' },

@@ -409,6 +409,56 @@ const router = createRouter({
       }
     },
 
+          // 娱乐游戏新增
+      {
+        path: '/entertainment/number-puzzle',
+        name: 'number-puzzle',
+        component: () => import('../views/entertainment/NumberPuzzleView.vue'),
+        meta: {
+          title: '数字华容道 - WG-Tools'
+        }
+      },
+      {
+        path: '/entertainment/whack-mole',
+        name: 'whack-mole',
+        component: () => import('../views/entertainment/WhackMoleView.vue'),
+        meta: {
+          title: '打地鼠游戏 - WG-Tools'
+        }
+      },
+      {
+        path: '/entertainment/2048',
+        name: '2048',
+        component: () => import('../views/entertainment/Game2048View.vue'),
+        meta: {
+          title: '2048数字合成 - WG-Tools'
+        }
+      },
+      {
+        path: '/entertainment/tetris',
+        name: 'tetris',
+        component: () => import('../views/entertainment/TetrisView.vue'),
+        meta: {
+          title: '俄罗斯方块 - WG-Tools'
+        }
+      },
+      {
+        path: '/entertainment/flappy-bird',
+        name: 'flappy-bird',
+        component: () => import('../views/entertainment/FlappyBirdView.vue'),
+        meta: {
+          title: 'Flappy Bird - WG-Tools'
+        }
+      },
+      {
+        path: '/entertainment/gem-crush',
+        name: 'gem-crush',
+        component: () => import('../views/entertainment/GemCrushView.vue'),
+        meta: {
+          title: '宝石消除 - WG-Tools'
+        }
+      },
+
     {
       path: '/about',
       name: 'about',
