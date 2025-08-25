@@ -22,17 +22,10 @@ logging:
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
 
-# 跨域配置
+# 跨域配置（完全无限制）
 cors:
-  allowed-origins: 
-    - http://localhost:3000
-    - http://localhost:5173
-    - http://localhost:8081
-  allowed-methods: 
-    - GET
-    - POST
-    - PUT
-    - DELETE
-    - OPTIONS
-  allowed-headers: "*"
-  allow-credentials: true
+  allowed-origin-patterns: "*"  # 允许所有来源访问
+  allowed-methods: "*"  # 允许所有HTTP方法
+  allowed-headers: "*"  # 允许所有请求头
+  allow-credentials: true  # 允许携带凭证
+  max-age: 3600

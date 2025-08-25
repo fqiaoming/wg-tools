@@ -400,6 +400,14 @@ const router = createRouter({
         title: '学生点名器 - WG-Tools'
       }
     },
+    {
+      path: '/utility/fortune-test',
+      name: 'fortune-test',
+      component: () => import('../views/utility/FortuneTestView.vue'),
+      meta: {
+        title: '运势测试 - WG-Tools'
+      }
+    },
 
     {
       path: '/about',

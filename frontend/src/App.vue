@@ -160,6 +160,9 @@
               <el-menu-item index="/utility/student-rollcall" data-category="utility">
                 <span class="menu-icon">📢</span>学生点名器
               </el-menu-item>
+              <el-menu-item index="/utility/fortune-test" data-category="utility">
+                <span class="menu-icon">🔮</span>运势测试
+              </el-menu-item>
             </el-sub-menu>
             <el-sub-menu 
               v-show="!isMobile && hiddenMenuItems.length === 0"
@@ -421,6 +424,10 @@
             <div class="mobile-menu-item" @click="handleMobileMenuClick('/utility/student-rollcall')">
               <span class="mobile-menu-icon">📢</span>
               <span>学生点名器</span>
+            </div>
+            <div class="mobile-menu-item" @click="handleMobileMenuClick('/utility/fortune-test')">
+              <span class="mobile-menu-icon">🔮</span>
+              <span>运势测试</span>
             </div>
           </div>
           
