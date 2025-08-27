@@ -1,20 +1,20 @@
 <template>
   <div class="bmi-calculator">
     <div class="page-header">
-      <h1>BMI计算器</h1>
-      <p>计算身体质量指数，评估体重健康状况</p>
+      <h1>{{ t('pages.bmiCalculator.title') }}</h1>
+      <p>{{ t('pages.bmiCalculator.description') }}</p>
     </div>
 
     <div class="calculator-container">
       <!-- 输入区域 -->
       <div class="input-section">
-        <h3>基本信息</h3>
+        <h3>{{ t('pages.bmiCalculator.basicInfo') }}</h3>
         <div class="input-group">
-          <label>身高 (cm)</label>
+          <label>{{ t('pages.bmiCalculator.height') }}</label>
           <el-input
             v-model="height"
             type="number"
-            placeholder="请输入身高"
+            :placeholder="t('pages.bmiCalculator.heightPlaceholder')"
             :min="100"
             :max="250"
             clearable
@@ -24,11 +24,11 @@
         </div>
         
         <div class="input-group">
-          <label>体重 (kg)</label>
+          <label>{{ t('pages.bmiCalculator.weight') }}</label>
           <el-input
             v-model="weight"
             type="number"
-            placeholder="请输入体重"
+            :placeholder="t('pages.bmiCalculator.weightPlaceholder')"
             :min="20"
             :max="300"
             clearable
@@ -38,16 +38,16 @@
         </div>
 
         <div class="input-group">
-          <label>年龄</label>
+          <label>{{ t('pages.bmiCalculator.age') }}</label>
           <el-input
             v-model="age"
             type="number"
-            placeholder="请输入年龄"
+            :placeholder="t('pages.bmiCalculator.agePlaceholder')"
             :min="1"
             :max="120"
             clearable
           >
-            <template #append>岁</template>
+            <template #append>{{ t('pages.bmiCalculator.years') }}</template>
           </el-input>
         </div>
 
@@ -66,13 +66,13 @@
           :disabled="!canCalculate"
           class="calculate-btn"
         >
-          计算BMI
+          {{ t('pages.bmiCalculator.calculate') }}
         </el-button>
       </div>
 
       <!-- 结果区域 -->
       <div v-if="bmiResult" class="result-section">
-        <h3>计算结果</h3>
+        <h3>{{ t('pages.bmiCalculator.result') }}</h3>
         
         <div class="bmi-display">
           <div class="bmi-value">
@@ -150,6 +150,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 // 响应式数据
 const height = ref('')

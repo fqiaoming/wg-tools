@@ -6,8 +6,8 @@
         <div class="hero-icon">
           <el-icon><DocumentCopy /></el-icon>
         </div>
-        <h1 class="hero-title">文件对比工具</h1>
-        <p class="hero-description">智能文件内容对比，高亮显示差异，支持多种对比模式</p>
+        <h1 class="hero-title">{{ t('menu.fileDiff') }}</h1>
+        <p class="hero-description">{{ t('pages.fileDiff.description') }}</p>
       </div>
     </div>
 
@@ -17,18 +17,18 @@
         <div class="config-icon">
           <el-icon><Setting /></el-icon>
         </div>
-        <h3>对比配置</h3>
-        <div class="config-description">设置对比选项和模式</div>
+        <h3>{{ t('pages.fileDiff.compareConfig') }}</h3>
+        <div class="config-description">{{ t('pages.fileDiff.configDescription') }}</div>
       </div>
       
       <div class="config-body">
         <div class="config-options">
           <div class="option-group">
-            <label class="option-label">对比模式</label>
+            <label class="option-label">{{ t('pages.fileDiff.compareMode') }}</label>
             <el-radio-group v-model="diffConfig.mode" @change="performDiff">
-              <el-radio-button label="line">按行对比</el-radio-button>
-              <el-radio-button label="word">按词对比</el-radio-button>
-              <el-radio-button label="char">按字符对比</el-radio-button>
+              <el-radio-button label="line">{{ t('pages.fileDiff.lineMode') }}</el-radio-button>
+              <el-radio-button label="word">{{ t('pages.fileDiff.wordMode') }}</el-radio-button>
+              <el-radio-button label="char">{{ t('pages.fileDiff.charMode') }}</el-radio-button>
             </el-radio-group>
           </div>
           
@@ -334,6 +334,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   DocumentCopy,
   Setting,
@@ -350,6 +351,7 @@ import {
 } from '@element-plus/icons-vue'
 import { fileDiffTool, type ToolResponse } from '../../utils/newTools'
 
+const { t } = useI18n()
 const loading = ref(false)
 const leftText = ref('')
 const rightText = ref('')

@@ -6,8 +6,8 @@
         <div class="hero-icon">
           <el-icon><Grid /></el-icon>
         </div>
-        <h1 class="hero-title">数字华容道</h1>
-        <p class="hero-description">经典数字拼图游戏，锻炼逻辑思维和空间想象力</p>
+        <h1 class="hero-title">{{ t('menu.numberPuzzle') }}</h1>
+        <p class="hero-description">{{ t('pages.numberPuzzle.description') }}</p>
       </div>
     </div>
 
@@ -16,9 +16,9 @@
       <div class="card-header">
         <h3>
           <el-icon><Rank /></el-icon>
-          游戏区域
+          {{ t('pages.numberPuzzle.gameArea') }}
         </h3>
-        <p class="card-description">将数字按1-15的顺序排列，空格在右下角即为胜利</p>
+        <p class="card-description">{{ t('pages.numberPuzzle.instructions') }}</p>
       </div>
       
       <div class="card-body">
@@ -141,12 +141,15 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Grid,
   Rank,
   Refresh,
   Setting
 } from '@element-plus/icons-vue'
+
+const { t } = useI18n()
 
 // 游戏状态
 const puzzle = ref<number[]>([])

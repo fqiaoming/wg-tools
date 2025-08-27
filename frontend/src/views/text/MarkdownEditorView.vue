@@ -6,8 +6,8 @@
         <div class="hero-icon">
           <el-icon><Edit /></el-icon>
         </div>
-        <h1 class="hero-title">Markdown编辑器</h1>
-        <p class="hero-description">功能强大的Markdown编辑器，支持实时预览、语法高亮和多种导出格式</p>
+        <h1 class="hero-title">{{ t('menu.markdownEditor') }}</h1>
+        <p class="hero-description">{{ t('pages.markdownEditor.description') }}</p>
       </div>
     </div>
 
@@ -15,9 +15,9 @@
       <div class="card-header">
         <h3>
           <el-icon><Edit /></el-icon>
-          编辑工具
+          {{ t('pages.markdownEditor.editTools') }}
         </h3>
-        <p class="card-description">快速插入Markdown语法</p>
+        <p class="card-description">{{ t('pages.markdownEditor.quickInsert') }}</p>
       </div>
 
       <div class="card-body">
@@ -26,19 +26,19 @@
           <div class="toolbar-group">
             <el-button @click="insertText('**粗体**')" size="small" plain>
               <el-icon><SetUp /></el-icon>
-              粗体
+              {{ t('pages.markdownEditor.bold') }}
             </el-button>
             <el-button @click="insertText('*斜体*')" size="small" plain>
               <el-icon><Edit /></el-icon>
-              斜体
+              {{ t('pages.markdownEditor.italic') }}
             </el-button>
             <el-button @click="insertText('[链接文本](https://example.com)')" size="small" plain>
               <el-icon><Link /></el-icon>
-              链接
+              {{ t('pages.markdownEditor.link') }}
             </el-button>
             <el-button @click="insertText('![图片描述](图片链接)')" size="small" plain>
               <el-icon><Picture /></el-icon>
-              图片
+              {{ t('pages.markdownEditor.image') }}
             </el-button>
           </div>
           
@@ -245,6 +245,7 @@
 <script setup lang="ts">
 import { ref, nextTick, onMounted, onUnmounted } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Edit,
   SetUp,
@@ -263,6 +264,7 @@ import {
 } from '@element-plus/icons-vue'
 import { markdownTool } from '../../utils/newTools'
 
+const { t } = useI18n()
 const markdownContent = ref('')
 const htmlContent = ref('')
 const tocResult = ref('')

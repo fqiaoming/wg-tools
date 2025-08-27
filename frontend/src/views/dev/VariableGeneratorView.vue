@@ -6,8 +6,8 @@
         <div class="hero-icon">
           <el-icon><DocumentCopy /></el-icon>
         </div>
-        <h1 class="hero-title">变量生成助手</h1>
-        <p class="hero-description">中文转英文变量名，智能生成多种编程命名格式</p>
+        <h1 class="hero-title">{{ t('menu.variableGenerator') }}</h1>
+        <p class="hero-description">{{ t('pages.variableGenerator.description') }}</p>
       </div>
     </div>
 
@@ -17,18 +17,18 @@
         <div class="config-icon">
           <el-icon><Edit /></el-icon>
         </div>
-        <h3>变量生成配置</h3>
-        <div class="config-description">输入中文描述，生成标准变量名</div>
+        <h3>{{ t('pages.variableGenerator.configTitle') }}</h3>
+        <div class="config-description">{{ t('pages.variableGenerator.configDescription') }}</div>
       </div>
       
       <div class="config-body">
         <!-- 输入区域 -->
         <div class="input-section">
-          <label class="input-label">中文描述</label>
+          <label class="input-label">{{ t('pages.variableGenerator.inputLabel') }}</label>
           <div class="input-group">
             <el-input
               v-model="inputText"
-              placeholder="请输入要转换的中文，如：学生信息、产品信息等..."
+              :placeholder="t('pages.variableGenerator.placeholder')"
               class="input-field"
               size="large"
               clearable
@@ -41,7 +41,7 @@
               :loading="isTranslating"
               class="translate-btn"
             >
-              {{ isTranslating ? '翻译中...' : '生成变量' }}
+              {{ isTranslating ? t('pages.variableGenerator.translating') : t('pages.variableGenerator.generate') }}
             </el-button>
           </div>
           
@@ -67,8 +67,8 @@
         <div class="result-icon">
           <el-icon><List /></el-icon>
         </div>
-        <h3>生成结果</h3>
-        <div class="result-description">点击任意结果复制到剪贴板</div>
+        <h3>{{ t('pages.variableGenerator.results') }}</h3>
+        <div class="result-description">{{ t('pages.variableGenerator.resultDescription') }}</div>
       </div>
       
       <div class="result-body">
@@ -139,8 +139,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import { DocumentCopy, Edit, List, QuestionFilled } from '@element-plus/icons-vue'
 
+const { t } = useI18n()
 // 响应式数据
 const inputText = ref('')
 const translatedText = ref('')

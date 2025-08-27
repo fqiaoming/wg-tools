@@ -1,8 +1,8 @@
 <template>
   <div class="fortune-test">
     <div class="page-header">
-      <h1>🔮 运势测试</h1>
-      <p>测试你的今日运势，看看会有什么惊喜等着你</p>
+      <h1>{{ t('pages.fortuneTest.title') }}</h1>
+      <p>{{ t('pages.fortuneTest.description') }}</p>
     </div>
 
     <div class="fortune-container">
@@ -20,7 +20,7 @@
               </div>
             </div>
             <div v-else-if="!isSpinning" class="initial-text">
-              点击下方按钮<br>测试运势
+              {{ t('pages.fortuneTest.initialText') }}
             </div>
           </div>
         </div>
@@ -33,7 +33,7 @@
           class="test-btn"
           :loading="isSpinning"
         >
-          {{ isSpinning ? '占卜中...' : '测试运势' }}
+          {{ isSpinning ? t('pages.fortuneTest.testing') : t('pages.fortuneTest.testButton') }}
         </el-button>
 
         <div v-if="currentFortune && !isSpinning" class="fortune-details">
@@ -41,7 +41,7 @@
             <h3>{{ currentFortune.level }}</h3>
             <p class="fortune-meaning">{{ currentFortune.meaning }}</p>
             <div class="fortune-advice">
-              <h4>今日建议</h4>
+              <h4>{{ t('pages.fortuneTest.advice') }}</h4>
               <ul>
                 <li v-for="(advice, index) in currentFortune.advice" :key="index">
                   {{ advice }}
@@ -110,6 +110,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 // 响应式数据
 const isSpinning = ref(false)

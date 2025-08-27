@@ -6,8 +6,8 @@
         <div class="hero-icon">
           <el-icon><Picture /></el-icon>
         </div>
-        <h1 class="hero-title">图标生成器</h1>
-        <p class="hero-description">快速生成各种风格的图标，支持多种尺寸和格式导出</p>
+        <h1 class="hero-title">{{ t('menu.iconGenerator') }}</h1>
+        <p class="hero-description">{{ t('pages.iconGenerator.description') }}</p>
       </div>
     </div>
 
@@ -17,14 +17,14 @@
         <div class="config-icon">
           <el-icon><Setting /></el-icon>
         </div>
-        <h3>图标配置</h3>
-        <div class="config-description">自定义图标样式和参数</div>
+        <h3>{{ t('pages.iconGenerator.configTitle') }}</h3>
+        <div class="config-description">{{ t('pages.iconGenerator.configDescription') }}</div>
       </div>
       
       <div class="config-body">
         <!-- 图标类型选择 -->
         <div class="type-section">
-          <label class="type-label">图标类型</label>
+          <label class="type-label">{{ t('pages.iconGenerator.iconType') }}</label>
           <div class="type-grid">
             <div 
               v-for="type in iconTypes" 
@@ -350,6 +350,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Picture,
   Setting,
@@ -362,6 +363,7 @@ import {
 } from '@element-plus/icons-vue'
 // import { iconGeneratorTool, type ToolResponse } from '../../utils/newTools'
 
+const { t } = useI18n()
 const loading = ref(false)
 const iconDataUrl = ref('')
 

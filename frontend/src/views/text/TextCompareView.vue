@@ -6,7 +6,7 @@
         <div class="hero-icon">
           <el-icon><Files /></el-icon>
         </div>
-        <h1 class="hero-title">文本对比工具</h1>
+        <h1 class="hero-title">{{ t('menu.textCompare') }}</h1>
         <p class="hero-description">强大的文本差异对比工具，支持逐行对比、高亮显示和详细统计</p>
       </div>
     </div>
@@ -350,6 +350,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Files,
   Switch,
@@ -368,6 +369,7 @@ import {
 } from '@element-plus/icons-vue'
 import { fileDiffTool, type ToolResponse } from '../../utils/newTools'
 
+const { t } = useI18n()
 const compareMode = ref('line')
 const viewMode = ref('unified')
 const leftText = ref('')

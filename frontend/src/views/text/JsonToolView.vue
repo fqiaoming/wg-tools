@@ -6,33 +6,33 @@
         <div class="hero-icon">
           <el-icon><Document /></el-icon>
         </div>
-        <h1 class="hero-title">JSON工具</h1>
-        <p class="hero-description">强大的JSON格式化、压缩和验证工具，支持语法高亮和错误检测</p>
+        <h1 class="hero-title">{{ t('pages.json.title') }}</h1>
+        <p class="hero-description">{{ t('pages.json.description') }}</p>
       </div>
     </div>
 
     <!-- 操作按钮卡片 -->
     <div class="action-card">
       <div class="action-header">
-        <h3>操作工具</h3>
-        <div class="action-description">选择要执行的JSON操作</div>
+        <h3>{{ t('pages.json.operationTools') }}</h3>
+        <div class="action-description">{{ t('pages.json.operationDescription') }}</div>
       </div>
       <div class="action-buttons">
         <el-button type="primary" @click="formatJson" :loading="loading" size="large">
           <el-icon><Document /></el-icon>
-          格式化
+          {{ t('pages.json.actions.format') }}
         </el-button>
         <el-button type="success" @click="compressJson" :loading="loading" size="large">
           <el-icon><Document /></el-icon>
-          压缩
+          {{ t('pages.json.actions.compress') }}
         </el-button>
         <el-button @click="clearAll" size="large">
           <el-icon><Delete /></el-icon>
-          清空
+          {{ t('pages.json.actions.clear') }}
         </el-button>
         <el-button @click="copyResult" v-if="result" size="large">
           <el-icon><CopyDocument /></el-icon>
-          复制结果
+          {{ t('pages.json.actions.copy') }}
         </el-button>
       </div>
     </div>
@@ -45,15 +45,15 @@
           <div class="editor-icon">
             <el-icon><Edit /></el-icon>
           </div>
-          <h3>输入JSON</h3>
-          <div class="char-count">{{ inputText.length }} 字符</div>
+          <h3>{{ t('common.input') }} JSON</h3>
+          <div class="char-count">{{ inputText.length }} {{ t('common.characters') }}</div>
         </div>
         <div class="editor-body">
           <el-input
             v-model="inputText"
             type="textarea"
             :rows="15"
-            placeholder="请输入JSON数据..."
+            :placeholder="t('pages.json.inputPlaceholder')"
             class="code-editor"
           />
         </div>
@@ -65,8 +65,8 @@
           <div class="editor-icon">
             <el-icon><View /></el-icon>
           </div>
-          <h3>输出结果</h3>
-          <div class="char-count">{{ result.length }} 字符</div>
+          <h3>{{ t('common.output') }}{{ t('common.result') }}</h3>
+          <div class="char-count">{{ result.length }} {{ t('common.characters') }}</div>
         </div>
         <div class="editor-body">
           <el-input
@@ -74,7 +74,7 @@
             type="textarea"
             :rows="15"
             readonly
-            placeholder="处理结果将显示在这里..."
+            :placeholder="`${t('common.result')}...`"
             class="code-editor"
           />
         </div>
@@ -118,6 +118,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Document,
   Delete,
@@ -126,6 +127,8 @@ import {
   View,
   DataAnalysis
 } from '@element-plus/icons-vue'
+
+const { t } = useI18n()
 import { jsonFormatter, type ToolResponse } from '@/utils/localTools'
 
 const inputText = ref('')

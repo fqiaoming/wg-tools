@@ -6,8 +6,8 @@
         <div class="hero-icon">
           <el-icon><DataAnalysis /></el-icon>
         </div>
-        <h1 class="hero-title">文本统计工具</h1>
-        <p class="hero-description">智能分析文本内容，提供详细的字符、单词、行数等统计信息</p>
+        <h1 class="hero-title">{{ t('menu.textStats') }}</h1>
+        <p class="hero-description">{{ t('pages.textStats.description') }}</p>
       </div>
     </div>
 
@@ -22,7 +22,7 @@
           class="action-button"
         >
           <el-icon><MagicStick /></el-icon>
-          分析文本
+          {{ t('pages.textStats.analyze') }}
         </el-button>
         <el-button 
           size="large" 
@@ -30,7 +30,7 @@
           class="action-button"
         >
           <el-icon><Delete /></el-icon>
-          清空内容
+          {{ t('common.clear') }}内容
         </el-button>
         <el-button 
           size="large" 
@@ -39,7 +39,7 @@
           class="action-button"
         >
           <el-icon><CopyDocument /></el-icon>
-          复制统计
+          {{ t('common.copy') }}统计
         </el-button>
       </div>
     </div>
@@ -52,14 +52,14 @@
           <div class="editor-icon">
             <el-icon><Edit /></el-icon>
           </div>
-          <h3>输入文本</h3>
-          <div class="character-count">{{ inputText.length }} 字符</div>
+          <h3>{{ t('common.input') }}文本</h3>
+          <div class="character-count">{{ inputText.length }} {{ t('common.characters') }}</div>
         </div>
         <div class="editor-body">
           <el-input
             v-model="inputText"
             type="textarea"
-            placeholder="请输入要分析的文本内容..."
+            :placeholder="t('pages.textStats.placeholder')"
             :rows="12"
             class="text-input"
             @input="analyzeText"
@@ -73,8 +73,8 @@
           <div class="stats-icon">
             <el-icon><TrendCharts /></el-icon>
           </div>
-          <h3>统计结果</h3>
-          <div class="stats-description">实时文本分析</div>
+          <h3>{{ t('pages.textStats.results') }}</h3>
+          <div class="stats-description">{{ t('pages.textStats.realTimeAnalysis') }}</div>
         </div>
         <div class="stats-body">
           <div class="stats-grid">
@@ -221,6 +221,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   DataAnalysis,
   Delete,
@@ -232,6 +233,7 @@ import {
   PieChart
 } from '@element-plus/icons-vue'
 
+const { t } = useI18n()
 const inputText = ref('')
 const stats = ref<any>(null)
 

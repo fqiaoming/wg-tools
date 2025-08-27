@@ -6,8 +6,8 @@
         <div class="hero-icon">
           <el-icon><Document /></el-icon>
         </div>
-        <h1 class="hero-title">代码格式化工具</h1>
-        <p class="hero-description">智能代码格式化和美化，支持多种编程语言的代码规范</p>
+        <h1 class="hero-title">{{ t('menu.codeFormatter') }}</h1>
+        <p class="hero-description">{{ t('pages.codeFormatter.description') }}</p>
       </div>
     </div>
 
@@ -333,6 +333,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Document,
   Setting,
@@ -350,6 +351,7 @@ import {
 } from '@element-plus/icons-vue'
 import { codeFormatterTool, type ToolResponse } from '../../utils/newTools'
 
+const { t } = useI18n()
 const loading = ref(false)
 const selectedLanguage = ref('javascript')
 const inputCode = ref('')

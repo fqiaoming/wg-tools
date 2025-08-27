@@ -6,8 +6,8 @@
         <div class="hero-icon">
           <el-icon><Link /></el-icon>
         </div>
-        <h1 class="hero-title">URL编码工具</h1>
-        <p class="hero-description">URL编码和解码，处理特殊字符，确保URL的正确传输</p>
+        <h1 class="hero-title">{{ t('pages.url.title') }}</h1>
+        <p class="hero-description">{{ t('pages.url.description') }}</p>
       </div>
     </div>
 
@@ -22,7 +22,7 @@
           class="action-button"
         >
           <el-icon><Lock /></el-icon>
-          URL编码
+          {{ t('pages.url.modes.encode') }}
         </el-button>
         <el-button 
           type="success" 
@@ -32,7 +32,7 @@
           class="action-button"
         >
           <el-icon><Unlock /></el-icon>
-          URL解码
+          {{ t('pages.url.modes.decode') }}
         </el-button>
         <el-button 
           size="large" 
@@ -40,7 +40,7 @@
           class="action-button"
         >
           <el-icon><Delete /></el-icon>
-          清空内容
+          {{ t('common.clear') }}
         </el-button>
       </div>
     </div>
@@ -53,14 +53,14 @@
           <div class="editor-icon">
             <el-icon><Edit /></el-icon>
           </div>
-          <h3>输入内容</h3>
-          <div class="character-count">{{ inputText.length }} 字符</div>
+          <h3>{{ t('common.input') }}内容</h3>
+          <div class="character-count">{{ inputText.length }} {{ t('common.characters') }}</div>
         </div>
         <div class="editor-body">
           <el-input
             v-model="inputText"
             type="textarea"
-            placeholder="请输入要编码或解码的URL内容..."
+            :placeholder="t('pages.url.inputPlaceholder')"
             :rows="8"
             class="url-input"
           />
@@ -206,6 +206,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Link,
   Delete,
@@ -219,6 +220,7 @@ import {
   Refresh
 } from '@element-plus/icons-vue'
 
+const { t } = useI18n()
 const inputText = ref('')
 const result = ref('')
 

@@ -6,7 +6,7 @@
         <div class="hero-icon">
           <el-icon><Trophy /></el-icon>
         </div>
-        <h1 class="hero-title">贪吃蛇游戏</h1>
+        <h1 class="hero-title">{{ t('menu.snakeGame') }}</h1>
         <p class="hero-description">经典街机游戏，考验你的反应速度和策略思维</p>
       </div>
     </div>
@@ -237,6 +237,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Trophy,
   VideoPlay,
@@ -245,6 +246,8 @@ import {
   Setting,
   Rank
 } from '@element-plus/icons-vue'
+
+const { t } = useI18n()
 
 // 游戏状态
 const gameRunning = ref(false)

@@ -275,6 +275,15 @@ export const unitTool = {
         case 'volume':
           result = convertVolume(value, fromUnit, toUnit)
           break
+        case 'time':
+          result = convertTime(value, fromUnit, toUnit)
+          break
+        case 'speed':
+          result = convertSpeed(value, fromUnit, toUnit)
+          break
+        case 'energy':
+          result = convertEnergy(value, fromUnit, toUnit)
+          break
         default:
           throw new Error('不支持的转换类别')
       }
@@ -306,15 +315,21 @@ export const unitTool = {
 function convertLength(value: number, from: string, to: string): number {
   const meters: { [key: string]: number } = {
     mm: 0.001, cm: 0.01, m: 1, km: 1000,
-    inch: 0.0254, ft: 0.3048, yard: 0.9144, mile: 1609.34
+    in: 0.0254, ft: 0.3048, yd: 0.9144, mi: 1609.34
+  }
+  if (!meters[from] || !meters[to]) {
+    throw new Error(`不支持的长度单位: ${from} 或 ${to}`)
   }
   return (value * meters[from]) / meters[to]
 }
 
 function convertWeight(value: number, from: string, to: string): number {
   const grams: { [key: string]: number } = {
-    mg: 0.001, g: 1, kg: 1000, ton: 1000000,
-    oz: 28.3495, lb: 453.592
+    mg: 0.001, g: 1, kg: 1000, t: 1000000,
+    oz: 28.3495, lb: 453.592, st: 6350.29
+  }
+  if (!grams[from] || !grams[to]) {
+    throw new Error(`不支持的重量单位: ${from} 或 ${to}`)
   }
   return (value * grams[from]) / grams[to]
 }
@@ -325,37 +340,73 @@ function convertTemperature(value: number, from: string, to: string): number {
   // 先转换为摄氏度
   let celsius: number
   switch (from) {
-    case 'C': celsius = value; break
-    case 'F': celsius = (value - 32) * 5/9; break
-    case 'K': celsius = value - 273.15; break
-    default: throw new Error('不支持的温度单位')
+    case 'c': celsius = value; break
+    case 'f': celsius = (value - 32) * 5/9; break
+    case 'k': celsius = value - 273.15; break
+    case 'r': celsius = (value - 491.67) * 5/9; break
+    default: throw new Error(`不支持的温度单位: ${from}`)
   }
   
   // 再从摄氏度转换为目标单位
   switch (to) {
-    case 'C': return celsius
-    case 'F': return celsius * 9/5 + 32
-    case 'K': return celsius + 273.15
-    default: throw new Error('不支持的温度单位')
+    case 'c': return celsius
+    case 'f': return celsius * 9/5 + 32
+    case 'k': return celsius + 273.15
+    case 'r': return (celsius + 273.15) * 9/5
+    default: throw new Error(`不支持的温度单位: ${to}`)
   }
 }
 
 function convertArea(value: number, from: string, to: string): number {
   const sqMeters: { [key: string]: number } = {
-    'sq mm': 0.000001, 'sq cm': 0.0001, 'sq m': 1, 'sq km': 1000000,
-    'sq inch': 0.00064516, 'sq ft': 0.092903, 'sq yard': 0.836127,
-    'acre': 4046.86, 'hectare': 10000
+    mm2: 0.000001, cm2: 0.0001, m2: 1, km2: 1000000,
+    in2: 0.00064516, ft2: 0.092903, ac: 4046.86, ha: 10000
+  }
+  if (!sqMeters[from] || !sqMeters[to]) {
+    throw new Error(`不支持的面积单位: ${from} 或 ${to}`)
   }
   return (value * sqMeters[from]) / sqMeters[to]
 }
 
 function convertVolume(value: number, from: string, to: string): number {
   const liters: { [key: string]: number } = {
-    ml: 0.001, l: 1, 'cu m': 1000,
-    'fl oz': 0.0295735, cup: 0.236588, pint: 0.473176, 
-    quart: 0.946353, gallon: 3.78541
+    ml: 0.001, l: 1, m3: 1000,
+    in3: 0.0163871, ft3: 28.3168, gal: 3.78541, qt: 0.946353
+  }
+  if (!liters[from] || !liters[to]) {
+    throw new Error(`不支持的体积单位: ${from} 或 ${to}`)
   }
   return (value * liters[from]) / liters[to]
+}
+
+function convertTime(value: number, from: string, to: string): number {
+  const seconds: { [key: string]: number } = {
+    ms: 0.001, s: 1, min: 60, h: 3600, d: 86400, w: 604800, mo: 2629746, y: 31556952
+  }
+  if (!seconds[from] || !seconds[to]) {
+    throw new Error(`不支持的时间单位: ${from} 或 ${to}`)
+  }
+  return (value * seconds[from]) / seconds[to]
+}
+
+function convertSpeed(value: number, from: string, to: string): number {
+  const mps: { [key: string]: number } = {
+    mps: 1, kmh: 0.277778, mph: 0.44704, fps: 0.3048, knot: 0.514444
+  }
+  if (!mps[from] || !mps[to]) {
+    throw new Error(`不支持的速度单位: ${from} 或 ${to}`)
+  }
+  return (value * mps[from]) / mps[to]
+}
+
+function convertEnergy(value: number, from: string, to: string): number {
+  const joules: { [key: string]: number } = {
+    j: 1, kj: 1000, cal: 4.184, kcal: 4184, wh: 3600, kwh: 3600000, btu: 1055.06
+  }
+  if (!joules[from] || !joules[to]) {
+    throw new Error(`不支持的能量单位: ${from} 或 ${to}`)
+  }
+  return (value * joules[from]) / joules[to]
 }
 
 function getConversionFormula(from: string, to: string, category: string): string {

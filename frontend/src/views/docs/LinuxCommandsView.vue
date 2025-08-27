@@ -6,8 +6,8 @@
         <div class="hero-icon">
           <el-icon><Monitor /></el-icon>
         </div>
-        <h1 class="hero-title">Linux 常用命令</h1>
-        <p class="hero-description">Linux系统管理和运维必备命令，涵盖文件操作、系统监控、网络管理等</p>
+        <h1 class="hero-title">{{ t('menu.linuxCommands') }}</h1>
+        <p class="hero-description">{{ t('pages.linuxCommands.description') }}</p>
       </div>
     </div>
 
@@ -407,6 +407,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Monitor,
   Search,
@@ -425,6 +426,7 @@ import {
   CaretTop
 } from '@element-plus/icons-vue'
 
+const { t } = useI18n()
 const searchQuery = ref('')
 const activeCategory = ref('all')
 const navCollapsed = ref(false)

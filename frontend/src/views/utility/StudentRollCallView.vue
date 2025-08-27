@@ -6,15 +6,15 @@
     <div class="container">
       <!-- 头部 -->
       <div class="header">
-        <h1>🎯 学生点名器</h1>
-        <div class="subtitle">开发者：WG科技</div>
+        <h1>{{ t('pages.rollCall.title') }}</h1>
+        <div class="subtitle">{{ t('pages.rollCall.subtitle') }}</div>
       </div>
 
       <!-- 控制面板 -->
       <div class="control-panel">
         <div class="upload-section">
           <el-button @click="downloadSample" type="primary">
-            📁 下载示例
+            {{ t('pages.rollCall.downloadSample') }}
           </el-button>
           <el-upload
             :auto-upload="false"
@@ -24,7 +24,7 @@
             action=""
           >
             <el-button type="info">
-              📤 上传班级名单
+              {{ t('pages.rollCall.uploadRoster') }}
             </el-button>
           </el-upload>
         </div>
@@ -78,6 +78,9 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 // 响应式数据
 const students = ref<string[]>([])

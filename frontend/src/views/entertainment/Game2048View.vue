@@ -6,8 +6,8 @@
         <div class="hero-icon">
           <el-icon><Grid /></el-icon>
         </div>
-        <h1 class="hero-title">2048 数字合成</h1>
-        <p class="hero-description">滑动合并相同数字，挑战2048！</p>
+        <h1 class="hero-title">{{ t('menu.game2048') }}</h1>
+        <p class="hero-description">{{ t('pages.game2048.description') }}</p>
       </div>
     </div>
 
@@ -16,9 +16,9 @@
       <div class="card-header">
         <h3>
           <el-icon><Trophy /></el-icon>
-          游戏区域
+          {{ t('pages.game2048.gameArea') }}
         </h3>
-        <p class="card-description">使用方向键或WASD移动，合并相同数字，目标是2048！</p>
+        <p class="card-description">{{ t('pages.game2048.instructions') }}</p>
       </div>
       
       <div class="card-body">
@@ -26,15 +26,15 @@
         <div class="game-controls">
           <div class="game-info">
             <div class="info-item">
-              <span class="label">得分:</span>
+              <span class="label">{{ t('pages.game2048.score') }}:</span>
               <span class="value score">{{ score }}</span>
             </div>
             <div class="info-item">
-              <span class="label">最高分:</span>
+              <span class="label">{{ t('pages.game2048.highScore') }}:</span>
               <span class="value">{{ highScore }}</span>
             </div>
             <div class="info-item">
-              <span class="label">移动次数:</span>
+              <span class="label">{{ t('pages.game2048.moves') }}:</span>
               <span class="value">{{ moves }}</span>
             </div>
           </div>
@@ -45,13 +45,13 @@
               type="primary" 
               :icon="Refresh"
             >
-              新游戏
+              {{ t('pages.game2048.newGame') }}
             </el-button>
             <el-button @click="undoMove" :disabled="!canUndo" :icon="Back">
-              撤销
+              {{ t('pages.game2048.undo') }}
             </el-button>
             <el-button @click="showHelp = true" :icon="QuestionFilled">
-              帮助
+              {{ t('pages.game2048.help') }}
             </el-button>
           </div>
         </div>
@@ -154,8 +154,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Grid,
   Trophy,
@@ -164,6 +165,7 @@ import {
   QuestionFilled
 } from '@element-plus/icons-vue'
 
+const { t } = useI18n()
 // 瓦片数据类型
 interface Tile {
   id: number
@@ -183,6 +185,7 @@ const gameOver = ref(false)
 const keepPlaying = ref(false)
 const showHelp = ref(false)
 const canUndo = ref(false)
+const isMoving = ref(false) // 添加移动状态锁
 
 // 历史状态（用于撤销）
 const history = ref<{
@@ -202,9 +205,14 @@ let tileIdCounter = 0
 const getTilePosition = (position: number) => {
   const row = Math.floor(position / 4)
   const col = position % 4
+  // 使用响应式计算，支持移动端
+  const isMobile = window.innerWidth <= 768
+  const tileSize = isMobile ? 67.5 : 105
+  const gap = isMobile ? 10 : 12
+  
   return {
-    x: col * 105 + col * 12,
-    y: row * 105 + row * 12
+    x: col * (tileSize + gap),
+    y: row * (tileSize + gap)
   }
 }
 
@@ -218,6 +226,7 @@ const initGame = () => {
   gameOver.value = false
   keepPlaying.value = false
   canUndo.value = false
+  isMoving.value = false // 重置移动状态锁
   tileIdCounter = 0
   
   // 添加两个初始瓦片
@@ -289,16 +298,18 @@ const undoMove = () => {
 
 // 移动瓦片
 const moveTiles = (direction: 'up' | 'down' | 'left' | 'right') => {
-  if (gameOver.value) return
+  if (gameOver.value || isMoving.value) return
+  
+  // 设置移动状态锁，防止快速按键
+  isMoving.value = true
   
   saveState()
   
   let moved = false
   const newBoard = [...board.value]
-  const newTiles: Tile[] = []
   const mergedPositions = new Set<number>()
   
-  // 清除合并标记
+  // 清除所有瓦片的合并标记
   tiles.value.forEach(tile => {
     tile.isMerged = false
   })
@@ -306,10 +317,16 @@ const moveTiles = (direction: 'up' | 'down' | 'left' | 'right') => {
   for (let i = 0; i < 4; i++) {
     const line = getLine(newBoard, direction, i)
     const originalLine = [...line]
-    const { movedLine, lineScore } = processLine(line)
+    const { movedLine, lineScore, mergedIndices } = processLine(line)
     
     if (!arraysEqual(originalLine, movedLine)) {
       moved = true
+      
+      // 记录合并位置
+      mergedIndices.forEach(index => {
+        const actualPosition = getActualPosition(direction, i, index)
+        mergedPositions.add(actualPosition)
+      })
     }
     
     score.value += lineScore
@@ -319,22 +336,25 @@ const moveTiles = (direction: 'up' | 'down' | 'left' | 'right') => {
   if (moved) {
     board.value = newBoard
     
-    // 更新瓦片位置
-    tiles.value.forEach(tile => {
-      const newPosition = findTileNewPosition(tile.position, direction, board.value, newBoard)
-      if (newPosition !== tile.position) {
-        tile.position = newPosition
-      }
-    })
+    // 重新构建tiles数组
+    const newTiles: Tile[] = []
     
-    // 移除值为0的瓦片
-    tiles.value = tiles.value.filter(tile => newBoard[tile.position] !== 0)
-    
-    // 创建新瓦片对象
     for (let i = 0; i < 16; i++) {
       if (newBoard[i] !== 0) {
-        const existingTile = tiles.value.find(tile => tile.position === i)
-        if (!existingTile) {
+        // 查找现有的瓦片 - 简化逻辑，直接匹配位置和值
+        const existingTile = tiles.value.find(tile => 
+          !newTiles.find(t => t.id === tile.id) && 
+          (tile.value === newBoard[i] || tile.value * 2 === newBoard[i])
+        )
+        
+        if (existingTile) {
+          // 更新现有瓦片
+          existingTile.position = i
+          existingTile.value = newBoard[i]
+          existingTile.isMerged = mergedPositions.has(i)
+          newTiles.push(existingTile)
+        } else {
+          // 创建新瓦片（合并产生的）
           newTiles.push({
             id: ++tileIdCounter,
             value: newBoard[i],
@@ -342,32 +362,31 @@ const moveTiles = (direction: 'up' | 'down' | 'left' | 'right') => {
             isNew: false,
             isMerged: mergedPositions.has(i)
           })
-        } else {
-          existingTile.value = newBoard[i]
-          if (mergedPositions.has(i)) {
-            existingTile.isMerged = true
-          }
         }
       }
     }
     
-    tiles.value.push(...newTiles)
+    tiles.value = newTiles
     moves.value++
     
     // 添加新瓦片
-    nextTick(() => {
+    setTimeout(() => {
       addRandomTile()
       
       // 检查游戏状态
       checkGameState()
       
-      // 清除合并标记
+      // 清除合并标记和释放移动锁
       setTimeout(() => {
         tiles.value.forEach(tile => {
           tile.isMerged = false
         })
+        isMoving.value = false
       }, 200)
-    })
+    }, 150)
+  } else {
+    // 没有移动时立即释放锁
+    isMoving.value = false
   }
 }
 
@@ -428,16 +447,18 @@ const setLine = (board: number[], direction: string, index: number, line: number
 }
 
 // 处理一行/列的移动和合并
-const processLine = (line: number[]): { movedLine: number[], lineScore: number } => {
+const processLine = (line: number[]): { movedLine: number[], lineScore: number, mergedIndices: number[] } => {
   // 移除零
   const nonZero = line.filter(x => x !== 0)
   let lineScore = 0
+  const mergedIndices: number[] = []
   
   // 合并相同数字
   for (let i = 0; i < nonZero.length - 1; i++) {
-    if (nonZero[i] === nonZero[i + 1]) {
+    if (nonZero[i] === nonZero[i + 1] && nonZero[i] !== 0) {
       nonZero[i] *= 2
       lineScore += nonZero[i]
+      mergedIndices.push(i) // 记录合并位置
       nonZero.splice(i + 1, 1)
     }
   }
@@ -447,43 +468,26 @@ const processLine = (line: number[]): { movedLine: number[], lineScore: number }
     nonZero.push(0)
   }
   
-  return { movedLine: nonZero, lineScore }
+  return { movedLine: nonZero, lineScore, mergedIndices }
 }
 
-// 查找瓦片新位置
-const findTileNewPosition = (oldPos: number, direction: string, oldBoard: number[], newBoard: number[]): number => {
-  const value = oldBoard[oldPos]
-  if (value === 0) return oldPos
-  
-  const row = Math.floor(oldPos / 4)
-  const col = oldPos % 4
-  
-  // 在新board中查找相同值的位置
-  for (let i = 0; i < 16; i++) {
-    if (newBoard[i] === value) {
-      const newRow = Math.floor(i / 4)
-      const newCol = i % 4
-      
-      // 根据移动方向判断是否为正确的新位置
-      switch (direction) {
-        case 'left':
-          if (newRow === row && newCol <= col) return i
-          break
-        case 'right':
-          if (newRow === row && newCol >= col) return i
-          break
-        case 'up':
-          if (newCol === col && newRow <= row) return i
-          break
-        case 'down':
-          if (newCol === col && newRow >= row) return i
-          break
-      }
-    }
+// 获取实际位置（从行列索引转换为board位置）
+const getActualPosition = (direction: string, lineIndex: number, positionInLine: number): number => {
+  switch (direction) {
+    case 'left':
+      return lineIndex * 4 + positionInLine
+    case 'right':
+      return lineIndex * 4 + (3 - positionInLine)
+    case 'up':
+      return positionInLine * 4 + lineIndex
+    case 'down':
+      return (3 - positionInLine) * 4 + lineIndex
+    default:
+      return 0
   }
-  
-  return oldPos
 }
+
+
 
 // 数组比较
 const arraysEqual = (a: number[], b: number[]): boolean => {

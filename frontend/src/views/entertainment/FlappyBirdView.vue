@@ -6,8 +6,8 @@
         <div class="hero-icon">
           <el-icon><Promotion /></el-icon>
         </div>
-        <h1 class="hero-title">Flappy Bird</h1>
-        <p class="hero-description">经典飞行躲避游戏，点击屏幕控制小鸟飞翔！</p>
+        <h1 class="hero-title">{{ t('menu.flappyBird') }}</h1>
+        <p class="hero-description">{{ t('pages.flappyBird.description') }}</p>
       </div>
     </div>
 
@@ -16,9 +16,9 @@
       <div class="card-header">
         <h3>
           <el-icon><Trophy /></el-icon>
-          游戏区域
+          {{ t('pages.flappyBird.gameArea') }}
         </h3>
-        <p class="card-description">点击屏幕或按空格键控制小鸟飞翔，躲避管道获得高分！</p>
+        <p class="card-description">{{ t('pages.flappyBird.instructions') }}</p>
       </div>
       
       <div class="card-body">
@@ -173,6 +173,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Promotion,
   Trophy,
@@ -180,6 +181,8 @@ import {
   VideoPause,
   QuestionFilled
 } from '@element-plus/icons-vue'
+
+const { t } = useI18n()
 
 // 游戏状态
 const gameCanvas = ref<HTMLCanvasElement | null>(null)

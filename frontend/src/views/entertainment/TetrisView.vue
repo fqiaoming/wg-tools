@@ -6,8 +6,8 @@
         <div class="hero-icon">
           <el-icon><Grid /></el-icon>
         </div>
-        <h1 class="hero-title">俄罗斯方块</h1>
-        <p class="hero-description">经典的俄罗斯方块游戏，消除满行获得高分！</p>
+        <h1 class="hero-title">{{ t('menu.tetris') }}</h1>
+        <p class="hero-description">{{ t('pages.tetris.description') }}</p>
       </div>
     </div>
 
@@ -16,9 +16,9 @@
       <div class="card-header">
         <h3>
           <el-icon><Trophy /></el-icon>
-          游戏区域
+          {{ t('pages.tetris.gameArea') }}
         </h3>
-        <p class="card-description">使用方向键控制方块，填满一行即可消除</p>
+        <p class="card-description">{{ t('pages.tetris.instructions') }}</p>
       </div>
       
       <div class="card-body">
@@ -26,19 +26,19 @@
         <div class="game-controls">
           <div class="game-info">
             <div class="info-item">
-              <span class="label">得分:</span>
+              <span class="label">{{ t('pages.tetris.score') }}:</span>
               <span class="value score">{{ score }}</span>
             </div>
             <div class="info-item">
-              <span class="label">等级:</span>
+              <span class="label">{{ t('pages.tetris.level') }}:</span>
               <span class="value">{{ level }}</span>
             </div>
             <div class="info-item">
-              <span class="label">消除行数:</span>
+              <span class="label">{{ t('pages.tetris.lines') }}:</span>
               <span class="value">{{ lines }}</span>
             </div>
             <div class="info-item">
-              <span class="label">最高分:</span>
+              <span class="label">{{ t('pages.tetris.highScore') }}:</span>
               <span class="value">{{ highScore }}</span>
             </div>
           </div>
@@ -193,6 +193,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Grid,
   Trophy,
@@ -201,6 +202,7 @@ import {
   QuestionFilled
 } from '@element-plus/icons-vue'
 
+const { t } = useI18n()
 // 方块类型定义
 interface Piece {
   shape: number[][]

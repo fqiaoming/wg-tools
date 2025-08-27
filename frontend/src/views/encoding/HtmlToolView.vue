@@ -4,8 +4,8 @@
       <div class="card-header">
         <el-icon class="icon"><Connection /></el-icon>
         <div>
-          <h2 class="title">HTML实体编码工具</h2>
-          <p class="description">HTML实体字符编码解码</p>
+          <h2 class="title">{{ t('pages.html.title') }}</h2>
+          <p class="description">{{ t('pages.html.description') }}</p>
         </div>
       </div>
 
@@ -13,19 +13,19 @@
       <div class="action-buttons">
         <el-button type="primary" @click="encodeHtml" :loading="loading">
           <el-icon><Lock /></el-icon>
-          编码
+          {{ t('pages.html.modes.encode') }}
         </el-button>
         <el-button type="success" @click="decodeHtml" :loading="loading">
           <el-icon><Unlock /></el-icon>
-          解码
+          {{ t('pages.html.modes.decode') }}
         </el-button>
         <el-button @click="clearAll">
           <el-icon><Delete /></el-icon>
-          清空
+          {{ t('common.clear') }}
         </el-button>
         <el-button @click="copyResult" v-if="result">
           <el-icon><CopyDocument /></el-icon>
-          复制结果
+          {{ t('common.copy') }}
         </el-button>
       </div>
 
@@ -34,14 +34,14 @@
         <!-- 输入区域 -->
         <div class="input-section">
           <div class="section-header">
-            <span class="section-title">输入HTML</span>
-            <span class="char-count">{{ inputText.length }} 字符</span>
+            <span class="section-title">{{ t('common.input') }}HTML</span>
+            <span class="char-count">{{ inputText.length }} {{ t('common.characters') }}</span>
           </div>
           <el-input
             v-model="inputText"
             type="textarea"
             :rows="12"
-            placeholder="请输入要编码或解码的HTML文本..."
+            :placeholder="t('pages.html.inputPlaceholder')"
             class="code-editor"
           />
         </div>
@@ -49,15 +49,15 @@
         <!-- 输出区域 -->
         <div class="output-section">
           <div class="section-header">
-            <span class="section-title">输出结果</span>
-            <span class="char-count">{{ result.length }} 字符</span>
+            <span class="section-title">{{ t('common.output') }}{{ t('common.result') }}</span>
+            <span class="char-count">{{ result.length }} {{ t('common.characters') }}</span>
           </div>
           <el-input
             v-model="result"
             type="textarea"
             :rows="12"
             readonly
-            placeholder="处理结果将显示在这里..."
+            :placeholder="`${t('common.result')}...`"
             class="code-editor"
           />
         </div>
@@ -103,6 +103,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Connection,
   Lock,
@@ -112,6 +113,7 @@ import {
 } from '@element-plus/icons-vue'
 import { htmlTool, type ToolResponse } from '@/utils/localTools'
 
+const { t } = useI18n()
 const inputText = ref('')
 const result = ref('')
 const loading = ref(false)

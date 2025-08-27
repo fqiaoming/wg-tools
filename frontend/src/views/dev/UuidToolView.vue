@@ -6,7 +6,7 @@
         <div class="hero-icon">
           <el-icon><Key /></el-icon>
         </div>
-        <h1 class="hero-title">UUID生成器</h1>
+        <h1 class="hero-title">{{ t('menu.uuidGenerator') }}</h1>
         <p class="hero-description">强大的UUID生成工具，支持单个和批量生成，符合RFC 4122标准</p>
       </div>
     </div>
@@ -160,7 +160,7 @@
             <div class="result-actions">
               <el-button @click="copyAllUuids" size="small">
                 <el-icon><CopyDocument /></el-icon>
-                复制全部
+                {{ t('common.copy') }}全部
               </el-button>
               <el-button @click="downloadUuids" size="small" type="primary" plain>
                 <el-icon><Download /></el-icon>
@@ -241,6 +241,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Key,
   MagicStick,
@@ -255,6 +256,7 @@ import {
 } from '@element-plus/icons-vue'
 import { uuidTool } from '../../utils/localTools'
 
+const { t } = useI18n()
 const mode = ref<'single' | 'batch'>('single')
 const loading = ref(false)
 

@@ -6,7 +6,7 @@
         <div class="hero-icon">
           <el-icon><Grid /></el-icon>
         </div>
-        <h1 class="hero-title">二维码生成器</h1>
+        <h1 class="hero-title">{{ t('menu.qrGenerator') }}</h1>
         <p class="hero-description">快速生成高质量二维码，支持多种尺寸和格式定制</p>
       </div>
     </div>
@@ -237,6 +237,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Grid,
   Setting,
@@ -249,6 +250,7 @@ import {
 } from '@element-plus/icons-vue'
 import { qrTool, type ToolResponse } from '../../utils/newTools'
 
+const { t } = useI18n()
 const loading = ref(false)
 const qrText = ref('')
 const qrSize = ref(256)

@@ -1,8 +1,8 @@
 <template>
   <div class="age-calculator">
     <div class="page-header">
-      <h1>年龄计算器</h1>
-      <p>精确计算年龄、生肖、星座，支持生日提醒和倒计时</p>
+      <h1>{{ t('pages.ageCalculator.title') }}</h1>
+      <p>{{ t('pages.ageCalculator.description') }}</p>
     </div>
 
     <div class="calculator-container">
@@ -217,6 +217,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 // 响应式数据
 const targetDate = ref('')

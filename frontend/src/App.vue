@@ -1,6 +1,7 @@
 <template>
   <div id="app">
-    <el-container class="layout-container">
+    <el-config-provider :locale="elementLocale">
+      <el-container class="layout-container">
       <!-- 头部 -->
       <el-header class="header">
         <div class="header-content">
@@ -21,187 +22,187 @@
               active-text-color="#ffffff"
               class="main-menu"
             >
-              <el-menu-item index="/">首页</el-menu-item>
+              <el-menu-item index="/">{{ t('nav.home') }}</el-menu-item>
               <el-sub-menu index="/text">
-                <template #title>📝 文本处理</template>
+                <template #title>{{ t('nav.textProcessing') }}</template>
                 <el-menu-item index="/text/json" data-category="text">
-                  <span class="menu-icon">📄</span>JSON工具
+                  <span class="menu-icon">📄</span>{{ t('menu.jsonTool') }}
                 </el-menu-item>
                 <el-menu-item index="/text/xml" data-category="text">
-                  <span class="menu-icon">📋</span>XML工具
+                  <span class="menu-icon">📋</span>{{ t('menu.xmlTool') }}
                 </el-menu-item>
                 <el-menu-item index="/text/compare" data-category="text">
-                  <span class="menu-icon">🔍</span>文本对比
+                  <span class="menu-icon">🔍</span>{{ t('menu.textCompare') }}
                 </el-menu-item>
                 <el-menu-item index="/text/encrypt" data-category="text">
-                  <span class="menu-icon">🔒</span>文本加密
+                  <span class="menu-icon">🔒</span>{{ t('menu.textEncrypt') }}
                 </el-menu-item>
                 <el-menu-item index="/text/regex" data-category="text">
-                  <span class="menu-icon">🎯</span>正则表达式
+                  <span class="menu-icon">🎯</span>{{ t('menu.regexTool') }}
                 </el-menu-item>
                 <el-menu-item index="/text/stats" data-category="text">
-                  <span class="menu-icon">📊</span>文本统计
+                  <span class="menu-icon">📊</span>{{ t('menu.textStats') }}
                 </el-menu-item>
                 <el-menu-item index="/text/markdown-editor" data-category="text">
-                  <span class="menu-icon">✍️</span>Markdown编辑器
+                  <span class="menu-icon">✍️</span>{{ t('menu.markdownEditor') }}
                 </el-menu-item>
               </el-sub-menu>
               <el-sub-menu index="/encoding">
-                <template #title>🔄 编码转换</template>
+                <template #title>{{ t('nav.encoding') }}</template>
                 <el-menu-item index="/encoding/base64" data-category="encoding">
-                  <span class="menu-icon">🔤</span>Base64编码
+                  <span class="menu-icon">🔤</span>{{ t('menu.base64Encoding') }}
                 </el-menu-item>
                 <el-menu-item index="/encoding/url" data-category="encoding">
-                  <span class="menu-icon">🌐</span>URL编码
+                  <span class="menu-icon">🌐</span>{{ t('menu.urlEncoding') }}
                 </el-menu-item>
                 <el-menu-item index="/encoding/unicode" data-category="encoding">
-                  <span class="menu-icon">🔣</span>Unicode编码
+                  <span class="menu-icon">🔣</span>{{ t('menu.unicodeEncoding') }}
                 </el-menu-item>
                 <el-menu-item index="/encoding/html" data-category="encoding">
-                  <span class="menu-icon">🏷️</span>HTML实体
+                  <span class="menu-icon">🏷️</span>{{ t('menu.htmlEntity') }}
                 </el-menu-item>
                 <el-menu-item index="/encoding/base" data-category="encoding">
-                  <span class="menu-icon">🔢</span>进制转换
+                  <span class="menu-icon">🔢</span>{{ t('menu.baseConverter') }}
                 </el-menu-item>
                 <el-menu-item index="/converter/image-base64" data-category="encoding">
-                  <span class="menu-icon">🖼️</span>图片Base64转换
+                  <span class="menu-icon">🖼️</span>{{ t('menu.imageBase64') }}
                 </el-menu-item>
               </el-sub-menu>
               <el-sub-menu index="/dev">
-                <template #title>🛠️ 开发工具</template>
+                <template #title>{{ t('nav.devTools') }}</template>
                 <el-menu-item index="/dev/color" data-category="dev">
-                  <span class="menu-icon">🎨</span>颜色工具
+                  <span class="menu-icon">🎨</span>{{ t('menu.colorTool') }}
                 </el-menu-item>
                 <el-menu-item index="/dev/color-picker" data-category="dev">
-                  <span class="menu-icon">🌈</span>高级颜色选择器
+                  <span class="menu-icon">🌈</span>{{ t('menu.colorPicker') }}
                 </el-menu-item>
                 <el-menu-item index="/dev/uuid" data-category="dev">
-                  <span class="menu-icon">🆔</span>UUID生成器
+                  <span class="menu-icon">🆔</span>{{ t('menu.uuidGenerator') }}
                 </el-menu-item>
                 <el-menu-item index="/dev/qr-generator" data-category="dev">
-                  <span class="menu-icon">📱</span>二维码生成器
+                  <span class="menu-icon">📱</span>{{ t('menu.qrGenerator') }}
                 </el-menu-item>
                 <el-menu-item index="/dev/random-data" data-category="dev">
-                  <span class="menu-icon">🎲</span>随机数据生成器
+                  <span class="menu-icon">🎲</span>{{ t('menu.randomData') }}
                 </el-menu-item>
                 <el-menu-item index="/dev/code-formatter" data-category="dev">
-                  <span class="menu-icon">💻</span>代码格式化
+                  <span class="menu-icon">💻</span>{{ t('menu.codeFormatter') }}
                 </el-menu-item>
                 <el-menu-item index="/dev/file-diff" data-category="dev">
-                  <span class="menu-icon">📊</span>文件对比
+                  <span class="menu-icon">📊</span>{{ t('menu.fileDiff') }}
                 </el-menu-item>
                 <el-menu-item index="/dev/icon-generator" data-category="dev">
-                  <span class="menu-icon">🖼️</span>图标生成器
+                  <span class="menu-icon">🖼️</span>{{ t('menu.iconGenerator') }}
                 </el-menu-item>
                 <el-menu-item index="/dev/cron" data-category="dev">
-                  <span class="menu-icon">⏰</span>Cron表达式
+                  <span class="menu-icon">⏰</span>{{ t('menu.cronTool') }}
                 </el-menu-item>
                 <el-menu-item index="/dev/variable-generator" data-category="dev">
-                  <span class="menu-icon">🔤</span>变量生成助手
+                  <span class="menu-icon">🔤</span>{{ t('menu.variableGenerator') }}
                 </el-menu-item>
               </el-sub-menu>
 
               <el-sub-menu index="/time">
-                <template #title>⏰ 时间工具</template>
+                <template #title>{{ t('nav.timeTools') }}</template>
                 <el-menu-item index="/time/timestamp" data-category="time">
-                  <span class="menu-icon">🕐</span>时间戳工具
+                  <span class="menu-icon">🕐</span>{{ t('menu.timestampTool') }}
                 </el-menu-item>
                 <el-menu-item index="/time/calculator" data-category="time">
-                  <span class="menu-icon">⏱️</span>时间计算器
+                  <span class="menu-icon">⏱️</span>{{ t('menu.timeCalculator') }}
                 </el-menu-item>
                 <el-menu-item index="/time/worldclock" data-category="time">
-                  <span class="menu-icon">🌍</span>世界时钟
+                  <span class="menu-icon">🌍</span>{{ t('menu.worldClock') }}
                 </el-menu-item>
                 <el-menu-item index="/converter/unit" data-category="time">
-                  <span class="menu-icon">📏</span>单位转换
+                  <span class="menu-icon">📏</span>{{ t('menu.unitConverter') }}
                 </el-menu-item>
               </el-sub-menu>
               <el-sub-menu index="/security">
-                <template #title>🔒 安全工具</template>
+                <template #title>{{ t('nav.securityTools') }}</template>
                 <el-menu-item index="/security/password" data-category="security">
-                  <span class="menu-icon">🔑</span>密码生成器
+                  <span class="menu-icon">🔑</span>{{ t('menu.passwordGenerator') }}
                 </el-menu-item>
                 <el-menu-item index="/security/hash" data-category="security">
-                  <span class="menu-icon">🔐</span>哈希计算
+                  <span class="menu-icon">🔐</span>{{ t('menu.hashTool') }}
                 </el-menu-item>
               </el-sub-menu>
               <el-sub-menu index="/docs">
-                <template #title>📚 文档</template>
+                <template #title>{{ t('nav.docs') }}</template>
                 <el-menu-item index="/docs/git" data-category="docs">
-                  <span class="menu-icon">📝</span>Git 常用命令
+                  <span class="menu-icon">📝</span>{{ t('menu.gitCommands') }}
                 </el-menu-item>
                 <el-menu-item index="/docs/linux" data-category="docs">
-                  <span class="menu-icon">🐧</span>Linux 常用命令
+                  <span class="menu-icon">🐧</span>{{ t('menu.linuxCommands') }}
                 </el-menu-item>
                 <el-menu-item index="/docs/docker" data-category="docs">
-                  <span class="menu-icon">🐳</span>Docker 常用命令
+                  <span class="menu-icon">🐳</span>{{ t('menu.dockerCommands') }}
                 </el-menu-item>
                 <el-menu-item index="/docs/mysql" data-category="docs">
-                  <span class="menu-icon">🗄️</span>MySQL 常用语法
+                  <span class="menu-icon">🗄️</span>{{ t('menu.mysqlSyntax') }}
                 </el-menu-item>
                 <el-menu-item index="/docs/java" data-category="docs">
-                  <span class="menu-icon">☕</span>Java 常用语法
+                  <span class="menu-icon">☕</span>{{ t('menu.javaSyntax') }}
                 </el-menu-item>
             </el-sub-menu>
             <el-sub-menu index="/utility">
-              <template #title>🛠️ 实用工具</template>
+              <template #title>{{ t('nav.utilityTools') }}</template>
               <el-menu-item index="/utility/bmi-calculator" data-category="utility">
-                <span class="menu-icon">⚖️</span>BMI计算器
+                <span class="menu-icon">⚖️</span>{{ t('menu.bmiCalculator') }}
               </el-menu-item>
               <el-menu-item index="/utility/mortgage-calculator" data-category="utility">
-                <span class="menu-icon">🏡</span>房贷计算器
+                <span class="menu-icon">🏡</span>{{ t('menu.mortgageCalculator') }}
               </el-menu-item>
               <el-menu-item index="/utility/age-calculator" data-category="utility">
-                <span class="menu-icon">🎂</span>年龄计算器
+                <span class="menu-icon">🎂</span>{{ t('menu.ageCalculator') }}
               </el-menu-item>
               <el-menu-item index="/utility/classroom-seating" data-category="utility">
-                <span class="menu-icon">🏫</span>班级座次表
+                <span class="menu-icon">🏫</span>{{ t('menu.classroomSeatingChart') }}
               </el-menu-item>
               <el-menu-item index="/utility/student-rollcall" data-category="utility">
-                <span class="menu-icon">📢</span>学生点名器
+                <span class="menu-icon">📢</span>{{ t('menu.studentRollCall') }}
               </el-menu-item>
               <el-menu-item index="/utility/fortune-test" data-category="utility">
-                <span class="menu-icon">🔮</span>运势测试
+                <span class="menu-icon">🔮</span>{{ t('menu.fortuneTest') }}
               </el-menu-item>
             </el-sub-menu>
             <el-sub-menu 
               v-show="!isMobile && hiddenMenuItems.length === 0"
               index="/entertainment"
             >
-              <template #title>🎮 娱乐工具</template>
+              <template #title>{{ t('nav.entertainment') }}</template>
               <el-menu-item index="/entertainment/piano" data-category="entertainment">
-                <span class="menu-icon">🎹</span>虚拟钢琴
+                <span class="menu-icon">🎹</span>{{ t('menu.virtualPiano') }}
               </el-menu-item>
               <el-menu-item index="/entertainment/snake" data-category="entertainment">
-                <span class="menu-icon">🐍</span>贪吃蛇游戏
+                <span class="menu-icon">🐍</span>{{ t('menu.snakeGame') }}
               </el-menu-item>
               <el-menu-item index="/entertainment/quotes" data-category="entertainment">
-                <span class="menu-icon">💭</span>励志语录
+                <span class="menu-icon">💭</span>{{ t('menu.quotes') }}
               </el-menu-item>
               <el-menu-item index="/entertainment/number-puzzle" data-category="entertainment">
-                <span class="menu-icon">🧩</span>数字华容道
+                <span class="menu-icon">🧩</span>{{ t('menu.numberPuzzle') }}
               </el-menu-item>
               <el-menu-item index="/entertainment/whack-mole" data-category="entertainment">
-                <span class="menu-icon">🔨</span>打地鼠游戏
+                <span class="menu-icon">🔨</span>{{ t('menu.whackMole') }}
               </el-menu-item>
               <el-menu-item index="/entertainment/2048" data-category="entertainment">
-                <span class="menu-icon">🔢</span>2048数字合成
+                <span class="menu-icon">🔢</span>{{ t('menu.game2048') }}
               </el-menu-item>
               <el-menu-item index="/entertainment/tetris" data-category="entertainment">
-                <span class="menu-icon">🧱</span>俄罗斯方块
+                <span class="menu-icon">🧱</span>{{ t('menu.tetris') }}
               </el-menu-item>
               <el-menu-item index="/entertainment/flappy-bird" data-category="entertainment">
-                <span class="menu-icon">🐦</span>Flappy Bird
+                <span class="menu-icon">🐦</span>{{ t('menu.flappyBird') }}
               </el-menu-item>
               <el-menu-item index="/entertainment/gem-crush" data-category="entertainment">
-                <span class="menu-icon">💎</span>宝石消除
+                <span class="menu-icon">💎</span>{{ t('menu.gemCrush') }}
               </el-menu-item>
             </el-sub-menu>
             <el-menu-item 
               v-show="!isMobile && hiddenMenuItems.length < 2"
               index="/about"
             >
-              关于
+              {{ t('nav.about') }}
             </el-menu-item>
             
             <!-- 更多菜单 - 在空间不足时显示 -->
@@ -212,7 +213,7 @@
             >
               <template #title>
                 <el-icon><More /></el-icon>
-                更多
+                {{ t('nav.more') }}
               </template>
               <el-menu-item 
                 v-for="item in hiddenAboutItems" 
@@ -246,6 +247,11 @@
             </el-sub-menu>
             </el-menu>
             
+          </div>
+          
+          <!-- 语言切换器 - 移到nav-menu外面 -->
+          <div class="header-right">
+            <LanguageSwitcher />
             <!-- 移动端汉堡菜单按钮 -->
             <div class="mobile-menu-btn" v-if="isMobile" @click="toggleMobileMenu">
               <el-icon size="24"><Menu /></el-icon>
@@ -264,11 +270,11 @@
         <div class="mobile-menu-content" @click.stop>
           <div class="mobile-menu-item" @click="handleMobileMenuClick('/')">
             <span class="mobile-menu-icon">🏠</span>
-            <span>首页</span>
+            <span>{{ t('nav.home') }}</span>
           </div>
           
           <div class="mobile-menu-category">
-            <div class="mobile-category-title">📝 文本处理</div>
+            <div class="mobile-category-title">📝 {{ t('nav.textProcessing') }}</div>
             <div class="mobile-menu-item" @click="handleMobileMenuClick('/text/json')">
               <span class="mobile-menu-icon">📄</span>
               <span>JSON工具</span>
@@ -300,7 +306,7 @@
           </div>
           
           <div class="mobile-menu-category">
-            <div class="mobile-category-title">🔄 编码转换</div>
+            <div class="mobile-category-title">🔄 {{ t('nav.encodingConversion') }}</div>
             <div class="mobile-menu-item" @click="handleMobileMenuClick('/encoding/base64')">
               <span class="mobile-menu-icon">🔤</span>
               <span>Base64编码</span>
@@ -328,7 +334,7 @@
           </div>
           
           <div class="mobile-menu-category">
-            <div class="mobile-category-title">🛠️ 开发工具</div>
+            <div class="mobile-category-title">🛠️ {{ t('nav.devTools') }}</div>
             <div class="mobile-menu-item" @click="handleMobileMenuClick('/dev/color')">
               <span class="mobile-menu-icon">🎨</span>
               <span>颜色工具</span>
@@ -372,7 +378,7 @@
           </div>
           
           <div class="mobile-menu-category">
-            <div class="mobile-category-title">⏰ 时间工具</div>
+            <div class="mobile-category-title">⏰ {{ t('nav.timeTools') }}</div>
             <div class="mobile-menu-item" @click="handleMobileMenuClick('/time/timestamp')">
               <span class="mobile-menu-icon">🕐</span>
               <span>时间戳工具</span>
@@ -392,7 +398,7 @@
           </div>
           
           <div class="mobile-menu-category">
-            <div class="mobile-category-title">🔒 安全工具</div>
+            <div class="mobile-category-title">🔒 {{ t('nav.securityTools') }}</div>
             <div class="mobile-menu-item" @click="handleMobileMenuClick('/security/password')">
               <span class="mobile-menu-icon">🔑</span>
               <span>密码生成器</span>
@@ -404,7 +410,7 @@
           </div>
           
           <div class="mobile-menu-category">
-            <div class="mobile-category-title">📚 文档</div>
+            <div class="mobile-category-title">📚 {{ t('nav.documentation') }}</div>
             <div class="mobile-menu-item" @click="handleMobileMenuClick('/docs/git')">
               <span class="mobile-menu-icon">📝</span>
               <span>Git 常用命令</span>
@@ -428,7 +434,7 @@
           </div>
           
           <div class="mobile-menu-category">
-            <div class="mobile-category-title">🛠️ 实用工具</div>
+            <div class="mobile-category-title">🛠️ {{ t('nav.utilityTools') }}</div>
             <div class="mobile-menu-item" @click="handleMobileMenuClick('/utility/bmi-calculator')">
               <span class="mobile-menu-icon">⚖️</span>
               <span>BMI计算器</span>
@@ -456,7 +462,7 @@
           </div>
           
           <div class="mobile-menu-category">
-            <div class="mobile-category-title">🎮 娱乐工具</div>
+            <div class="mobile-category-title">🎮 {{ t('nav.entertainmentTools') }}</div>
             <div class="mobile-menu-item" @click="handleMobileMenuClick('/entertainment/piano')">
               <span class="mobile-menu-icon">🎹</span>
               <span>虚拟钢琴</span>
@@ -497,7 +503,22 @@
           
           <div class="mobile-menu-item" @click="handleMobileMenuClick('/about')">
             <span class="mobile-menu-icon">ℹ️</span>
-            <span>关于</span>
+            <span>{{ t('nav.about') }}</span>
+          </div>
+          
+          <!-- 移动端语言切换 -->
+          <div class="mobile-language-section">
+            <div class="mobile-category-title">🌐 {{ t('common.language') }}</div>
+            <div class="mobile-menu-item" @click="changeLanguage('zh')">
+              <span class="mobile-menu-icon">🇨🇳</span>
+              <span>{{ t('common.chinese') }}</span>
+              <span v-if="locale === 'zh'" class="mobile-check">✓</span>
+            </div>
+            <div class="mobile-menu-item" @click="changeLanguage('en')">
+              <span class="mobile-menu-icon">🇺🇸</span>
+              <span>{{ t('common.english') }}</span>
+              <span v-if="locale === 'en'" class="mobile-check">✓</span>
+            </div>
           </div>
         </div>
       </div>
@@ -514,24 +535,36 @@
       <!-- 底部 -->
       <el-footer class="footer">
         <div class="footer-content">
-          <p>&copy; 2024 WG-Tools. 为开发者提供便捷的在线工具服务.</p>
+          <p>{{ t('footer.copyright') }}</p>
           <p class="footer-links">
-            <a href="https://github.com" target="_blank">GitHub</a>
+            <a href="https://github.com" target="_blank">{{ t('footer.github') }}</a>
             <span class="divider">|</span>
-            <a href="/about">关于我们</a>
+            <a href="/about">{{ t('footer.aboutUs') }}</a>
             <span class="divider">|</span>
-            <a href="mailto:support@wgtools.com">联系我们</a>
+            <a href="mailto:support@wgtools.com">{{ t('footer.contactUs') }}</a>
           </p>
         </div>
       </el-footer>
     </el-container>
+    </el-config-provider>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useRouter, useRoute } from 'vue-router'
 import { ref, computed, onMounted, onUnmounted, nextTick, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Tools, More, Menu } from '@element-plus/icons-vue'
+import LanguageSwitcher from './components/LanguageSwitcher.vue'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
+import en from 'element-plus/es/locale/lang/en'
+
+const { t, locale } = useI18n()
+
+// ElementPlus locale 计算属性
+const elementLocale = computed(() => {
+  return locale.value === 'en' ? en : zhCn
+})
 
 const router = useRouter()
 const route = useRoute()
@@ -553,18 +586,18 @@ const hiddenEntertainmentItems = computed(() =>
 )
 
 // 菜单项配置
-const menuItems = [
-  { path: '/', title: '首页', priority: 1 },
-  { path: '/text', title: '📝 文本处理', priority: 2 },
-  { path: '/encoding', title: '🔄 编码转换', priority: 3 },
-  { path: '/dev', title: '🛠️ 开发工具', priority: 4 },
-  { path: '/time', title: '⏰ 时间工具', priority: 5 },
-  { path: '/security', title: '🔒 安全工具', priority: 6 },
-  { path: '/docs', title: '📚 文档', priority: 7 },
-  { path: '/utility', title: '🛠️ 实用工具', priority: 8 },
-  { path: '/entertainment', title: '🎮 娱乐工具', priority: 9 },
-  { path: '/about', title: '关于', priority: 10 }
-]
+const menuItems = computed(() => [
+  { path: '/', title: t('nav.home'), priority: 1 },
+  { path: '/text', title: t('nav.textProcessing'), priority: 2 },
+  { path: '/encoding', title: t('nav.encodingConversion'), priority: 3 },
+  { path: '/dev', title: t('nav.devTools'), priority: 4 },
+  { path: '/time', title: t('nav.timeTools'), priority: 5 },
+  { path: '/security', title: t('nav.securityTools'), priority: 6 },
+  { path: '/docs', title: t('nav.documentation'), priority: 7 },
+  { path: '/utility', title: t('nav.utilityTools'), priority: 8 },
+  { path: '/entertainment', title: t('nav.entertainmentTools'), priority: 9 },
+  { path: '/about', title: t('nav.about'), priority: 10 }
+])
 
 // 检查导航栏宽度并调整显示
 const checkNavWidth = () => {
@@ -581,22 +614,37 @@ const checkNavWidth = () => {
     return
   }
   
-  // 桌面端响应式判断
+  // 桌面端响应式判断 - 动态根据文本长度调整
   let hideItemsCount = 0
   
-  if (windowWidth < 1200) {
-    // 中等屏幕：隐藏娱乐工具和关于
-    hideItemsCount = 2
+  // 计算当前语言下菜单文本的总长度估算
+  const totalTextLength = menuItems.value.reduce((sum, item) => {
+    return sum + (item.title?.length || 0)
+  }, 0)
+  
+  // 根据窗口宽度和文本长度动态调整
+  if (windowWidth < 1000) {
+    // 小屏幕：至少隐藏2个
+    hideItemsCount = Math.max(2, Math.ceil(totalTextLength / 80))
+  } else if (windowWidth < 1200) {
+    // 中等屏幕：根据文本长度调整
+    hideItemsCount = totalTextLength > 100 ? 2 : (totalTextLength > 80 ? 1 : 0)
   } else if (windowWidth < 1400) {
-    // 较大屏幕：隐藏娱乐工具
-    hideItemsCount = 1
+    // 较大屏幕：只有在文本很长时才隐藏
+    hideItemsCount = totalTextLength > 120 ? 1 : 0
+  } else if (windowWidth < 1600) {
+    // 超大屏幕：文本特别长时隐藏
+    hideItemsCount = totalTextLength > 140 ? 1 : 0
   } else {
-    // 大屏幕：显示所有菜单
+    // 特大屏幕：显示所有菜单
     hideItemsCount = 0
   }
   
+  // 确保不超过菜单项总数
+  hideItemsCount = Math.min(hideItemsCount, menuItems.value.length - 2)
+  
   if (hideItemsCount > 0) {
-    hiddenMenuItems.value = menuItems.slice(-hideItemsCount).map(item => ({
+    hiddenMenuItems.value = menuItems.value.slice(-hideItemsCount).map(item => ({
       path: item.path,
       title: item.title
     }))
@@ -623,6 +671,17 @@ const handleMobileMenuClick = (path: string) => {
   closeMobileMenu()
 }
 
+// 语言切换方法
+const changeLanguage = (lang: string) => {
+  locale.value = lang
+  localStorage.setItem('wg-tools-locale', lang)
+  closeMobileMenu()
+  
+  setTimeout(() => {
+    window.location.reload()
+  }, 100)
+}
+
 // 窗口大小变化监听
 const handleResize = () => {
   nextTick(() => {
@@ -639,6 +698,13 @@ watch(() => route.path, () => {
   if (mobileMenuOpen.value) {
     closeMobileMenu()
   }
+})
+
+// 监听语言变化，重新检查导航宽度
+watch(() => locale.value, () => {
+  nextTick(() => {
+    checkNavWidth()
+  })
 })
 
 onMounted(() => {
@@ -690,9 +756,9 @@ onUnmounted(() => {
   align-items: center;
   justify-content: space-between;
   height: 100%;
-  max-width: 1600px;
+  max-width: 1800px;
   margin: 0 auto;
-  padding: 0 30px;
+  padding: 0 20px;
   overflow: hidden;
 }
 
@@ -700,15 +766,15 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   cursor: pointer;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: bold;
   color: #ffffff;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
   white-space: nowrap;
   flex-shrink: 0;
-  min-width: 160px;
-  margin-right: 30px;
+  min-width: 140px;
+  margin-right: 20px;
 }
 
 .logo:hover {
@@ -726,6 +792,15 @@ onUnmounted(() => {
   justify-content: center;
   min-width: 0;
   position: relative;
+  overflow: hidden;
+  max-width: calc(100vw - 300px);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
 }
 
 .mobile-menu-btn {
@@ -806,11 +881,11 @@ onUnmounted(() => {
 
 :deep(.el-menu--horizontal) {
   border-bottom: none;
+  min-width: 0;
+  overflow: hidden;
 }
 
-:deep(.el-menu--horizontal > .el-menu-item) {
-  border-bottom: 2px solid transparent;
-}
+
 
 :deep(.el-menu--horizontal > .el-menu-item:hover) {
   background-color: rgba(255, 255, 255, 0.1);
@@ -823,11 +898,75 @@ onUnmounted(() => {
 
 :deep(.el-sub-menu__title) {
   color: rgba(255, 255, 255, 0.9) !important;
+  padding: 0 20px !important;
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: ellipsis;
+  max-width: 160px;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  position: relative;
+  height: 60px !important;
+  margin: 0 4px !important;
 }
 
 :deep(.el-sub-menu__title:hover) {
   background-color: rgba(255, 255, 255, 0.1) !important;
   color: #ffffff !important;
+}
+
+:deep(.el-sub-menu__icon-arrow) {
+  display: none !important;
+}
+
+/* 子菜单标题文字布局优化 */
+:deep(.el-sub-menu__title span) {
+  flex: 1 !important;
+  text-align: left !important;
+}
+
+/* 确保主菜单项也有合适的样式 */
+:deep(.el-menu--horizontal > .el-menu-item) {
+  border-bottom: 2px solid transparent;
+  padding: 0 20px !important;
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: ellipsis;
+  max-width: 140px;
+  height: 60px !important;
+  line-height: 60px !important;
+  color: rgba(255, 255, 255, 0.9) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 4px !important;
+}
+
+/* 响应式调整 - 根据屏幕大小动态调整菜单项宽度 */
+@media (max-width: 1400px) {
+  :deep(.el-sub-menu__title) {
+    max-width: 150px !important;
+    padding: 0 16px !important;
+  }
+  
+  :deep(.el-menu--horizontal > .el-menu-item) {
+    max-width: 130px !important;
+    padding: 0 16px !important;
+  }
+}
+
+@media (max-width: 1200px) {
+  :deep(.el-sub-menu__title) {
+    max-width: 130px !important;
+    padding: 0 14px !important;
+  }
+  
+  :deep(.el-menu--horizontal > .el-menu-item) {
+    max-width: 115px !important;
+    padding: 0 14px !important;
+  }
 }
 
 :deep(.el-menu--popup) {
@@ -1082,16 +1221,63 @@ body {
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
+/* 菜单项样式优化 */
+:deep(.el-menu--horizontal .el-menu-item) {
+  padding: 0 8px !important;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+:deep(.el-menu--horizontal .el-sub-menu__title) {
+  padding: 0 8px !important;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
 /* 响应式导航 */
-@media (max-width: 1200px) {
+@media (max-width: 1400px) {
   .header-content {
     max-width: 100%;
-    padding: 0 20px;
+    padding: 0 15px;
   }
   
   .logo {
-    min-width: 140px;
-    margin-right: 20px;
+    min-width: 120px;
+    margin-right: 15px;
+    font-size: 18px;
+  }
+  
+  :deep(.el-menu--horizontal .el-menu-item) {
+    padding: 0 6px !important;
+    font-size: 13px;
+  }
+  
+  :deep(.el-menu--horizontal .el-sub-menu__title) {
+    padding: 0 6px !important;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .header-content {
+    max-width: 100%;
+    padding: 0 15px;
+  }
+  
+  .logo {
+    min-width: 100px;
+    margin-right: 10px;
+    font-size: 16px;
+  }
+  
+  :deep(.el-menu--horizontal .el-menu-item) {
+    padding: 0 4px !important;
+    font-size: 12px;
+  }
+  
+  :deep(.el-menu--horizontal .el-sub-menu__title) {
+    padding: 0 4px !important;
+    font-size: 12px;
   }
 }
 
@@ -1138,6 +1324,10 @@ body {
     min-width: 100px;
     margin-right: 10px;
     font-size: 18px;
+  }
+  
+  .header-right {
+    gap: 8px;
   }
 }
 
@@ -1224,6 +1414,19 @@ body {
 
 .mobile-menu-category .mobile-menu-item:last-child {
   border-bottom: none;
+}
+
+/* 移动端语言切换样式 */
+.mobile-language-section {
+  border-top: 2px solid #e2e8f0;
+  margin-top: 8px;
+}
+
+.mobile-check {
+  margin-left: auto;
+  color: #10b981;
+  font-weight: bold;
+  font-size: 16px;
 }
 
 @keyframes fadeIn {

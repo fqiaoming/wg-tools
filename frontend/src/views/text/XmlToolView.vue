@@ -6,8 +6,8 @@
         <div class="hero-icon">
           <el-icon><Document /></el-icon>
         </div>
-        <h1 class="hero-title">XML工具</h1>
-        <p class="hero-description">XML格式化、美化和验证，提升XML文档的可读性</p>
+        <h1 class="hero-title">{{ t('pages.xml.title') }}</h1>
+        <p class="hero-description">{{ t('pages.xml.description') }}</p>
       </div>
     </div>
 
@@ -22,7 +22,7 @@
           class="action-button"
         >
           <el-icon><MagicStick /></el-icon>
-          格式化XML
+          {{ t('pages.xml.actions.format') }}
         </el-button>
         <el-button 
           size="large" 
@@ -30,7 +30,7 @@
           class="action-button"
         >
           <el-icon><Delete /></el-icon>
-          清空内容
+          {{ t('pages.xml.actions.clear') }}
         </el-button>
         <el-button 
           size="large" 
@@ -39,7 +39,7 @@
           class="action-button"
         >
           <el-icon><CopyDocument /></el-icon>
-          复制结果
+          {{ t('pages.xml.actions.copy') }}
         </el-button>
       </div>
     </div>
@@ -52,14 +52,14 @@
           <div class="editor-icon">
             <el-icon><Edit /></el-icon>
           </div>
-          <h3>输入XML</h3>
-          <div class="character-count">{{ inputText.length }} 字符</div>
+          <h3>{{ t('common.input') }} XML</h3>
+          <div class="character-count">{{ inputText.length }} {{ t('common.characters') }}</div>
         </div>
         <div class="editor-body">
           <el-input
             v-model="inputText"
             type="textarea"
-            placeholder="请输入要格式化的XML内容..."
+            :placeholder="t('pages.xml.inputPlaceholder')"
             :rows="15"
             class="xml-input"
           />
@@ -72,8 +72,8 @@
           <div class="editor-icon">
             <el-icon><View /></el-icon>
           </div>
-          <h3>格式化结果</h3>
-          <div class="character-count">{{ result.length }} 字符</div>
+          <h3>{{ t('common.format') }}{{ t('common.result') }}</h3>
+          <div class="character-count">{{ result.length }} {{ t('common.characters') }}</div>
         </div>
         <div class="editor-body">
           <el-input
@@ -159,6 +159,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Document,
   Delete,
@@ -170,6 +171,7 @@ import {
   MagicStick
 } from '@element-plus/icons-vue'
 
+const { t } = useI18n()
 const loading = ref(false)
 const inputText = ref('')
 const result = ref('')

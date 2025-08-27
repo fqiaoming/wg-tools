@@ -6,8 +6,8 @@
         <div class="hero-icon">
           <el-icon><Brush /></el-icon>
         </div>
-        <h1 class="hero-title">高级颜色工具</h1>
-        <p class="hero-description">专业的颜色分析和处理工具，提供颜色提取、调色板生成等高级功能</p>
+        <h1 class="hero-title">{{ t('pages.colorTool.title') }}</h1>
+        <p class="hero-description">{{ t('pages.colorTool.description') }}</p>
       </div>
     </div>
 
@@ -17,8 +17,8 @@
         <div class="selector-icon">
           <el-icon><Grid /></el-icon>
         </div>
-        <h3>功能选择</h3>
-        <div class="selector-description">选择颜色处理功能</div>
+        <h3>{{ t('pages.colorTool.functionSelection') }}</h3>
+        <div class="selector-description">{{ t('pages.colorTool.selectFunction') }}</div>
       </div>
       
       <div class="selector-body">
@@ -44,8 +44,8 @@
         <div class="extract-icon">
           <el-icon><Picture /></el-icon>
         </div>
-        <h3>图片颜色提取</h3>
-        <div class="extract-description">从图片中提取主要颜色</div>
+        <h3>{{ t('pages.colorTool.functions.extract.title') }}</h3>
+        <div class="extract-description">{{ t('pages.colorTool.functions.extract.subtitle') }}</div>
       </div>
       
       <div class="extract-body">
@@ -123,7 +123,7 @@
               class="action-btn"
             >
               <el-icon><CopyDocument /></el-icon>
-              复制颜色列表
+              {{ t('common.copy') }}颜色列表
             </el-button>
             <el-button 
               @click="exportColorPalette"
@@ -412,6 +412,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Brush,
   Grid,
@@ -429,6 +430,7 @@ import {
 } from '@element-plus/icons-vue'
 import { advancedColorTool, type ToolResponse } from '../../utils/newTools'
 
+const { t } = useI18n()
 const extracting = ref(false)
 const selectedFunction = ref('extract')
 const uploadedImage = ref('')

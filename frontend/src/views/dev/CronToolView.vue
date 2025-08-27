@@ -6,8 +6,8 @@
         <div class="hero-icon">
           <el-icon><Timer /></el-icon>
         </div>
-        <h1 class="hero-title">Cron表达式工具</h1>
-        <p class="hero-description">生成和解析Cron表达式，轻松配置定时任务调度</p>
+        <h1 class="hero-title">{{ t('menu.cronTool') }}</h1>
+        <p class="hero-description">{{ t('pages.cronTool.description') }}</p>
       </div>
     </div>
 
@@ -267,6 +267,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Timer,
   Setting,
@@ -279,6 +280,7 @@ import {
   InfoFilled
 } from '@element-plus/icons-vue'
 
+const { t } = useI18n()
 const cronExpression = ref('')
 const cronDescription = ref('')
 const nextExecutions = ref<string[]>([])

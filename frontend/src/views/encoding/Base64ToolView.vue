@@ -6,33 +6,33 @@
         <div class="hero-icon">
           <el-icon><Key /></el-icon>
         </div>
-        <h1 class="hero-title">Base64编码工具</h1>
-        <p class="hero-description">强大的Base64编码解码工具，支持文本、文件和URL安全编码</p>
+        <h1 class="hero-title">{{ t('pages.base64.title') }}</h1>
+        <p class="hero-description">{{ t('pages.base64.description') }}</p>
       </div>
     </div>
 
     <!-- 操作按钮卡片 -->
     <div class="action-card">
       <div class="action-header">
-        <h3>编码操作</h3>
-        <div class="action-description">选择要执行的Base64操作</div>
+        <h3>{{ t('common.encode') }}{{ t('common.output') }}</h3>
+        <div class="action-description">{{ t('pages.base64.description') }}</div>
       </div>
       <div class="action-buttons">
         <el-button type="primary" @click="encodeBase64" :loading="loading" size="large">
           <el-icon><Lock /></el-icon>
-          编码
+          {{ t('pages.base64.actions.encode') }}
         </el-button>
         <el-button type="success" @click="decodeBase64" :loading="loading" size="large">
           <el-icon><Unlock /></el-icon>
-          解码
+          {{ t('pages.base64.actions.decode') }}
         </el-button>
         <el-button @click="clearAll" size="large">
           <el-icon><Delete /></el-icon>
-          清空
+          {{ t('pages.base64.actions.clear') }}
         </el-button>
         <el-button @click="copyResult" v-if="result" size="large">
           <el-icon><CopyDocument /></el-icon>
-          复制结果
+          {{ t('pages.base64.actions.copy') }}
         </el-button>
       </div>
     </div>
@@ -45,15 +45,15 @@
           <div class="editor-icon">
             <el-icon><Edit /></el-icon>
           </div>
-          <h3>输入文本</h3>
-          <div class="char-count">{{ inputText.length }} 字符</div>
+          <h3>{{ t('common.input') }}{{ t('common.characters') }}</h3>
+          <div class="char-count">{{ inputText.length }} {{ t('common.characters') }}</div>
         </div>
         <div class="editor-body">
           <el-input
             v-model="inputText"
             type="textarea"
             :rows="12"
-            placeholder="请输入要编码或解码的文本..."
+            :placeholder="t('pages.base64.inputPlaceholder')"
             class="code-editor"
           />
         </div>
@@ -65,8 +65,8 @@
           <div class="editor-icon">
             <el-icon><View /></el-icon>
           </div>
-          <h3>输出结果</h3>
-          <div class="char-count">{{ result.length }} 字符</div>
+          <h3>{{ t('common.output') }}{{ t('common.result') }}</h3>
+          <div class="char-count">{{ result.length }} {{ t('common.characters') }}</div>
         </div>
         <div class="editor-body">
           <el-input
@@ -74,7 +74,7 @@
             type="textarea"
             :rows="12"
             readonly
-            placeholder="处理结果将显示在这里..."
+            :placeholder="`${t('common.result')}...`"
             class="code-editor"
           />
         </div>
@@ -138,6 +138,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Key,
   Lock,
@@ -151,6 +152,7 @@ import {
 } from '@element-plus/icons-vue'
 import { base64Tool, type ToolResponse } from '../../utils/localTools'
 
+const { t } = useI18n()
 const inputText = ref('')
 const result = ref('')
 const loading = ref(false)

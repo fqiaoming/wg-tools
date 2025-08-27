@@ -6,8 +6,8 @@
         <div class="hero-icon">
           <el-icon><Coin /></el-icon>
         </div>
-        <h1 class="hero-title">随机数据生成器</h1>
-        <p class="hero-description">生成各种类型的随机测试数据，支持自定义格式和批量生成</p>
+        <h1 class="hero-title">{{ t('menu.randomData') }}</h1>
+        <p class="hero-description">{{ t('pages.randomData.description') }}</p>
       </div>
     </div>
 
@@ -17,8 +17,8 @@
         <div class="selector-icon">
           <el-icon><Grid /></el-icon>
         </div>
-        <h3>数据类型</h3>
-        <div class="selector-description">选择要生成的数据类型</div>
+        <h3>{{ t('pages.randomData.dataType') }}</h3>
+        <div class="selector-description">{{ t('pages.randomData.selectType') }}</div>
       </div>
       
       <div class="selector-body">
@@ -357,6 +357,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Coin,
   Grid,
@@ -372,6 +373,7 @@ import {
 } from '@element-plus/icons-vue'
 import { randomDataTool, type ToolResponse } from '../../utils/newTools'
 
+const { t } = useI18n()
 const loading = ref(false)
 const selectedType = ref('name')
 const generatedData = ref('')

@@ -2,7 +2,7 @@
   <div class="classroom-seating">
     <!-- 开发者信息 -->
     <header class="developer-info">
-      <h1>班级座次表</h1>
+      <h1>{{ t('menu.classroomSeatingChart') }}</h1>
       <div class="developer-tag">开发者：WG科技</div>
     </header>
 
@@ -155,6 +155,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 // 响应式数据
 const students = ref<Student[]>([])

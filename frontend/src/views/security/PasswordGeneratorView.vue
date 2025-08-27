@@ -6,8 +6,8 @@
         <div class="hero-icon">
           <el-icon><Lock /></el-icon>
         </div>
-        <h1 class="hero-title">密码生成器</h1>
-        <p class="hero-description">生成安全可靠的随机密码，支持多种字符类型组合和强度评估</p>
+        <h1 class="hero-title">{{ t('pages.password.title') }}</h1>
+        <p class="hero-description">{{ t('pages.password.description') }}</p>
       </div>
     </div>
 
@@ -16,14 +16,14 @@
       <div class="card-header">
         <h3>
           <el-icon><Setting /></el-icon>
-          密码配置
+          {{ t('pages.password.title') }}配置
         </h3>
       </div>
       
       <div class="card-body">
         <div class="length-section">
           <div class="length-header">
-            <label class="length-label">密码长度</label>
+            <label class="length-label">{{ t('pages.password.options.length') }}</label>
             <span class="length-value">{{ passwordLength }} 位</span>
           </div>
           <el-slider
@@ -113,7 +113,7 @@
             class="generate-button"
           >
             <el-icon><Refresh /></el-icon>
-            生成新密码
+            {{ t('pages.password.actions.generate') }}
           </el-button>
         </div>
 
@@ -124,7 +124,7 @@
             <div class="password-actions">
               <el-button @click="copyPassword" size="small">
                 <el-icon><CopyDocument /></el-icon>
-                复制
+                {{ t('pages.password.actions.copy') }}
               </el-button>
               <el-button @click="generatePassword" size="small" type="primary" plain>
                 <el-icon><Refresh /></el-icon>
@@ -213,6 +213,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Lock,
   Refresh,
@@ -223,6 +224,7 @@ import {
 } from '@element-plus/icons-vue'
 import { passwordTool } from '../../utils/newTools'
 
+const { t } = useI18n()
 const loading = ref(false)
 const passwordLength = ref(12)
 const result = ref('')

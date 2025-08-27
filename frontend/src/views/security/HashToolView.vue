@@ -6,8 +6,8 @@
         <div class="hero-icon">
           <el-icon><Key /></el-icon>
         </div>
-        <h1 class="hero-title">哈希计算工具</h1>
-        <p class="hero-description">计算文本的哈希值，支持多种安全哈希算法</p>
+        <h1 class="hero-title">{{ t('pages.hash.title') }}</h1>
+        <p class="hero-description">{{ t('pages.hash.description') }}</p>
       </div>
     </div>
 
@@ -16,25 +16,25 @@
       <div class="card-header">
         <h3>
           <el-icon><MagicStick /></el-icon>
-          哈希计算
+          {{ t('pages.hash.title') }}
         </h3>
       </div>
       <div class="card-body">
         <!-- 输入区域 -->
         <div class="input-section">
-          <label class="input-label">输入文本</label>
+          <label class="input-label">{{ t('common.input') }}{{ t('common.text') }}</label>
           <el-input
             v-model="inputText"
             type="textarea"
             :rows="6"
-            placeholder="请输入要计算哈希值的文本..."
+            :placeholder="t('pages.hash.inputPlaceholder')"
             @input="calculateHash"
           />
         </div>
 
         <!-- 算法选择 -->
         <div class="algorithm-section">
-          <label class="input-label">哈希算法</label>
+          <label class="input-label">{{ t('pages.hash.algorithm') }}</label>
           <el-radio-group v-model="selectedAlgorithm" @change="calculateHash">
             <el-radio-button label="djb2">DJB2</el-radio-button>
             <el-radio-button label="sdbm">SDBM</el-radio-button>
@@ -52,7 +52,7 @@
             :disabled="!inputText.trim()"
           >
             <el-icon><MagicStick /></el-icon>
-            计算哈希值
+            {{ t('pages.hash.calculateButton') }}
           </el-button>
         </div>
       </div>
@@ -63,7 +63,7 @@
       <div class="card-header">
         <h3>
           <el-icon><Key /></el-icon>
-          哈希结果
+          {{ t('pages.hash.hashResult') }}
         </h3>
       </div>
       <div class="card-body">
@@ -72,7 +72,7 @@
           <div class="hash-actions">
             <el-button @click="copyResult" type="primary" size="small">
               <el-icon><CopyDocument /></el-icon>
-              复制结果
+              {{ t('pages.hash.copyResult') }}
             </el-button>
           </div>
         </div>
@@ -81,20 +81,20 @@
         <div v-if="extra" class="details-section">
           <div class="detail-grid">
             <div class="detail-item">
-              <span class="detail-label">算法:</span>
+              <span class="detail-label">{{ t('pages.hash.detailLabels.algorithm') }}:</span>
               <span class="detail-value">{{ extra.algorithm.toUpperCase() }}</span>
             </div>
             <div class="detail-item">
-              <span class="detail-label">输入长度:</span>
-              <span class="detail-value">{{ extra.inputLength }} 字符</span>
+              <span class="detail-label">{{ t('pages.hash.detailLabels.inputLength') }}:</span>
+              <span class="detail-value">{{ extra.inputLength }} {{ t('pages.hash.detailLabels.characters') }}</span>
             </div>
             <div class="detail-item">
-              <span class="detail-label">输出长度:</span>
-              <span class="detail-value">{{ extra.outputLength }} 字符</span>
+              <span class="detail-label">{{ t('pages.hash.detailLabels.outputLength') }}:</span>
+              <span class="detail-value">{{ extra.outputLength }} {{ t('pages.hash.detailLabels.characters') }}</span>
             </div>
             <div class="detail-item">
-              <span class="detail-label">处理时间:</span>
-              <span class="detail-value">{{ processTime }}ms</span>
+              <span class="detail-label">{{ t('pages.hash.detailLabels.processTime') }}:</span>
+              <span class="detail-value">{{ processTime }}{{ t('pages.hash.detailLabels.milliseconds') }}</span>
             </div>
           </div>
         </div>
@@ -106,26 +106,26 @@
       <div class="card-header">
         <h3>
           <el-icon><InfoFilled /></el-icon>
-          算法说明
+          {{ t('pages.hash.algorithmDesc') }}
         </h3>
       </div>
       <div class="card-body">
         <div class="usage-content">
           <div class="usage-section">
-            <h4>DJB2</h4>
-            <p>Daniel J. Bernstein开发的简单哈希算法，具有良好的分布特性。</p>
+            <h4>{{ t('pages.hash.algorithms.djb2.name') }}</h4>
+            <p>{{ t('pages.hash.algorithms.djb2.description') }}</p>
           </div>
           <div class="usage-section">
-            <h4>SDBM</h4>
-            <p>SDBM数据库使用的哈希算法，适用于字符串哈希。</p>
+            <h4>{{ t('pages.hash.algorithms.sdbm.name') }}</h4>
+            <p>{{ t('pages.hash.algorithms.sdbm.description') }}</p>
           </div>
           <div class="usage-section">
-            <h4>Lose Lose</h4>
-            <p>最简单的哈希算法之一，将所有字符的ASCII值相加。</p>
+            <h4>{{ t('pages.hash.algorithms.loselose.name') }}</h4>
+            <p>{{ t('pages.hash.algorithms.loselose.description') }}</p>
           </div>
           <div class="usage-section warning">
-            <h4>⚠️ 注意</h4>
-            <p>这些算法用于简单哈希算法，不适用于加密安全用途。如需加密级别的哈希，请使用SHA-256、SHA-512等标准算法。</p>
+            <h4>⚠️ {{ t('pages.hash.warning.title') }}</h4>
+            <p>{{ t('pages.hash.warning.description') }}</p>
           </div>
         </div>
       </div>
@@ -136,6 +136,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Key,
   MagicStick,
@@ -144,6 +145,7 @@ import {
 } from '@element-plus/icons-vue'
 import { hashTool } from '../../utils/newTools'
 
+const { t } = useI18n()
 const loading = ref(false)
 const inputText = ref('')
 const selectedAlgorithm = ref('djb2')
@@ -170,10 +172,10 @@ const calculateHash = () => {
       extra.value = response.extra
       processTime.value = Date.now() - startTime
     } else {
-      ElMessage.error(response.error || '哈希计算失败')
+      ElMessage.error(response.error || t('pages.hash.messages.calculationError'))
     }
   } catch (error: any) {
-    ElMessage.error(error.message || '哈希计算失败')
+    ElMessage.error(error.message || t('pages.hash.messages.calculationError'))
   } finally {
     loading.value = false
   }
@@ -183,9 +185,9 @@ const calculateHash = () => {
 const copyResult = async () => {
   try {
     await navigator.clipboard.writeText(result.value)
-    ElMessage.success('哈希值已复制到剪贴板')
+    ElMessage.success(t('pages.hash.messages.copied'))
   } catch (error) {
-    ElMessage.error('复制失败')
+    ElMessage.error(t('pages.hash.messages.copyFailed'))
   }
 }
 </script>

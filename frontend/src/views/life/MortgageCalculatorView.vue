@@ -1,8 +1,8 @@
 <template>
   <div class="mortgage-calculator">
     <div class="page-header">
-      <h1>房贷计算器</h1>
-      <p>计算房贷月供、总利息，支持等额本息、等额本金两种还款方式</p>
+      <h1>{{ t('pages.mortgageCalculator.title') }}</h1>
+      <p>{{ t('pages.mortgageCalculator.description') }}</p>
     </div>
 
     <div class="calculator-container">
@@ -190,6 +190,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 // 响应式数据
 const loanAmount = ref('')

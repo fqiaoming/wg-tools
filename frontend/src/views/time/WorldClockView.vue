@@ -6,8 +6,8 @@
         <div class="hero-icon">
           <el-icon><Clock /></el-icon>
         </div>
-        <h1 class="hero-title">世界时钟</h1>
-        <p class="hero-description">实时显示全球主要城市时间，支持自定义时区和时间格式</p>
+        <h1 class="hero-title">{{ t('pages.worldClock.title') }}</h1>
+        <p class="hero-description">{{ t('pages.worldClock.description') }}</p>
       </div>
     </div>
 
@@ -16,11 +16,11 @@
       <div class="card-header">
         <h3>
           <el-icon><Location /></el-icon>
-          本地时间
+          {{ t('pages.worldClock.localTime') }}
         </h3>
         <div class="live-indicator">
           <span class="live-dot"></span>
-          实时更新
+          {{ t('pages.worldClock.liveUpdate') }}
         </div>
       </div>
       <div class="current-time-display">
@@ -167,6 +167,7 @@
 <script setup lang="ts">
 import { ref, reactive, onMounted, onUnmounted } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Clock,
   Location,
@@ -177,6 +178,7 @@ import {
   InfoFilled
 } from '@element-plus/icons-vue'
 
+const { t } = useI18n()
 // 响应式数据
 const currentTime = reactive({
   time: '',

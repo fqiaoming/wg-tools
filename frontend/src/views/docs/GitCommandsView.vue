@@ -6,8 +6,8 @@
         <div class="hero-icon">
           <el-icon><Files /></el-icon>
         </div>
-        <h1 class="hero-title">Git 常用命令</h1>
-        <p class="hero-description">Git版本控制系统的常用命令和使用场景，帮助您高效管理代码版本</p>
+        <h1 class="hero-title">{{ t('menu.gitCommands') }}</h1>
+        <p class="hero-description">{{ t('pages.gitCommands.description') }}</p>
       </div>
     </div>
 
@@ -431,6 +431,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Document,
   Search,
@@ -449,6 +450,7 @@ import {
   CaretTop
 } from '@element-plus/icons-vue'
 
+const { t } = useI18n()
 const searchQuery = ref('')
 const activeCategory = ref('all')
 const navCollapsed = ref(false)

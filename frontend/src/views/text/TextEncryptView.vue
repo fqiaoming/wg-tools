@@ -6,8 +6,8 @@
         <div class="hero-icon">
           <el-icon><Lock /></el-icon>
         </div>
-        <h1 class="hero-title">文本加密工具</h1>
-        <p class="hero-description">安全的文本加密解密工具，支持多种加密算法和编码格式</p>
+        <h1 class="hero-title">{{ t('menu.textEncrypt') }}</h1>
+        <p class="hero-description">{{ t('pages.textEncrypt.description') }}</p>
       </div>
     </div>
 
@@ -17,14 +17,14 @@
         <div class="selector-icon">
           <el-icon><Switch /></el-icon>
         </div>
-        <h3>操作模式</h3>
-        <div class="selector-description">选择加密或解密操作</div>
+        <h3>{{ t('pages.textEncrypt.operationMode') }}</h3>
+        <div class="selector-description">{{ t('pages.textEncrypt.selectOperation') }}</div>
       </div>
       
       <div class="selector-body">
         <el-radio-group v-model="mode" @change="onModeChange" size="large" class="mode-group">
-          <el-radio-button label="encrypt">加密</el-radio-button>
-          <el-radio-button label="decrypt">解密</el-radio-button>
+          <el-radio-button label="encrypt">{{ t('pages.textEncrypt.encrypt') }}</el-radio-button>
+          <el-radio-button label="decrypt">{{ t('pages.textEncrypt.decrypt') }}</el-radio-button>
         </el-radio-group>
       </div>
     </div>
@@ -35,14 +35,14 @@
         <div class="algorithm-icon">
           <el-icon><Setting /></el-icon>
         </div>
-        <h3>加密算法</h3>
-        <div class="algorithm-description">选择加密算法和参数</div>
+        <h3>{{ t('pages.textEncrypt.algorithm') }}</h3>
+        <div class="algorithm-description">{{ t('pages.textEncrypt.selectAlgorithm') }}</div>
       </div>
       
       <div class="algorithm-body">
         <div class="algorithm-selector">
           <div class="selector-section">
-            <label class="selector-label">算法类型</label>
+            <label class="selector-label">{{ t('pages.textEncrypt.algorithmType') }}</label>
             <el-select v-model="selectedAlgorithm" @change="onAlgorithmChange" size="large" class="algorithm-select">
               <el-option
                 v-for="algo in algorithms"
@@ -391,6 +391,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Lock,
   Switch,
@@ -408,6 +409,7 @@ import {
   Warning
 } from '@element-plus/icons-vue'
 
+const { t } = useI18n()
 const mode = ref('encrypt')
 const selectedAlgorithm = ref('aes')
 const password = ref('')

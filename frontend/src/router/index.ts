@@ -472,7 +472,12 @@ const router = createRouter({
 
 // 路由守卫，设置页面标题
 router.beforeEach((to, _from, next) => {
-  document.title = to.meta.title as string || 'WG-Tools - 在线开发者工具箱'
+  // 基础标题，会根据语言动态更新
+  const baseTitle = localStorage.getItem('wg-tools-locale') === 'en' 
+    ? 'WG-Tools - Online Developer Toolbox'
+    : 'WG-Tools - 在线开发者工具箱'
+  
+  document.title = to.meta.title as string || baseTitle
   next()
 })
 

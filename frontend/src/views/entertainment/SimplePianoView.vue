@@ -7,7 +7,7 @@
           <div class="option-item-wrap">
             <div class="option-item">
               <label class="label">
-                显示按键提示
+                {{ t('menu.virtualPiano') }}按键提示
                 <input type="checkbox" id="keyname" v-model="showKeyNames"> 
                 <i></i>
               </label>
@@ -253,6 +253,9 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, nextTick, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 // 类型定义
 interface Song {

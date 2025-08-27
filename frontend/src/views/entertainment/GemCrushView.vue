@@ -6,8 +6,8 @@
         <div class="hero-icon">
           <el-icon><Guide /></el-icon>
         </div>
-        <h1 class="hero-title">宝石消除</h1>
-        <p class="hero-description">经典三消游戏，交换相邻宝石，消除三个或更多相同宝石！</p>
+        <h1 class="hero-title">{{ t('menu.gemCrush') }}</h1>
+        <p class="hero-description">{{ t('pages.gemCrush.description') }}</p>
       </div>
     </div>
 
@@ -16,9 +16,9 @@
       <div class="card-header">
         <h3>
           <el-icon><Trophy /></el-icon>
-          宝石消除世界
+          {{ t('pages.gemCrush.gameArea') }}
         </h3>
-        <p class="card-description">拖拽相邻宝石交换位置，或点击选择，消除三个或更多相同宝石获得分数！</p>
+        <p class="card-description">{{ t('pages.gemCrush.instructions') }}</p>
       </div>
       
       <div class="card-body">
@@ -195,6 +195,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Guide,
   Trophy,
@@ -202,6 +203,8 @@ import {
   RefreshRight,
   QuestionFilled
 } from '@element-plus/icons-vue'
+
+const { t } = useI18n()
 
 // 游戏状态
 const gameCanvas = ref<HTMLCanvasElement | null>(null)

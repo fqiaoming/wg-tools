@@ -6,8 +6,8 @@
         <div class="hero-icon">
           <el-icon><Picture /></el-icon>
         </div>
-        <h1 class="hero-title">图片Base64转换</h1>
-        <p class="hero-description">支持图片与Base64编码的双向转换，方便网页开发和数据传输</p>
+        <h1 class="hero-title">{{ t('menu.imageBase64') }}</h1>
+        <p class="hero-description">{{ t('pages.imageBase64.description') }}</p>
       </div>
     </div>
 
@@ -17,8 +17,8 @@
         <div class="selector-icon">
           <el-icon><Switch /></el-icon>
         </div>
-        <h3>转换模式</h3>
-        <div class="selector-description">选择转换方向</div>
+        <h3>{{ t('pages.imageBase64.conversionMode') }}</h3>
+        <div class="selector-description">{{ t('pages.imageBase64.selectDirection') }}</div>
       </div>
       
       <div class="selector-body">
@@ -322,6 +322,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Picture,
   Switch,
@@ -335,6 +336,7 @@ import {
 } from '@element-plus/icons-vue'
 import { imageBase64Tool, type ToolResponse } from '../../utils/newTools'
 
+const { t } = useI18n()
 const mode = ref('imageToBase64')
 const imagePreview = ref('')
 const imageInfo = ref<any>(null)

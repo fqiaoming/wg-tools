@@ -2,18 +2,15 @@
   <div class="home">
     <!-- 页面标题 -->
     <div class="hero-section">
-      <h1 class="page-title">WG-Tools 开发者工具箱</h1>
-      <p class="page-subtitle">
-        为开发者提供便捷、高效的在线工具服务<br>
-        支持文本处理、编码转换、开发调试等常用功能
-      </p>
+      <h1 class="page-title">{{ t('home.title') }}</h1>
+      <p class="page-subtitle" v-html="t('home.subtitle').replace('\n', '<br>')"></p>
     </div>
 
     <!-- 搜索框 -->
     <div class="search-section">
       <el-input
         v-model="searchKeyword"
-        placeholder="搜索工具..."
+        :placeholder="t('home.searchPlaceholder')"
         size="large"
         class="search-input"
         clearable
@@ -27,7 +24,11 @@
     <!-- 工具分类 -->
     <div class="categories-section">
       <el-tabs v-model="activeCategory" class="tool-tabs">
-        <el-tab-pane label="全部工具" name="all">
+        <el-tab-pane name="all">
+          <template #label>
+            <span style="margin-right: 6px;">📱</span>
+            {{ t('home.categories.all') }}
+          </template>
           <div class="tools-grid">
             <div
               v-for="tool in filteredTools"
@@ -57,7 +58,11 @@
           </div>
         </el-tab-pane>
         
-        <el-tab-pane label="文本处理" name="text">
+        <el-tab-pane name="text">
+          <template #label>
+            <span style="margin-right: 6px;">📝</span>
+            {{ t('home.categories.text') }}
+          </template>
           <div class="tools-grid">
             <div
               v-for="tool in getToolsByCategory('text')"
@@ -87,7 +92,11 @@
           </div>
         </el-tab-pane>
         
-        <el-tab-pane label="编码转换" name="encoding">
+        <el-tab-pane name="encoding">
+          <template #label>
+            <span style="margin-right: 6px;">🔄</span>
+            {{ t('home.categories.encoding') }}
+          </template>
           <div class="tools-grid">
             <div
               v-for="tool in getToolsByCategory('encoding')"
@@ -117,7 +126,11 @@
           </div>
         </el-tab-pane>
         
-        <el-tab-pane label="开发工具" name="dev">
+        <el-tab-pane name="dev">
+          <template #label>
+            <span style="margin-right: 6px;">🛠️</span>
+            {{ t('home.categories.dev') }}
+          </template>
           <div class="tools-grid">
             <div
               v-for="tool in getToolsByCategory('dev')"
@@ -147,7 +160,11 @@
           </div>
         </el-tab-pane>
         
-        <el-tab-pane label="时间工具" name="time">
+        <el-tab-pane name="time">
+          <template #label>
+            <span style="margin-right: 6px;">⏰</span>
+            {{ t('home.categories.time') }}
+          </template>
           <div class="tools-grid">
             <div
               v-for="tool in getToolsByCategory('time')"
@@ -177,7 +194,10 @@
           </div>
         </el-tab-pane>
 
-        <el-tab-pane label="文档" name="docs">
+        <el-tab-pane name="docs">
+          <template #label>
+            {{ t('nav.docs') }}
+          </template>
           <div class="tools-grid">
             <div
               v-for="tool in getToolsByCategory('docs')"
@@ -207,7 +227,11 @@
           </div>
         </el-tab-pane>
         
-        <el-tab-pane label="安全工具" name="security">
+        <el-tab-pane name="security">
+          <template #label>
+            <span style="margin-right: 6px;">🔒</span>
+            {{ t('home.categories.security') }}
+          </template>
           <div class="tools-grid">
             <div
               v-for="tool in getToolsByCategory('security')"
@@ -237,7 +261,11 @@
           </div>
         </el-tab-pane>
         
-        <el-tab-pane label="娱乐工具" name="entertainment">
+        <el-tab-pane name="entertainment">
+          <template #label>
+            <span style="margin-right: 6px;">🎮</span>
+            {{ t('home.categories.entertainment') }}
+          </template>
           <div class="tools-grid">
             <div
               v-for="tool in getToolsByCategory('entertainment')"
@@ -267,7 +295,11 @@
           </div>
         </el-tab-pane>
         
-        <el-tab-pane label="🛠️ 实用工具" name="utility">
+        <el-tab-pane name="utility">
+          <template #label>
+            <span style="margin-right: 6px;">🔧</span>
+            {{ t('home.categories.utility') }}
+          </template>
           <div class="tools-grid">
             <div
               v-for="tool in getToolsByCategory('utility')"
@@ -304,296 +336,421 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import {
   Search
 } from '@element-plus/icons-vue'
 
 const router = useRouter()
+const { t, locale } = useI18n()
 const searchKeyword = ref('')
 const activeCategory = ref('all')
 
+// 获取标签数组的辅助函数
+const getTagsArray = (key: string) => {
+  const tags = t(key)
+  // 如果翻译失败，使用默认标签
+  if (!Array.isArray(tags) || tags.length === 0) {
+    // 根据当前语言提供默认标签
+    const isEnglish = locale.value === 'en'
+    const defaultTags: Record<string, string[]> = isEnglish ? {
+      // Text Tools
+      'home.tools.jsonTool.tags': ['JSON', 'Format', 'Validate'],
+      'home.tools.xmlTool.tags': ['XML', 'Format', 'Beautify'],
+      'home.tools.textCompare.tags': ['Text', 'Compare', 'Diff'],
+      'home.tools.textEncrypt.tags': ['Encrypt', 'Text', 'Security'],
+      'home.tools.regexTool.tags': ['Regex', 'Match', 'Replace'],
+      'home.tools.textStats.tags': ['Text', 'Statistics', 'Analysis'],
+      // Encoding Tools
+      'home.tools.base64Tool.tags': ['Base64', 'Encode', 'Decode'],
+      'home.tools.urlTool.tags': ['URL', 'Encode', 'Decode'],
+      'home.tools.unicodeTool.tags': ['Unicode', 'Character', 'Encode'],
+      'home.tools.htmlTool.tags': ['HTML', 'Escape', 'Entity'],
+      'home.tools.baseTool.tags': ['Base', 'Convert', 'Math'],
+      // Development Tools
+      'home.tools.colorTool.tags': ['Color', 'Palette', 'Design'],
+      'home.tools.uuidTool.tags': ['UUID', 'Generate', 'Unique'],
+      'home.tools.timestampTool.tags': ['Timestamp', 'Convert', 'Time'],
+      'home.tools.timeCalculator.tags': ['Time', 'Calculate', 'Date'],
+      'home.tools.worldClock.tags': ['Clock', 'Timezone', 'World'],
+      'home.tools.passwordGenerator.tags': ['Password', 'Generate', 'Security'],
+      'home.tools.hashTool.tags': ['Hash', 'Encrypt', 'Checksum'],
+      'home.tools.unitConverter.tags': ['Unit', 'Convert', 'Measure'],
+      'home.tools.qrGenerator.tags': ['QR Code', 'Generate', 'Scan'],
+      'home.tools.imageBase64.tags': ['Image', 'Base64', 'Convert'],
+      'home.tools.randomData.tags': ['Random', 'Data', 'Generate'],
+      'home.tools.codeFormatter.tags': ['Code', 'Format', 'Beautify'],
+      'home.tools.markdownEditor.tags': ['Markdown', 'Editor', 'Preview'],
+      'home.tools.fileDiff.tags': ['File', 'Compare', 'Diff'],
+      'home.tools.colorPicker.tags': ['Color', 'Picker', 'Eyedropper'],
+      'home.tools.iconGenerator.tags': ['Icon', 'Generate', 'Design'],
+      'home.tools.cronTool.tags': ['Cron', 'Schedule', 'Expression'],
+      'home.tools.variableGenerator.tags': ['Variable', 'Generate', 'Naming'],
+      // Documentation Tools
+      'home.tools.gitCommands.tags': ['Git', 'Commands', 'Version'],
+      'home.tools.linuxCommands.tags': ['Linux', 'Commands', 'System'],
+      'home.tools.dockerCommands.tags': ['Docker', 'Container', 'Commands'],
+      'home.tools.mysqlSyntax.tags': ['MySQL', 'Database', 'Syntax'],
+      'home.tools.javaSyntax.tags': ['Java', 'Syntax', 'Programming'],
+      // Entertainment Tools
+      'home.tools.piano.tags': ['Piano', 'Music', 'Play'],
+      'home.tools.snakeGame.tags': ['Snake', 'Game', 'Classic'],
+      'home.tools.quoteGenerator.tags': ['Quote', 'Generate', 'Inspiration'],
+      'home.tools.numberPuzzle.tags': ['Number', 'Puzzle', 'Brain'],
+      'home.tools.whackMole.tags': ['Whack', 'Mole', 'Reaction'],
+      'home.tools.game2048.tags': ['Number', 'Merge', 'Strategy', 'Puzzle'],
+      'home.tools.tetris.tags': ['Block', 'Clear', 'Classic', 'Reaction'],
+      'home.tools.flappyBird.tags': ['Fly', 'Avoid', 'Rhythm', 'Reaction'],
+      'home.tools.gemCrush.tags': ['Match3', 'Crush', 'Strategy', 'Gem'],
+      // Utility Tools
+      'home.tools.bmiCalculator.tags': ['Health', 'BMI', 'Weight', 'Calculate'],
+      'home.tools.mortgageCalculator.tags': ['Mortgage', 'Calculator', 'Loan', 'Interest'],
+      'home.tools.ageCalculator.tags': ['Age', 'Zodiac', 'Birthday', 'Calculate'],
+      'home.tools.classroomSeating.tags': ['Education', 'Seating', 'Classroom', 'Manage'],
+      'home.tools.studentRollCall.tags': ['Education', 'Roll Call', 'Random', 'Class'],
+    } : {
+      // 文本工具
+      'home.tools.jsonTool.tags': ['JSON', '格式化', '验证'],
+      'home.tools.xmlTool.tags': ['XML', '格式化', '美化'],
+      'home.tools.textCompare.tags': ['文本', '对比', '差异'],
+      'home.tools.textEncrypt.tags': ['加密', '文本', '安全'],
+      'home.tools.regexTool.tags': ['正则', '匹配', '替换'],
+      'home.tools.textStats.tags': ['文本', '统计', '分析'],
+      // 编码工具
+      'home.tools.base64Tool.tags': ['Base64', '编码', '解码'],
+      'home.tools.urlTool.tags': ['URL', '编码', '解码'],
+      'home.tools.unicodeTool.tags': ['Unicode', '字符', '编码'],
+      'home.tools.htmlTool.tags': ['HTML', '转义', '实体'],
+      'home.tools.baseTool.tags': ['进制', '转换', '数学'],
+      // 开发工具
+      'home.tools.colorTool.tags': ['颜色', '调色板', '设计'],
+      'home.tools.uuidTool.tags': ['UUID', '生成', '唯一标识'],
+      'home.tools.timestampTool.tags': ['时间戳', '转换', '时间'],
+      'home.tools.timeCalculator.tags': ['时间', '计算', '日期'],
+      'home.tools.worldClock.tags': ['时钟', '时区', '世界时间'],
+      'home.tools.passwordGenerator.tags': ['密码', '生成', '安全'],
+      'home.tools.hashTool.tags': ['哈希', '加密', '校验'],
+      'home.tools.unitConverter.tags': ['单位', '转换', '度量'],
+      'home.tools.qrGenerator.tags': ['二维码', '生成', '扫码'],
+      'home.tools.imageBase64.tags': ['图片', 'Base64', '转换'],
+      'home.tools.randomData.tags': ['随机', '数据', '生成'],
+      'home.tools.codeFormatter.tags': ['代码', '格式化', '美化'],
+      'home.tools.markdownEditor.tags': ['Markdown', '编辑器', '预览'],
+      'home.tools.fileDiff.tags': ['文件', '对比', '差异'],
+      'home.tools.colorPicker.tags': ['颜色', '选择器', '取色'],
+      'home.tools.iconGenerator.tags': ['图标', '生成', '设计'],
+      'home.tools.cronTool.tags': ['Cron', '定时任务', '表达式'],
+      'home.tools.variableGenerator.tags': ['变量', '生成', '命名'],
+      // 文档工具
+      'home.tools.gitCommands.tags': ['Git', '命令', '版本控制'],
+      'home.tools.linuxCommands.tags': ['Linux', '命令', '系统'],
+      'home.tools.dockerCommands.tags': ['Docker', '容器', '命令'],
+      'home.tools.mysqlSyntax.tags': ['MySQL', '数据库', '语法'],
+      'home.tools.javaSyntax.tags': ['Java', '语法', '编程'],
+      // 娱乐工具
+      'home.tools.piano.tags': ['钢琴', '音乐', '演奏'],
+      'home.tools.snakeGame.tags': ['贪吃蛇', '游戏', '经典'],
+      'home.tools.quoteGenerator.tags': ['名言', '生成', '励志'],
+      'home.tools.numberPuzzle.tags': ['数字', '拼图', '益智'],
+      'home.tools.whackMole.tags': ['打地鼠', '反应', '游戏'],
+      'home.tools.game2048.tags': ['数字', '合成', '策略', '益智'],
+      'home.tools.tetris.tags': ['方块', '消除', '经典', '反应'],
+      'home.tools.flappyBird.tags': ['飞行', '躲避', '节奏', '反应'],
+      'home.tools.gemCrush.tags': ['三消', '消除', '策略', '宝石'],
+      // 实用工具
+      'home.tools.bmiCalculator.tags': ['健康', 'BMI', '体重', '计算'],
+      'home.tools.mortgageCalculator.tags': ['房贷', '计算器', '月供', '利率'],
+      'home.tools.ageCalculator.tags': ['年龄', '生肖', '星座', '生日'],
+      'home.tools.classroomSeating.tags': ['教学', '座位', '排座', '管理'],
+      'home.tools.studentRollCall.tags': ['教学', '点名', '随机', '课堂'],
+    }
+    return defaultTags[key] || (isEnglish ? ['Tool'] : ['工具'])
+  }
+  return tags
+}
+
 // 工具列表数据
-const tools = ref([
+const tools = computed(() => [
   {
-    name: 'JSON工具',
-    description: 'JSON格式化、压缩、验证，让JSON数据更易读',
+    name: t('home.tools.jsonTool.name'),
+    description: t('home.tools.jsonTool.description'),
     icon: 'Document',
     path: '/text/json',
     category: 'text',
-    tags: ['JSON', '格式化', '验证'],
+    tags: getTagsArray('home.tools.jsonTool.tags'),
     color: '#22c55e'
   },
   {
-    name: 'XML工具',
-    description: 'XML格式化、美化，提升XML可读性',
+    name: t('home.tools.xmlTool.name'),
+    description: t('home.tools.xmlTool.description'),
     icon: 'Document',
     path: '/text/xml',
     category: 'text',
-    tags: ['XML', '格式化'],
+    tags: getTagsArray('home.tools.xmlTool.tags'),
     color: '#3b82f6'
   },
   {
-    name: '文本对比',
-    description: '比较两段文本的差异，支持逐行对比',
+    name: t('home.tools.textCompare.name'),
+    description: t('home.tools.textCompare.description'),
     icon: 'Edit',
     path: '/text/compare',
     category: 'text',
-    tags: ['文本', '对比', '差异'],
+    tags: getTagsArray('home.tools.textCompare.tags'),
     color: '#f59e0b'
   },
   {
-    name: '文本加密',
-    description: '支持MD5、SHA1、SHA256等多种加密算法',
+    name: t('home.tools.textEncrypt.name'),
+    description: t('home.tools.textEncrypt.description'),
     icon: 'Lock',
     path: '/text/encrypt',
     category: 'text',
-    tags: ['加密', 'MD5', 'SHA'],
+    tags: getTagsArray('home.tools.textEncrypt.tags'),
     color: '#ef4444'
   },
   {
-    name: 'Base64编码',
-    description: 'Base64编码解码，支持文本和文件转换',
+    name: t('home.tools.base64Tool.name'),
+    description: t('home.tools.base64Tool.description'),
     icon: 'Key',
     path: '/encoding/base64',
     category: 'encoding',
-    tags: ['Base64', '编码', '解码'],
+    tags: getTagsArray('home.tools.base64Tool.tags'),
     color: '#8b5cf6'
   },
   {
-    name: 'URL编码',
-    description: 'URL编码解码，处理特殊字符转换',
+    name: t('home.tools.urlTool.name'),
+    description: t('home.tools.urlTool.description'),
     icon: 'Link',
     path: '/encoding/url',
     category: 'encoding',
-    tags: ['URL', '编码', '转换'],
+    tags: getTagsArray('home.tools.urlTool.tags'),
     color: '#06b6d4'
   },
   {
-    name: 'Unicode编码',
-    description: 'Unicode编码解码，处理多语言字符',
+    name: t('home.tools.unicodeTool.name'),
+    description: t('home.tools.unicodeTool.description'),
     icon: 'Switch',
     path: '/encoding/unicode',
     category: 'encoding',
-    tags: ['Unicode', '字符', '编码'],
+    tags: getTagsArray('home.tools.unicodeTool.tags'),
     color: '#f97316'
   },
   {
-    name: 'HTML实体编码',
-    description: 'HTML实体字符编码解码',
+    name: t('home.tools.htmlTool.name'),
+    description: t('home.tools.htmlTool.description'),
     icon: 'Connection',
     path: '/encoding/html',
     category: 'encoding',
-    tags: ['HTML', '实体', '编码'],
+    tags: getTagsArray('home.tools.htmlTool.tags'),
     color: '#ec4899'
   },
   {
-    name: '进制转换',
-    description: '2、8、10、16进制之间的相互转换',
+    name: t('home.tools.baseTool.name'),
+    description: t('home.tools.baseTool.description'),
     icon: 'Operation',
     path: '/encoding/base',
     category: 'encoding',
-    tags: ['进制', '转换', '二进制', '十六进制'],
+    tags: getTagsArray('home.tools.baseTool.tags'),
     color: '#84cc16'
   },
   {
-    name: '正则表达式',
-    description: '正则表达式测试、替换，支持多种模式',
+    name: t('home.tools.regexTool.name'),
+    description: t('home.tools.regexTool.description'),
     icon: 'MagicStick',
     path: '/text/regex',
     category: 'text',
-    tags: ['正则', '匹配', '替换'],
+    tags: getTagsArray('home.tools.regexTool.tags'),
     color: '#a855f7'
   },
   {
-    name: '颜色工具',
-    description: 'HEX、RGB、HSL颜色格式转换',
+    name: t('home.tools.colorTool.name'),
+    description: t('home.tools.colorTool.description'),
     icon: 'Brush',
     path: '/dev/color',
     category: 'dev',
-    tags: ['颜色', 'HEX', 'RGB', 'HSL'],
+    tags: getTagsArray('home.tools.colorTool.tags'),
     color: '#f59e0b'
   },
   {
-    name: 'UUID生成器',
-    description: '生成标准UUID，支持单个和批量生成',
+    name: t('home.tools.uuidTool.name'),
+    description: t('home.tools.uuidTool.description'),
     icon: 'Key',
     path: '/dev/uuid',
     category: 'dev',
-    tags: ['UUID', '生成', '唯一标识'],
+    tags: getTagsArray('home.tools.uuidTool.tags'),
     color: '#10b981'
   },
   {
-    name: '时间戳工具',
-    description: '时间戳与日期格式相互转换',
+    name: t('home.tools.timestampTool.name'),
+    description: t('home.tools.timestampTool.description'),
     icon: 'Clock',
     path: '/time/timestamp',
     category: 'time',
-    tags: ['时间戳', '日期', '转换'],
+    tags: getTagsArray('home.tools.timestampTool.tags'),
     color: '#0ea5e9'
   },
   {
-    name: '时间计算器',
-    description: '时间加减运算、工作日计算、年龄计算',
+    name: t('home.tools.timeCalculator.name'),
+    description: t('home.tools.timeCalculator.description'),
     icon: 'Timer',
     path: '/time/calculator',
     category: 'time',
-    tags: ['时间计算', '工作日', '年龄'],
+    tags: getTagsArray('home.tools.timeCalculator.tags'),
     color: '#8b5cf6'
   },
   {
-    name: '世界时钟',
-    description: '全球时区时间显示和转换',
+    name: t('home.tools.worldClock.name'),
+    description: t('home.tools.worldClock.description'),
     icon: 'Monitor',
     path: '/time/worldclock',
     category: 'time',
-    tags: ['世界时钟', '时区', '全球时间'],
+    tags: getTagsArray('home.tools.worldClock.tags'),
     color: '#10b981'
   },
   {
-    name: '密码生成器',
-    description: '生成安全可靠的随机密码',
+    name: t('home.tools.passwordGenerator.name'),
+    description: t('home.tools.passwordGenerator.description'),
     icon: 'Lock',
     path: '/security/password',
     category: 'security',
-    tags: ['密码', '安全', '随机', '生成'],
+    tags: getTagsArray('home.tools.passwordGenerator.tags'),
     color: '#dc2626'
   },
   {
-    name: '哈希计算',
-    description: '计算文本的哈希值，支持多种算法',
+    name: t('home.tools.hashTool.name'),
+    description: t('home.tools.hashTool.description'),
     icon: 'Key',
     path: '/security/hash',
     category: 'security',
-    tags: ['哈希', '计算', 'MD5', 'SHA'],
+    tags: getTagsArray('home.tools.hashTool.tags'),
     color: '#b91c1c'
   },
   {
-    name: '文本统计',
-    description: '分析文本的字符、单词、行数等统计信息',
+    name: t('home.tools.textStats.name'),
+    description: t('home.tools.textStats.description'),
     icon: 'DataAnalysis',
     path: '/text/stats',
     category: 'text',
-    tags: ['文本', '统计', '分析', '词频'],
+    tags: getTagsArray('home.tools.textStats.tags'),
     color: '#7c3aed'
   },
   {
-    name: '单位转换',
-    description: '长度、重量、温度等多种单位转换',
+    name: t('home.tools.unitConverter.name'),
+    description: t('home.tools.unitConverter.description'),
     icon: 'Switch',
     path: '/converter/unit',
     category: 'time',
-    tags: ['单位', '转换', '长度', '重量', '温度']
+    tags: getTagsArray('home.tools.unitConverter.tags')
   },
   {
-    name: '二维码生成器',
-    description: '生成各种内容的二维码，支持文本、网址、WiFi等',
+    name: t('home.tools.qrGenerator.name'),
+    description: t('home.tools.qrGenerator.description'),
     icon: 'QrCode',
     path: '/dev/qr-generator',
     category: 'dev',
-    tags: ['二维码', 'QR码', '生成', '分享']
+    tags: getTagsArray('home.tools.qrGenerator.tags')
   },
   {
-    name: '图片Base64转换',
-    description: '图片与Base64编码的相互转换',
+    name: t('home.tools.imageBase64.name'),
+    description: t('home.tools.imageBase64.description'),
     icon: 'Picture',
     path: '/converter/image-base64',
     category: 'encoding',
-    tags: ['图片', 'Base64', '编码', '转换']
+    tags: getTagsArray('home.tools.imageBase64.tags')
   },
 
   {
-    name: '随机数据生成器',
-    description: '生成测试用的姓名、邮箱、电话等数据',
+    name: t('home.tools.randomData.name'),
+    description: t('home.tools.randomData.description'),
     icon: 'MagicStick',
     path: '/dev/random-data',
     category: 'dev',
-    tags: ['随机', '测试数据', '姓名', '邮箱']
+    tags: getTagsArray('home.tools.randomData.tags')
   },
   {
-    name: '代码格式化工具',
-    description: '美化CSS、SQL、JSON等代码格式',
+    name: t('home.tools.codeFormatter.name'),
+    description: t('home.tools.codeFormatter.description'),
     icon: 'DocumentCopy',
     path: '/dev/code-formatter',
     category: 'dev',
-    tags: ['代码', '格式化', 'CSS', 'SQL']
+    tags: getTagsArray('home.tools.codeFormatter.tags')
   },
   {
-    name: 'Markdown编辑器',
-    description: '实时预览Markdown文档，支持语法高亮',
+    name: t('home.tools.markdownEditor.name'),
+    description: t('home.tools.markdownEditor.description'),
     icon: 'Files',
     path: '/text/markdown-editor',
     category: 'text',
-    tags: ['Markdown', '编辑器', '预览', '文档']
+    tags: getTagsArray('home.tools.markdownEditor.tags')
   },
   {
-    name: '文件对比工具',
-    description: '对比两个文件的差异，逐行分析统计',
+    name: t('home.tools.fileDiff.name'),
+    description: t('home.tools.fileDiff.description'),
     icon: 'Operation',
     path: '/dev/file-diff',
     category: 'dev',
-    tags: ['文件', '对比', '差异', '分析']
+    tags: getTagsArray('home.tools.fileDiff.tags')
   },
   {
-    name: '高级颜色选择器',
-    description: '颜色分析、调色板生成和颜色转换',
+    name: t('home.tools.colorPicker.name'),
+    description: t('home.tools.colorPicker.description'),
     icon: 'Brush',
     path: '/dev/color-picker',
     category: 'dev',
-    tags: ['颜色', '调色板', '分析', '转换']
+    tags: getTagsArray('home.tools.colorPicker.tags')
   },
   {
-    name: '图标生成器',
-    description: 'SVG图标生成和Favicon制作工具',
+    name: t('home.tools.iconGenerator.name'),
+    description: t('home.tools.iconGenerator.description'),
     icon: 'Camera',
     path: '/dev/icon-generator',
     category: 'dev',
-    tags: ['图标', 'SVG', 'Favicon', '生成']
+    tags: getTagsArray('home.tools.iconGenerator.tags')
   },
 
         {
-          name: 'Cron表达式工具',
-          description: '定时任务表达式生成、解析和执行时间预测',
+          name: t('home.tools.cronTool.name'),
+          description: t('home.tools.cronTool.description'),
           icon: 'Clock',
           path: '/dev/cron',
           category: 'dev',
-          tags: ['Cron', '定时任务', '表达式', '调度']
+          tags: getTagsArray('home.tools.cronTool.tags')
         },
         {
-          name: '变量生成助手',
-          description: '中文转英文变量名，支持多种编程命名格式',
+          name: t('home.tools.variableGenerator.name'),
+          description: t('home.tools.variableGenerator.description'),
           icon: 'Document',
           path: '/dev/variable-generator',
           category: 'dev',
-          tags: ['变量', '命名', '翻译', '编程'],
+          tags: getTagsArray('home.tools.variableGenerator.tags'),
           color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
         },
 
         // 文档工具
-        { name: 'Git 常用命令', description: 'Git版本控制常用命令参考手册', icon: 'Document', path: '/docs/git', category: 'docs', tags: ['Git', '版本控制', '命令', '文档'] },
-        { name: 'Linux 常用命令', description: 'Linux系统管理和操作常用命令参考', icon: 'Monitor', path: '/docs/linux', category: 'docs', tags: ['Linux', '系统管理', '命令', '运维'] },
-        { name: 'Docker 常用命令', description: 'Docker容器和镜像管理常用命令参考', icon: 'Box', path: '/docs/docker', category: 'docs', tags: ['Docker', '容器', '镜像', '部署'] },
-        { name: 'MySQL 常用语法', description: 'MySQL数据库操作常用SQL语法参考', icon: 'DataAnalysis', path: '/docs/mysql', category: 'docs', tags: ['MySQL', 'SQL', '数据库', '查询'] },
-        { name: 'Java 常用语法', description: 'Java编程语言核心语法和Stream API操作', icon: 'Files', path: '/docs/java', category: 'docs', tags: ['Java', 'Stream', '编程', '语法'], color: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)' },
+        { name: t('home.tools.gitCommands.name'), description: t('home.tools.gitCommands.description'), icon: 'Document', path: '/docs/git', category: 'docs', tags: getTagsArray('home.tools.gitCommands.tags') },
+        { name: t('home.tools.linuxCommands.name'), description: t('home.tools.linuxCommands.description'), icon: 'Monitor', path: '/docs/linux', category: 'docs', tags: getTagsArray('home.tools.linuxCommands.tags') },
+        { name: t('home.tools.dockerCommands.name'), description: t('home.tools.dockerCommands.description'), icon: 'Box', path: '/docs/docker', category: 'docs', tags: getTagsArray('home.tools.dockerCommands.tags') },
+        { name: t('home.tools.mysqlSyntax.name'), description: t('home.tools.mysqlSyntax.description'), icon: 'DataAnalysis', path: '/docs/mysql', category: 'docs', tags: getTagsArray('home.tools.mysqlSyntax.tags') },
+        { name: t('home.tools.javaSyntax.name'), description: t('home.tools.javaSyntax.description'), icon: 'Files', path: '/docs/java', category: 'docs', tags: getTagsArray('home.tools.javaSyntax.tags'), color: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)' },
         
         // 娱乐工具
-        { name: '虚拟钢琴', description: '在线钢琴演奏，内置经典曲目教学，键盘按键支持', icon: 'VideoPlay', path: '/entertainment/piano', category: 'entertainment', tags: ['钢琴', '音乐', '演奏', '娱乐'], color: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)' },
-        { name: '贪吃蛇游戏', description: '经典街机游戏，支持多种难度和主题，考验反应速度', icon: 'Trophy', path: '/entertainment/snake', category: 'entertainment', tags: ['游戏', '贪吃蛇', '休闲', '娱乐'], color: 'linear-gradient(135deg, #10b981 0%, #059669 100%)' },
-        { name: '励志语录生成器', description: '随机生成励志、搞笑、哲理语录，支持分类和收藏', icon: 'ChatLineRound', path: '/entertainment/quotes', category: 'entertainment', tags: ['语录', '励志', '哲理', '摸鱼'], color: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' },
-        { name: '数字华容道', description: '经典数字拼图游戏，锻炼逻辑思维和空间想象力', icon: 'Grid', path: '/entertainment/number-puzzle', category: 'entertainment', tags: ['益智', '拼图', '华容道', '思维'], color: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' },
-                  { name: '打地鼠游戏', description: '经典反应训练游戏，考验手速和专注力，多种难度挑战', icon: 'Pointer', path: '/entertainment/whack-mole', category: 'entertainment', tags: ['反应', '手速', '训练', '挑战'], color: 'linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)' },
-          { name: '2048数字合成', description: '经典数字合成游戏，通过滑动合并相同数字，挑战2048', icon: 'Grid', path: '/entertainment/2048', category: 'entertainment', tags: ['数字', '合成', '策略', '益智'], color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
-          { name: '俄罗斯方块', description: '经典俄罗斯方块游戏，消除满行获得高分，挑战反应速度', icon: 'Grid', path: '/entertainment/tetris', category: 'entertainment', tags: ['方块', '消除', '经典', '反应'], color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
-          { name: 'Flappy Bird', description: '经典飞行躲避游戏，控制小鸟穿越管道，考验反应和节奏感', icon: 'Promotion', path: '/entertainment/flappy-bird', category: 'entertainment', tags: ['飞行', '躲避', '节奏', '反应'], color: 'linear-gradient(135deg, #74b9ff 0%, #0984e3 100%)' },
-        { name: '宝石消除', description: '经典三消游戏，交换相邻宝石形成消除，策略与运气的完美结合', icon: 'Guide', path: '/entertainment/gem-crush', category: 'entertainment', tags: ['三消', '消除', '策略', '宝石'], color: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 100%)' },
+        { name: t('home.tools.piano.name'), description: t('home.tools.piano.description'), icon: 'VideoPlay', path: '/entertainment/piano', category: 'entertainment', tags: getTagsArray('home.tools.piano.tags'), color: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)' },
+        { name: t('home.tools.snakeGame.name'), description: t('home.tools.snakeGame.description'), icon: 'Trophy', path: '/entertainment/snake', category: 'entertainment', tags: getTagsArray('home.tools.snakeGame.tags'), color: 'linear-gradient(135deg, #10b981 0%, #059669 100%)' },
+        { name: t('home.tools.quoteGenerator.name'), description: t('home.tools.quoteGenerator.description'), icon: 'ChatLineRound', path: '/entertainment/quotes', category: 'entertainment', tags: getTagsArray('home.tools.quoteGenerator.tags'), color: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' },
+        { name: t('home.tools.numberPuzzle.name'), description: t('home.tools.numberPuzzle.description'), icon: 'Grid', path: '/entertainment/number-puzzle', category: 'entertainment', tags: getTagsArray('home.tools.numberPuzzle.tags'), color: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' },
+                  { name: t('home.tools.whackMole.name'), description: t('home.tools.whackMole.description'), icon: 'Pointer', path: '/entertainment/whack-mole', category: 'entertainment', tags: getTagsArray('home.tools.whackMole.tags'), color: 'linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)' },
+          { name: t('home.tools.game2048.name'), description: t('home.tools.game2048.description'), icon: 'Grid', path: '/entertainment/2048', category: 'entertainment', tags: getTagsArray('home.tools.game2048.tags'), color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
+          { name: t('home.tools.tetris.name'), description: t('home.tools.tetris.description'), icon: 'Grid', path: '/entertainment/tetris', category: 'entertainment', tags: getTagsArray('home.tools.tetris.tags'), color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
+          { name: t('home.tools.flappyBird.name'), description: t('home.tools.flappyBird.description'), icon: 'Promotion', path: '/entertainment/flappy-bird', category: 'entertainment', tags: getTagsArray('home.tools.flappyBird.tags'), color: 'linear-gradient(135deg, #74b9ff 0%, #0984e3 100%)' },
+        { name: t('home.tools.gemCrush.name'), description: t('home.tools.gemCrush.description'), icon: 'Guide', path: '/entertainment/gem-crush', category: 'entertainment', tags: getTagsArray('home.tools.gemCrush.tags'), color: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 100%)' },
         
         // 实用工具
-        { name: 'BMI计算器', description: '计算身体质量指数，评估体重健康状况，提供健康建议', icon: 'DataAnalysis', path: '/utility/bmi-calculator', category: 'utility', tags: ['健康', 'BMI', '体重', '计算'], color: 'linear-gradient(135deg, #10b981 0%, #059669 100%)' },
-        { name: '房贷计算器', description: '房贷月供计算，支持等额本息、等额本金两种还款方式', icon: 'Money', path: '/utility/mortgage-calculator', category: 'utility', tags: ['房贷', '计算器', '月供', '利率'], color: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' },
-        { name: '年龄计算器', description: '精确计算年龄、生肖、星座，支持生日提醒和倒计时', icon: 'Calendar', path: '/utility/age-calculator', category: 'utility', tags: ['年龄', '生肖', '星座', '生日'], color: 'linear-gradient(135deg, #ec4899 0%, #db2777 100%)' },
+        { name: t('home.tools.bmiCalculator.name'), description: t('home.tools.bmiCalculator.description'), icon: 'DataAnalysis', path: '/utility/bmi-calculator', category: 'utility', tags: getTagsArray('home.tools.bmiCalculator.tags'), color: 'linear-gradient(135deg, #10b981 0%, #059669 100%)' },
+        { name: t('home.tools.mortgageCalculator.name'), description: t('home.tools.mortgageCalculator.description'), icon: 'Money', path: '/utility/mortgage-calculator', category: 'utility', tags: getTagsArray('home.tools.mortgageCalculator.tags'), color: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)' },
+        { name: t('home.tools.ageCalculator.name'), description: t('home.tools.ageCalculator.description'), icon: 'Calendar', path: '/utility/age-calculator', category: 'utility', tags: getTagsArray('home.tools.ageCalculator.tags'), color: 'linear-gradient(135deg, #ec4899 0%, #db2777 100%)' },
         
         // 教师工具
-        { name: '班级座次表', description: '智能座位安排系统，支持随机排座、成绩分区、优差搭配等多种方式', icon: 'School', path: '/utility/classroom-seating', category: 'utility', tags: ['教学', '座位', '班级', '管理'], color: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' },
-        { name: '学生点名器', description: '智能随机点名工具，支持批量导入名单、统计分析、音效动画', icon: 'Bell', path: '/utility/student-rollcall', category: 'utility', tags: ['教学', '点名', '随机', '课堂'], color: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)' }
+        { name: t('home.tools.classroomSeating.name'), description: t('home.tools.classroomSeating.description'), icon: 'School', path: '/utility/classroom-seating', category: 'utility', tags: getTagsArray('home.tools.classroomSeating.tags'), color: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)' },
+        { name: t('home.tools.studentRollCall.name'), description: t('home.tools.studentRollCall.description'), icon: 'Bell', path: '/utility/student-rollcall', category: 'utility', tags: getTagsArray('home.tools.studentRollCall.tags'), color: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)' }
       ])
 
 // 搜索过滤

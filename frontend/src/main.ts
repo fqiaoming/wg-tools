@@ -7,6 +7,7 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn'
 
 import App from './App.vue'
 import router from './router'
+import i18n from './i18n'
 
 import './assets/main.css'
 
@@ -19,8 +20,9 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 
 app.use(createPinia())
 app.use(router)
+app.use(i18n)
 app.use(ElementPlus, {
-  locale: zhCn,
+  locale: zhCn, // 默认使用中文，在语言切换时动态更新
 })
 
 app.mount('#app')

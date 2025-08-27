@@ -6,8 +6,8 @@
         <div class="hero-icon">
           <el-icon><Operation /></el-icon>
         </div>
-        <h1 class="hero-title">进制转换工具</h1>
-        <p class="hero-description">支持二进制、八进制、十进制、十六进制之间的快速相互转换</p>
+        <h1 class="hero-title">{{ t('pages.base.title') }}</h1>
+        <p class="hero-description">{{ t('pages.base.description') }}</p>
       </div>
     </div>
 
@@ -17,25 +17,25 @@
         <div class="card-icon">
           <el-icon><Edit /></el-icon>
         </div>
-        <h3>输入数值</h3>
-        <div class="card-description">选择进制并输入数值</div>
+        <h3>{{ t('common.input') }}数值</h3>
+        <div class="card-description">{{ t('pages.base.description') }}</div>
       </div>
       
       <div class="card-body">
         <div class="base-selector">
-          <label class="selector-label">输入进制</label>
+          <label class="selector-label">{{ t('common.input') }}进制</label>
           <el-radio-group v-model="fromBase" @change="onFromBaseChange" size="large">
-            <el-radio-button :label="2">二进制</el-radio-button>
-            <el-radio-button :label="8">八进制</el-radio-button>
-            <el-radio-button :label="10">十进制</el-radio-button>
-            <el-radio-button :label="16">十六进制</el-radio-button>
+            <el-radio-button :label="2">{{ t('pages.base.bases.binary') }}</el-radio-button>
+            <el-radio-button :label="8">{{ t('pages.base.bases.octal') }}</el-radio-button>
+            <el-radio-button :label="10">{{ t('pages.base.bases.decimal') }}</el-radio-button>
+            <el-radio-button :label="16">{{ t('pages.base.bases.hex') }}</el-radio-button>
           </el-radio-group>
         </div>
 
         <div class="input-section">
           <el-input
             v-model="inputValue"
-            placeholder="请输入要转换的数值"
+            :placeholder="t('pages.base.inputPlaceholder')"
             clearable
             size="large"
             @input="onValueChange"
@@ -59,7 +59,7 @@
             class="convert-button"
           >
             <el-icon><MagicStick /></el-icon>
-            开始转换
+            {{ t('common.convert') }}
           </el-button>
           <el-button 
             size="large" 
@@ -67,7 +67,7 @@
             class="clear-button"
           >
             <el-icon><Delete /></el-icon>
-            清空
+            {{ t('common.clear') }}
           </el-button>
         </div>
       </div>
@@ -168,6 +168,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Operation,
   Delete,
@@ -178,6 +179,7 @@ import {
   MagicStick
 } from '@element-plus/icons-vue'
 
+const { t } = useI18n()
 const fromBase = ref(10)
 const inputValue = ref('')
 const results = ref<any[]>([])

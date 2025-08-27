@@ -6,8 +6,8 @@
         <div class="hero-icon">
           <el-icon><Clock /></el-icon>
         </div>
-        <h1 class="hero-title">时间戳工具</h1>
-        <p class="hero-description">精确的时间戳与日期格式转换，支持多种时间格式和时区</p>
+        <h1 class="hero-title">{{ t('pages.timestamp.title') }}</h1>
+        <p class="hero-description">{{ t('pages.timestamp.description') }}</p>
       </div>
     </div>
 
@@ -15,10 +15,10 @@
     <div class="current-time-section">
       <div class="current-time-card">
         <div class="time-card-header">
-          <h3>实时时间戳</h3>
+          <h3>{{ t('pages.timestamp.current') }}</h3>
           <el-button @click="refreshCurrentTime" type="primary" size="small" plain>
             <el-icon><Refresh /></el-icon>
-            刷新
+            {{ t('common.refresh') }}
           </el-button>
         </div>
         
@@ -52,11 +52,11 @@
         
         <div class="converter-body">
           <div class="input-section">
-            <label class="input-label">输入时间戳</label>
+            <label class="input-label">{{ t('common.input') }}时间戳</label>
             <div class="input-group">
               <el-input
                 v-model="timestampInput"
-                placeholder="输入时间戳 (如: 1755567685)"
+                :placeholder="t('pages.timestamp.inputPlaceholder')"
                 size="large"
                 @input="onTimestampChange"
                 class="timestamp-input"
@@ -70,7 +70,7 @@
               </el-input>
               <el-button @click="setCurrentTimestamp" type="primary" size="large">
                 <el-icon><Clock /></el-icon>
-                当前时间
+                {{ t('pages.timestamp.actions.toTimestamp') }}
               </el-button>
             </div>
           </div>
@@ -192,6 +192,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Clock,
   Refresh,
@@ -199,6 +200,8 @@ import {
   ArrowLeft
 } from '@element-plus/icons-vue'
 import { timeTool } from '../../utils/localTools'
+
+const { t } = useI18n()
 
 // 当前时间戳
 const currentTimestamp = ref('')

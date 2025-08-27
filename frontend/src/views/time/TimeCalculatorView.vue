@@ -6,8 +6,8 @@
         <div class="hero-icon">
           <el-icon><Timer /></el-icon>
         </div>
-        <h1 class="hero-title">时间计算器</h1>
-        <p class="hero-description">时间加减运算、工作日计算、时区转换等实用时间计算功能</p>
+        <h1 class="hero-title">{{ t('pages.timeCalculator.title') }}</h1>
+        <p class="hero-description">{{ t('pages.timeCalculator.description') }}</p>
       </div>
     </div>
 
@@ -16,15 +16,15 @@
       <div class="card-header">
         <h3>
           <el-icon><Switch /></el-icon>
-          功能选择
+          {{ t('pages.timeCalculator.modeSelect') }}
         </h3>
       </div>
       <div class="mode-selector">
         <el-radio-group v-model="currentMode" size="large">
-          <el-radio-button label="duration">时间计算</el-radio-button>
-          <el-radio-button label="workdays">工作日计算</el-radio-button>
-          <el-radio-button label="timezone">时区转换</el-radio-button>
-          <el-radio-button label="age">年龄计算</el-radio-button>
+          <el-radio-button label="duration">{{ t('pages.timeCalculator.calculate') }}</el-radio-button>
+          <el-radio-button label="workdays">{{ t('pages.timeCalculator.workdays') }}</el-radio-button>
+          <el-radio-button label="timezone">{{ t('pages.timeCalculator.timezone') }}</el-radio-button>
+          <el-radio-button label="age">{{ t('pages.timeCalculator.age') }}</el-radio-button>
         </el-radio-group>
       </div>
     </div>
@@ -34,7 +34,7 @@
       <div class="card-header">
         <h3>
           <el-icon><Clock /></el-icon>
-          时间计算
+          {{ t('pages.timeCalculator.calculate') }}
         </h3>
       </div>
       <div class="calculator-section">
@@ -313,6 +313,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 // import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Timer,
   Switch,
@@ -324,6 +325,7 @@ import {
   InfoFilled
 } from '@element-plus/icons-vue'
 
+const { t } = useI18n()
 const currentMode = ref('duration')
 const result = ref<any>(null)
 

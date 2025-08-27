@@ -6,8 +6,8 @@
         <div class="hero-icon">
           <el-icon><Document /></el-icon>
         </div>
-        <h1 class="hero-title">Unicode编码工具</h1>
-        <p class="hero-description">强大的Unicode编码转换工具，支持多种编码格式和字符分析</p>
+        <h1 class="hero-title">{{ t('pages.unicode.title') }}</h1>
+        <p class="hero-description">{{ t('pages.unicode.description') }}</p>
       </div>
     </div>
 
@@ -17,14 +17,14 @@
         <div class="selector-icon">
           <el-icon><Switch /></el-icon>
         </div>
-        <h3>转换模式</h3>
-        <div class="selector-description">选择Unicode编码转换方式</div>
+        <h3>{{ t('pages.unicode.modeTitle') }}</h3>
+        <div class="selector-description">{{ t('pages.unicode.modeDescription') }}</div>
       </div>
       
       <div class="selector-body">
         <el-radio-group v-model="mode" @change="performConversion" size="large" class="mode-group">
-          <el-radio-button label="encode">文本 → Unicode</el-radio-button>
-          <el-radio-button label="decode">Unicode → 文本</el-radio-button>
+          <el-radio-button label="encode">{{ t('pages.unicode.modes.encode') }}</el-radio-button>
+          <el-radio-button label="decode">{{ t('pages.unicode.modes.decode') }}</el-radio-button>
         </el-radio-group>
       </div>
     </div>
@@ -341,6 +341,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Document,
   Switch,
@@ -357,6 +358,7 @@ import {
   InfoFilled
 } from '@element-plus/icons-vue'
 
+const { t } = useI18n()
 const mode = ref('encode')
 const selectedFormat = ref('unicode')
 const inputText = ref('')

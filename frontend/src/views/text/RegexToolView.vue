@@ -6,8 +6,8 @@
         <div class="hero-icon">
           <el-icon><Search /></el-icon>
         </div>
-        <h1 class="hero-title">正则表达式工具</h1>
-        <p class="hero-description">强大的正则表达式测试和学习工具，支持实时匹配和详细解释</p>
+        <h1 class="hero-title">{{ t('pages.regex.title') }}</h1>
+        <p class="hero-description">{{ t('pages.regex.description') }}</p>
       </div>
     </div>
 
@@ -17,8 +17,8 @@
         <div class="pattern-icon">
           <el-icon><Edit /></el-icon>
         </div>
-        <h3>正则表达式</h3>
-        <div class="pattern-description">输入正则表达式模式</div>
+        <h3>{{ t('pages.regex.pattern') }}</h3>
+        <div class="pattern-description">{{ t('pages.regex.patternDescription') }}</div>
       </div>
       
       <div class="pattern-body">
@@ -26,7 +26,7 @@
           <div class="input-wrapper">
             <el-input
               v-model="regexPattern"
-              placeholder="请输入正则表达式，例如：\d{3}-\d{3}-\d{4}"
+:placeholder="t('pages.regex.patternPlaceholder')"
               size="large"
               class="pattern-input"
               @input="performMatch"
@@ -37,18 +37,18 @@
           </div>
           
           <div class="flags-section">
-            <label class="flags-label">修饰符：</label>
+            <label class="flags-label">{{ t('pages.regex.flags') }}:</label>
             <div class="flags-options">
-              <el-checkbox v-model="globalFlag" @change="updateFlags">全局匹配 (g)</el-checkbox>
-              <el-checkbox v-model="ignoreCase" @change="updateFlags">忽略大小写 (i)</el-checkbox>
-              <el-checkbox v-model="multiline" @change="updateFlags">多行模式 (m)</el-checkbox>
-              <el-checkbox v-model="dotAll" @change="updateFlags">单行模式 (s)</el-checkbox>
+              <el-checkbox v-model="globalFlag" @change="updateFlags">{{ t('pages.regex.flagOptions.global') }}</el-checkbox>
+              <el-checkbox v-model="ignoreCase" @change="updateFlags">{{ t('pages.regex.flagOptions.ignoreCase') }}</el-checkbox>
+              <el-checkbox v-model="multiline" @change="updateFlags">{{ t('pages.regex.flagOptions.multiline') }}</el-checkbox>
+              <el-checkbox v-model="dotAll" @change="updateFlags">{{ t('pages.regex.flagOptions.dotAll') }}</el-checkbox>
             </div>
           </div>
         </div>
 
         <div class="quick-patterns">
-          <label class="quick-label">常用模式：</label>
+          <label class="quick-label">{{ t('pages.regex.commonPatterns') }}:</label>
           <div class="patterns-grid">
             <el-button 
               v-for="pattern in commonPatterns" 
@@ -70,8 +70,8 @@
         <div class="test-icon">
           <el-icon><Document /></el-icon>
         </div>
-        <h3>测试文本</h3>
-        <div class="test-description">输入要匹配的文本内容</div>
+        <h3>{{ t('pages.regex.testText') }}</h3>
+        <div class="test-description">{{ t('pages.regex.testDescription') }}</div>
       </div>
       
       <div class="test-body">
@@ -79,14 +79,14 @@
           <el-input
             v-model="testText"
             type="textarea"
-            placeholder="请输入要测试的文本内容..."
+:placeholder="t('pages.regex.testPlaceholder')"
             :rows="8"
             class="test-textarea"
             @input="performMatch"
           />
           
           <div class="text-examples">
-            <label class="examples-label">示例文本：</label>
+            <label class="examples-label">{{ t('pages.regex.exampleTexts') }}:</label>
             <div class="examples-grid">
               <el-button 
                 v-for="example in textExamples" 
@@ -109,9 +109,9 @@
         <div class="results-icon">
           <el-icon><DataAnalysis /></el-icon>
         </div>
-        <h3>匹配结果</h3>
+        <h3>{{ t('pages.regex.matchResults') }}</h3>
         <div class="results-info">
-          {{ hasError ? '表达式错误' : `找到 ${matchResults.length} 个匹配项` }}
+          {{ hasError ? t('pages.regex.expressionError') : t('pages.regex.matchCount', { count: matchResults.length }) }}
         </div>
       </div>
       
@@ -129,19 +129,19 @@
         <div v-else-if="matchResults.length > 0" class="match-stats">
           <div class="stats-grid">
             <div class="stat-item">
-              <div class="stat-label">匹配数量</div>
+              <div class="stat-label">{{ t('pages.regex.stats.matchCount') }}</div>
               <div class="stat-value success">{{ matchResults.length }}</div>
             </div>
             <div class="stat-item">
-              <div class="stat-label">匹配位置</div>
+              <div class="stat-label">{{ t('pages.regex.stats.positions') }}</div>
               <div class="stat-value info">{{ getMatchPositions() }}</div>
             </div>
             <div class="stat-item">
-              <div class="stat-label">覆盖率</div>
+              <div class="stat-label">{{ t('pages.regex.stats.coverage') }}</div>
               <div class="stat-value warning">{{ getCoveragePercent() }}%</div>
             </div>
             <div class="stat-item">
-              <div class="stat-label">总字符</div>
+              <div class="stat-label">{{ t('pages.regex.stats.totalChars') }}</div>
               <div class="stat-value">{{ getTotalChars() }}</div>
             </div>
           </div>
@@ -149,7 +149,7 @@
 
         <!-- 匹配详情 -->
         <div v-if="matchResults.length > 0" class="matches-list">
-          <h4 class="matches-title">匹配详情</h4>
+          <h4 class="matches-title">{{ t('pages.regex.matchDetails') }}</h4>
           <div class="matches-container">
             <div 
               v-for="(match, index) in matchResults" 
@@ -157,20 +157,20 @@
               class="match-item"
             >
               <div class="match-header">
-                <span class="match-index">匹配 {{ index + 1 }}</span>
-                <span class="match-position">位置: {{ match.index }}-{{ match.index + match[0].length }}</span>
+                <span class="match-index">{{ t('pages.regex.match') }} {{ index + 1 }}</span>
+                <span class="match-position">{{ t('pages.regex.position') }}: {{ match.index }}-{{ match.index + match[0].length }}</span>
               </div>
               <div class="match-content">
                 <div class="match-text">{{ match[0] }}</div>
                 <div v-if="match.length > 1" class="match-groups">
-                  <div class="groups-title">捕获组:</div>
+                  <div class="groups-title">{{ t('pages.regex.captureGroups') }}:</div>
                   <div 
                     v-for="(group, groupIndex) in match.slice(1)" 
                     :key="groupIndex"
                     class="group-item"
                   >
-                    <span class="group-label">组 {{ groupIndex + 1 }}:</span>
-                    <span class="group-value">{{ group || '(空)' }}</span>
+                    <span class="group-label">{{ t('pages.regex.group') }} {{ groupIndex + 1 }}:</span>
+                    <span class="group-value">{{ group || t('pages.regex.empty') }}</span>
                   </div>
                 </div>
               </div>
@@ -180,7 +180,7 @@
 
         <!-- 高亮显示 -->
         <div v-if="matchResults.length > 0" class="highlighted-text">
-          <h4 class="highlight-title">高亮显示</h4>
+          <h4 class="highlight-title">{{ t('pages.regex.highlighted') }}</h4>
           <div class="highlight-container">
             <div 
               class="highlighted-content" 
@@ -197,21 +197,21 @@
             class="action-btn"
           >
             <el-icon><CopyDocument /></el-icon>
-            复制匹配结果
+            {{ t('pages.regex.copyMatches') }}
           </el-button>
           <el-button 
             @click="exportResults"
             class="action-btn"
           >
             <el-icon><Download /></el-icon>
-            导出结果
+            {{ t('pages.regex.exportResults') }}
           </el-button>
           <el-button 
             @click="replaceMatches"
             class="action-btn"
           >
             <el-icon><Edit /></el-icon>
-            批量替换
+            {{ t('pages.regex.batchReplace') }}
           </el-button>
         </div>
       </div>
@@ -223,16 +223,16 @@
         <div class="replace-icon">
           <el-icon><Refresh /></el-icon>
         </div>
-        <h3>批量替换</h3>
-        <div class="replace-description">使用正则表达式进行文本替换</div>
+        <h3>{{ t('pages.regex.batchReplace') }}</h3>
+        <div class="replace-description">{{ t('pages.regex.replaceDescription') }}</div>
       </div>
       
       <div class="replace-body">
         <div class="replace-input">
-          <label class="replace-label">替换为：</label>
+          <label class="replace-label">{{ t('pages.regex.replaceTo') }}:</label>
           <el-input
             v-model="replaceText"
-            placeholder="输入替换文本，支持 $1, $2 等捕获组引用"
+:placeholder="t('pages.regex.replacePlaceholder')"
             size="large"
             class="replace-input-field"
           />
@@ -244,18 +244,18 @@
             @click="performReplace"
             class="replace-btn"
           >
-            执行替换
+            {{ t('pages.regex.executeReplace') }}
           </el-button>
           <el-button 
             @click="showReplace = false"
             class="cancel-btn"
           >
-            取消
+            {{ t('common.cancel') }}
           </el-button>
         </div>
 
         <div v-if="replaceResult" class="replace-result">
-          <h4 class="replace-result-title">替换结果：</h4>
+          <h4 class="replace-result-title">{{ t('pages.regex.replaceResult') }}:</h4>
           <el-input
             v-model="replaceResult"
             type="textarea"
@@ -269,7 +269,7 @@
               class="copy-replace-btn"
             >
               <el-icon><CopyDocument /></el-icon>
-              复制结果
+              {{ t('pages.regex.copyResult') }}
             </el-button>
           </div>
         </div>
@@ -282,13 +282,13 @@
         <div class="guide-icon">
           <el-icon><InfoFilled /></el-icon>
         </div>
-        <h3>正则表达式指南</h3>
-        <div class="guide-description">常用语法和示例</div>
+        <h3>{{ t('pages.regex.guide') }}</h3>
+        <div class="guide-description">{{ t('pages.regex.guideDescription') }}</div>
       </div>
       <div class="guide-body">
         <div class="syntax-grid">
           <div class="syntax-category">
-            <h4 class="category-title">字符匹配</h4>
+            <h4 class="category-title">{{ t('pages.regex.syntax.characters') }}</h4>
             <div class="syntax-items">
               <div class="syntax-item">
                 <code>.</code>
@@ -383,6 +383,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Search,
   Edit,
@@ -394,6 +395,7 @@ import {
   InfoFilled
 } from '@element-plus/icons-vue'
 
+const { t } = useI18n()
 const regexPattern = ref('')
 const testText = ref('')
 const flags = ref('')

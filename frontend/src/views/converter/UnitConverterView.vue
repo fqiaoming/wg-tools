@@ -6,8 +6,8 @@
         <div class="hero-icon">
           <el-icon><Operation /></el-icon>
         </div>
-        <h1 class="hero-title">单位转换工具</h1>
-        <p class="hero-description">强大的单位转换器，支持长度、重量、温度、时间等多种单位类型</p>
+        <h1 class="hero-title">{{ t('pages.unitConverter.title') }}</h1>
+        <p class="hero-description">{{ t('pages.unitConverter.description') }}</p>
       </div>
     </div>
 
@@ -17,8 +17,8 @@
         <div class="selector-icon">
           <el-icon><Grid /></el-icon>
         </div>
-        <h3>转换类型</h3>
-        <div class="selector-description">选择要转换的单位类型</div>
+        <h3>{{ t('pages.unitConverter.typeSelection') }}</h3>
+        <div class="selector-description">{{ t('pages.unitConverter.selectTypeDescription') }}</div>
       </div>
       
       <div class="selector-body">
@@ -31,8 +31,8 @@
             @click="selectType(type.value)"
           >
             <div class="type-icon">{{ type.icon }}</div>
-            <div class="type-name">{{ type.name }}</div>
-            <div class="type-description">{{ type.description }}</div>
+            <div class="type-name">{{ t(`pages.unitConverter.types.${type.value}.name`) }}</div>
+            <div class="type-description">{{ t(`pages.unitConverter.types.${type.value}.description`) }}</div>
           </div>
         </div>
       </div>
@@ -44,8 +44,8 @@
         <div class="converter-icon">
           <el-icon><Switch /></el-icon>
         </div>
-        <h3>{{ getTypeName(selectedType) }}转换</h3>
-        <div class="converter-description">输入数值进行单位转换</div>
+        <h3>{{ t(`pages.unitConverter.types.${selectedType}.name`) }} {{ t('pages.unitConverter.conversion') }}</h3>
+        <div class="converter-description">{{ t('pages.unitConverter.conversionDescription') }}</div>
       </div>
       
       <div class="converter-body">
@@ -56,14 +56,14 @@
               <div class="section-icon">
                 <el-icon><Edit /></el-icon>
               </div>
-              <h4>转换前</h4>
+              <h4>{{ t('pages.unitConverter.inputValue') }}</h4>
             </div>
             
             <div class="input-group">
               <el-input
                 v-model="inputValue"
                 type="number"
-                placeholder="请输入数值"
+                :placeholder="t('pages.unitConverter.inputPlaceholder')"
                 size="large"
                 class="value-input"
                 @input="performConversion"
@@ -101,14 +101,14 @@
               <div class="section-icon">
                 <el-icon><View /></el-icon>
               </div>
-              <h4>转换后</h4>
+              <h4>{{ t('pages.unitConverter.outputValue') }}</h4>
             </div>
             
             <div class="input-group">
               <el-input
                 v-model="outputValue"
                 type="number"
-                placeholder="转换结果"
+                :placeholder="t('pages.unitConverter.outputPlaceholder')"
                 size="large"
                 readonly
                 class="value-input result-input"
@@ -132,7 +132,7 @@
 
         <!-- 快速转换 -->
         <div class="quick-conversion">
-          <h4 class="quick-title">快速转换</h4>
+          <h4 class="quick-title">{{ t('pages.unitConverter.quickConversion') }}</h4>
           <div class="quick-grid">
             <div 
               v-for="conversion in getQuickConversions()" 
@@ -156,14 +156,14 @@
             class="copy-btn"
           >
             <el-icon><CopyDocument /></el-icon>
-            复制结果
+            {{ t('pages.unitConverter.copyResult') }}
           </el-button>
           <el-button 
             @click="clearAll"
             class="clear-btn"
           >
             <el-icon><Delete /></el-icon>
-            清空数据
+            {{ t('pages.unitConverter.clearData') }}
           </el-button>
           <el-button 
             @click="addToHistory"
@@ -171,7 +171,7 @@
             class="history-btn"
           >
             <el-icon><Plus /></el-icon>
-            保存记录
+            {{ t('pages.unitConverter.saveRecord') }}
           </el-button>
         </div>
       </div>
@@ -183,8 +183,8 @@
         <div class="history-icon">
           <el-icon><Clock /></el-icon>
         </div>
-        <h3>转换历史</h3>
-        <div class="history-description">最近的转换记录</div>
+        <h3>{{ t('pages.unitConverter.conversionHistory') }}</h3>
+        <div class="history-description">{{ t('pages.unitConverter.historyDescription') }}</div>
       </div>
       
       <div class="history-body">
@@ -210,14 +210,14 @@
                 @click="useHistoryRecord(record)"
                 class="use-btn"
               >
-                使用
+                {{ t('pages.unitConverter.use') }}
               </el-button>
               <el-button 
                 size="small" 
                 @click="removeHistoryRecord(index)"
                 class="remove-btn"
               >
-                删除
+                {{ t('pages.unitConverter.delete') }}
               </el-button>
             </div>
           </div>
@@ -229,14 +229,14 @@
             class="clear-history-btn"
           >
             <el-icon><Delete /></el-icon>
-            清空历史
+            {{ t('pages.unitConverter.clearHistory') }}
           </el-button>
           <el-button 
             @click="exportHistory"
             class="export-history-btn"
           >
             <el-icon><Download /></el-icon>
-            导出历史
+            {{ t('pages.unitConverter.exportHistory') }}
           </el-button>
         </div>
       </div>
@@ -248,8 +248,8 @@
         <div class="usage-icon">
           <el-icon><InfoFilled /></el-icon>
         </div>
-        <h3>支持的单位类型</h3>
-        <div class="usage-description">详细的单位转换说明</div>
+        <h3>{{ t('pages.unitConverter.supportedTypes') }}</h3>
+        <div class="usage-description">{{ t('pages.unitConverter.usageDescription') }}</div>
       </div>
       <div class="usage-body">
         <div class="unit-categories">
@@ -260,9 +260,9 @@
           >
             <h4 class="category-title">
               <span class="category-icon">{{ type.icon }}</span>
-              {{ type.name }}
+              {{ t(`pages.unitConverter.types.${type.value}.name`) }}
             </h4>
-            <div class="category-description">{{ type.description }}</div>
+            <div class="category-description">{{ t(`pages.unitConverter.types.${type.value}.description`) }}</div>
             <div class="category-units">
               <div class="units-grid">
                 <span 
@@ -299,7 +299,9 @@ import {
   InfoFilled
 } from '@element-plus/icons-vue'
 import { unitTool, type ToolResponse } from '../../utils/newTools'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const selectedType = ref('length')
 const inputValue = ref('')
 const outputValue = ref('')
@@ -309,94 +311,98 @@ const conversionHistory = ref<any[]>([])
 
 // 单位类型定义
 const unitTypes = [
-  { value: 'length', name: '长度', icon: '📏', description: '米、千米、英尺、英寸等' },
-  { value: 'weight', name: '重量', icon: '⚖️', description: '千克、克、磅、盎司等' },
-  { value: 'temperature', name: '温度', icon: '🌡️', description: '摄氏度、华氏度、开尔文等' },
-  { value: 'area', name: '面积', icon: '⬜', description: '平方米、公顷、英亩等' },
-  { value: 'volume', name: '体积', icon: '🧊', description: '升、毫升、加仑等' },
-  { value: 'time', name: '时间', icon: '⏰', description: '秒、分钟、小时、天等' },
-  { value: 'speed', name: '速度', icon: '🚗', description: '米/秒、公里/小时等' },
-  { value: 'energy', name: '能量', icon: '⚡', description: '焦耳、卡路里、千瓦时等' }
+  { value: 'length', icon: '📏' },
+  { value: 'weight', icon: '⚖️' },
+  { value: 'temperature', icon: '🌡️' },
+  { value: 'area', icon: '⬜' },
+  { value: 'volume', icon: '🧊' },
+  { value: 'time', icon: '⏰' },
+  { value: 'speed', icon: '🚗' },
+  { value: 'energy', icon: '⚡' }
 ]
 
-// 单位定义
-const units = {
-  length: [
-    { value: 'mm', label: '毫米 (mm)' },
-    { value: 'cm', label: '厘米 (cm)' },
-    { value: 'm', label: '米 (m)' },
-    { value: 'km', label: '千米 (km)' },
-    { value: 'in', label: '英寸 (in)' },
-    { value: 'ft', label: '英尺 (ft)' },
-    { value: 'yd', label: '码 (yd)' },
-    { value: 'mi', label: '英里 (mi)' }
-  ],
-  weight: [
-    { value: 'mg', label: '毫克 (mg)' },
-    { value: 'g', label: '克 (g)' },
-    { value: 'kg', label: '千克 (kg)' },
-    { value: 't', label: '吨 (t)' },
-    { value: 'oz', label: '盎司 (oz)' },
-    { value: 'lb', label: '磅 (lb)' },
-    { value: 'st', label: '英石 (st)' }
-  ],
-  temperature: [
-    { value: 'c', label: '摄氏度 (°C)' },
-    { value: 'f', label: '华氏度 (°F)' },
-    { value: 'k', label: '开尔文 (K)' },
-    { value: 'r', label: '兰氏度 (°R)' }
-  ],
-  area: [
-    { value: 'mm2', label: '平方毫米 (mm²)' },
-    { value: 'cm2', label: '平方厘米 (cm²)' },
-    { value: 'm2', label: '平方米 (m²)' },
-    { value: 'km2', label: '平方千米 (km²)' },
-    { value: 'in2', label: '平方英寸 (in²)' },
-    { value: 'ft2', label: '平方英尺 (ft²)' },
-    { value: 'ac', label: '英亩 (ac)' },
-    { value: 'ha', label: '公顷 (ha)' }
-  ],
-  volume: [
-    { value: 'ml', label: '毫升 (ml)' },
-    { value: 'l', label: '升 (l)' },
-    { value: 'm3', label: '立方米 (m³)' },
-    { value: 'in3', label: '立方英寸 (in³)' },
-    { value: 'ft3', label: '立方英尺 (ft³)' },
-    { value: 'gal', label: '加仑 (gal)' },
-    { value: 'qt', label: '夸脱 (qt)' }
-  ],
-  time: [
-    { value: 'ms', label: '毫秒 (ms)' },
-    { value: 's', label: '秒 (s)' },
-    { value: 'min', label: '分钟 (min)' },
-    { value: 'h', label: '小时 (h)' },
-    { value: 'd', label: '天 (d)' },
-    { value: 'w', label: '周 (w)' },
-    { value: 'mo', label: '月 (mo)' },
-    { value: 'y', label: '年 (y)' }
-  ],
-  speed: [
-    { value: 'mps', label: '米/秒 (m/s)' },
-    { value: 'kmh', label: '公里/小时 (km/h)' },
-    { value: 'mph', label: '英里/小时 (mph)' },
-    { value: 'fps', label: '英尺/秒 (ft/s)' },
-    { value: 'knot', label: '节 (knot)' }
-  ],
-  energy: [
-    { value: 'j', label: '焦耳 (J)' },
-    { value: 'kj', label: '千焦 (kJ)' },
-    { value: 'cal', label: '卡路里 (cal)' },
-    { value: 'kcal', label: '千卡 (kcal)' },
-    { value: 'wh', label: '瓦时 (Wh)' },
-    { value: 'kwh', label: '千瓦时 (kWh)' },
-    { value: 'btu', label: '英热单位 (BTU)' }
-  ]
+// 获取单位定义
+const getUnits = (type: string) => {
+  const unitMap: { [key: string]: { value: string, labelKey: string }[] } = {
+    length: [
+      { value: 'mm', labelKey: 'pages.unitConverter.units.length.mm' },
+      { value: 'cm', labelKey: 'pages.unitConverter.units.length.cm' },
+      { value: 'm', labelKey: 'pages.unitConverter.units.length.m' },
+      { value: 'km', labelKey: 'pages.unitConverter.units.length.km' },
+      { value: 'in', labelKey: 'pages.unitConverter.units.length.in' },
+      { value: 'ft', labelKey: 'pages.unitConverter.units.length.ft' },
+      { value: 'yd', labelKey: 'pages.unitConverter.units.length.yd' },
+      { value: 'mi', labelKey: 'pages.unitConverter.units.length.mi' }
+    ],
+    weight: [
+      { value: 'mg', labelKey: 'pages.unitConverter.units.weight.mg' },
+      { value: 'g', labelKey: 'pages.unitConverter.units.weight.g' },
+      { value: 'kg', labelKey: 'pages.unitConverter.units.weight.kg' },
+      { value: 't', labelKey: 'pages.unitConverter.units.weight.t' },
+      { value: 'oz', labelKey: 'pages.unitConverter.units.weight.oz' },
+      { value: 'lb', labelKey: 'pages.unitConverter.units.weight.lb' },
+      { value: 'st', labelKey: 'pages.unitConverter.units.weight.st' }
+    ],
+    temperature: [
+      { value: 'c', labelKey: 'pages.unitConverter.units.temperature.c' },
+      { value: 'f', labelKey: 'pages.unitConverter.units.temperature.f' },
+      { value: 'k', labelKey: 'pages.unitConverter.units.temperature.k' },
+      { value: 'r', labelKey: 'pages.unitConverter.units.temperature.r' }
+    ],
+    area: [
+      { value: 'mm2', labelKey: 'pages.unitConverter.units.area.mm2' },
+      { value: 'cm2', labelKey: 'pages.unitConverter.units.area.cm2' },
+      { value: 'm2', labelKey: 'pages.unitConverter.units.area.m2' },
+      { value: 'km2', labelKey: 'pages.unitConverter.units.area.km2' },
+      { value: 'in2', labelKey: 'pages.unitConverter.units.area.in2' },
+      { value: 'ft2', labelKey: 'pages.unitConverter.units.area.ft2' },
+      { value: 'ac', labelKey: 'pages.unitConverter.units.area.ac' },
+      { value: 'ha', labelKey: 'pages.unitConverter.units.area.ha' }
+    ],
+    volume: [
+      { value: 'ml', labelKey: 'pages.unitConverter.units.volume.ml' },
+      { value: 'l', labelKey: 'pages.unitConverter.units.volume.l' },
+      { value: 'm3', labelKey: 'pages.unitConverter.units.volume.m3' },
+      { value: 'in3', labelKey: 'pages.unitConverter.units.volume.in3' },
+      { value: 'ft3', labelKey: 'pages.unitConverter.units.volume.ft3' },
+      { value: 'gal', labelKey: 'pages.unitConverter.units.volume.gal' },
+      { value: 'qt', labelKey: 'pages.unitConverter.units.volume.qt' }
+    ],
+    time: [
+      { value: 'ms', labelKey: 'pages.unitConverter.units.time.ms' },
+      { value: 's', labelKey: 'pages.unitConverter.units.time.s' },
+      { value: 'min', labelKey: 'pages.unitConverter.units.time.min' },
+      { value: 'h', labelKey: 'pages.unitConverter.units.time.h' },
+      { value: 'd', labelKey: 'pages.unitConverter.units.time.d' },
+      { value: 'w', labelKey: 'pages.unitConverter.units.time.w' },
+      { value: 'mo', labelKey: 'pages.unitConverter.units.time.mo' },
+      { value: 'y', labelKey: 'pages.unitConverter.units.time.y' }
+    ],
+    speed: [
+      { value: 'mps', labelKey: 'pages.unitConverter.units.speed.mps' },
+      { value: 'kmh', labelKey: 'pages.unitConverter.units.speed.kmh' },
+      { value: 'mph', labelKey: 'pages.unitConverter.units.speed.mph' },
+      { value: 'fps', labelKey: 'pages.unitConverter.units.speed.fps' },
+      { value: 'knot', labelKey: 'pages.unitConverter.units.speed.knot' }
+    ],
+    energy: [
+      { value: 'j', labelKey: 'pages.unitConverter.units.energy.j' },
+      { value: 'kj', labelKey: 'pages.unitConverter.units.energy.kj' },
+      { value: 'cal', labelKey: 'pages.unitConverter.units.energy.cal' },
+      { value: 'kcal', labelKey: 'pages.unitConverter.units.energy.kcal' },
+      { value: 'wh', labelKey: 'pages.unitConverter.units.energy.wh' },
+      { value: 'kwh', labelKey: 'pages.unitConverter.units.energy.kwh' },
+      { value: 'btu', labelKey: 'pages.unitConverter.units.energy.btu' }
+    ]
+  }
+  
+  return unitMap[type] || []
 }
 
 // 选择类型
 const selectType = (type: string) => {
   selectedType.value = type
-  const typeUnits = units[type as keyof typeof units]
+  const typeUnits = getUnits(type)
   if (typeUnits && typeUnits.length >= 2) {
     fromUnit.value = typeUnits[0].value
     toUnit.value = typeUnits[1].value
@@ -405,52 +411,63 @@ const selectType = (type: string) => {
   outputValue.value = ''
 }
 
-// 获取类型名称
-const getTypeName = (type: string) => {
-  const unitType = unitTypes.find(t => t.value === type)
-  return unitType ? unitType.name : '单位'
-}
-
 // 获取当前单位列表
 const getCurrentUnits = () => {
-  return units[selectedType.value as keyof typeof units] || []
+  return getUnits(selectedType.value).map(unit => ({
+    value: unit.value,
+    label: t(unit.labelKey)
+  }))
+}
+
+// 获取类型名称
+const getTypeName = (typeValue: string) => {
+  return t(`pages.unitConverter.types.${typeValue}.name`)
 }
 
 // 获取指定类型的单位
 const getUnitsForType = (type: string) => {
-  return units[type as keyof typeof units] || []
+  return getUnits(type).map(unit => ({
+    value: unit.value,
+    label: t(unit.labelKey)
+  }))
 }
 
 // 获取快速转换选项
 const getQuickConversions = () => {
-  const quickConversions = {
+  const quickConversions: { [key: string]: Array<{ from: string, to: string, fromLabelKey: string, toLabelKey: string }> } = {
     length: [
-      { from: 'm', to: 'km', fromLabel: '米', toLabel: '千米' },
-      { from: 'cm', to: 'in', fromLabel: '厘米', toLabel: '英寸' },
-      { from: 'ft', to: 'm', fromLabel: '英尺', toLabel: '米' },
-      { from: 'mi', to: 'km', fromLabel: '英里', toLabel: '千米' }
+      { from: 'm', to: 'km', fromLabelKey: 'pages.unitConverter.units.length.m', toLabelKey: 'pages.unitConverter.units.length.km' },
+      { from: 'cm', to: 'in', fromLabelKey: 'pages.unitConverter.units.length.cm', toLabelKey: 'pages.unitConverter.units.length.in' },
+      { from: 'ft', to: 'm', fromLabelKey: 'pages.unitConverter.units.length.ft', toLabelKey: 'pages.unitConverter.units.length.m' },
+      { from: 'mi', to: 'km', fromLabelKey: 'pages.unitConverter.units.length.mi', toLabelKey: 'pages.unitConverter.units.length.km' }
     ],
     weight: [
-      { from: 'kg', to: 'lb', fromLabel: '千克', toLabel: '磅' },
-      { from: 'g', to: 'oz', fromLabel: '克', toLabel: '盎司' },
-      { from: 't', to: 'kg', fromLabel: '吨', toLabel: '千克' },
-      { from: 'lb', to: 'kg', fromLabel: '磅', toLabel: '千克' }
+      { from: 'kg', to: 'lb', fromLabelKey: 'pages.unitConverter.units.weight.kg', toLabelKey: 'pages.unitConverter.units.weight.lb' },
+      { from: 'g', to: 'oz', fromLabelKey: 'pages.unitConverter.units.weight.g', toLabelKey: 'pages.unitConverter.units.weight.oz' },
+      { from: 't', to: 'kg', fromLabelKey: 'pages.unitConverter.units.weight.t', toLabelKey: 'pages.unitConverter.units.weight.kg' },
+      { from: 'lb', to: 'kg', fromLabelKey: 'pages.unitConverter.units.weight.lb', toLabelKey: 'pages.unitConverter.units.weight.kg' }
     ],
     temperature: [
-      { from: 'c', to: 'f', fromLabel: '摄氏度', toLabel: '华氏度' },
-      { from: 'f', to: 'c', fromLabel: '华氏度', toLabel: '摄氏度' },
-      { from: 'c', to: 'k', fromLabel: '摄氏度', toLabel: '开尔文' },
-      { from: 'k', to: 'c', fromLabel: '开尔文', toLabel: '摄氏度' }
+      { from: 'c', to: 'f', fromLabelKey: 'pages.unitConverter.units.temperature.c', toLabelKey: 'pages.unitConverter.units.temperature.f' },
+      { from: 'f', to: 'c', fromLabelKey: 'pages.unitConverter.units.temperature.f', toLabelKey: 'pages.unitConverter.units.temperature.c' },
+      { from: 'c', to: 'k', fromLabelKey: 'pages.unitConverter.units.temperature.c', toLabelKey: 'pages.unitConverter.units.temperature.k' },
+      { from: 'k', to: 'c', fromLabelKey: 'pages.unitConverter.units.temperature.k', toLabelKey: 'pages.unitConverter.units.temperature.c' }
     ],
     time: [
-      { from: 'h', to: 'min', fromLabel: '小时', toLabel: '分钟' },
-      { from: 'min', to: 's', fromLabel: '分钟', toLabel: '秒' },
-      { from: 'd', to: 'h', fromLabel: '天', toLabel: '小时' },
-      { from: 'w', to: 'd', fromLabel: '周', toLabel: '天' }
+      { from: 'h', to: 'min', fromLabelKey: 'pages.unitConverter.units.time.h', toLabelKey: 'pages.unitConverter.units.time.min' },
+      { from: 'min', to: 's', fromLabelKey: 'pages.unitConverter.units.time.min', toLabelKey: 'pages.unitConverter.units.time.s' },
+      { from: 'd', to: 'h', fromLabelKey: 'pages.unitConverter.units.time.d', toLabelKey: 'pages.unitConverter.units.time.h' },
+      { from: 'w', to: 'd', fromLabelKey: 'pages.unitConverter.units.time.w', toLabelKey: 'pages.unitConverter.units.time.d' }
     ]
   }
   
-  return quickConversions[selectedType.value as keyof typeof quickConversions] || []
+  const conversions = quickConversions[selectedType.value] || []
+  return conversions.map(conv => ({
+    from: conv.from,
+    to: conv.to,
+    fromLabel: t(conv.fromLabelKey),
+    toLabel: t(conv.toLabelKey)
+  }))
 }
 
 // 使用快速转换
@@ -484,11 +501,11 @@ const performConversion = async () => {
       outputValue.value = parseFloat(response.result).toFixed(6).replace(/\.?0+$/, '')
     } else {
       outputValue.value = ''
-      ElMessage.error(response.error || '转换失败')
+      ElMessage.error(response.error || t('pages.unitConverter.messages.conversionFailed'))
     }
   } catch (error) {
     outputValue.value = ''
-    ElMessage.error('转换失败，请检查输入')
+    ElMessage.error(t('pages.unitConverter.messages.conversionError'))
   }
 }
 
@@ -510,7 +527,7 @@ const swapUnits = () => {
 // 复制结果
 const copyResult = async () => {
   if (!outputValue.value) {
-    ElMessage.warning('没有结果可复制')
+    ElMessage.warning(t('pages.unitConverter.messages.noResultToCopy'))
     return
   }
 
@@ -521,9 +538,9 @@ const copyResult = async () => {
   
   try {
     await navigator.clipboard.writeText(result)
-    ElMessage.success('转换结果已复制到剪贴板！')
+    ElMessage.success(t('pages.unitConverter.messages.copiedToClipboard'))
   } catch (error) {
-    ElMessage.error('复制失败')
+    ElMessage.error(t('pages.unitConverter.messages.copyFailed'))
   }
 }
 
@@ -531,13 +548,13 @@ const copyResult = async () => {
 const clearAll = () => {
   inputValue.value = ''
   outputValue.value = ''
-  ElMessage.info('已清空数据')
+  ElMessage.info(t('pages.unitConverter.messages.dataCleared'))
 }
 
 // 添加到历史
 const addToHistory = () => {
   if (!inputValue.value || !outputValue.value) {
-    ElMessage.warning('没有转换结果可保存')
+    ElMessage.warning(t('pages.unitConverter.messages.noResultToSave'))
     return
   }
 
@@ -564,7 +581,7 @@ const addToHistory = () => {
     conversionHistory.value = conversionHistory.value.slice(0, 20)
   }
 
-  ElMessage.success('已添加到转换历史')
+  ElMessage.success(t('pages.unitConverter.messages.addedToHistory'))
 }
 
 // 使用历史记录
@@ -574,25 +591,25 @@ const useHistoryRecord = (record: any) => {
   toUnit.value = record.toUnitValue
   inputValue.value = record.inputValue
   outputValue.value = record.outputValue
-  ElMessage.info('已应用历史记录')
+  ElMessage.info(t('pages.unitConverter.messages.historyApplied'))
 }
 
 // 删除历史记录
 const removeHistoryRecord = (index: number) => {
   conversionHistory.value.splice(index, 1)
-  ElMessage.info('已删除历史记录')
+  ElMessage.info(t('pages.unitConverter.messages.historyDeleted'))
 }
 
 // 清空历史
 const clearHistory = () => {
   conversionHistory.value = []
-  ElMessage.info('已清空转换历史')
+  ElMessage.info(t('pages.unitConverter.messages.historyCleared'))
 }
 
 // 导出历史
 const exportHistory = () => {
   if (conversionHistory.value.length === 0) {
-    ElMessage.warning('没有历史记录可导出')
+    ElMessage.warning(t('pages.unitConverter.messages.noHistoryToExport'))
     return
   }
 
@@ -613,7 +630,7 @@ const exportHistory = () => {
   document.body.removeChild(link)
   URL.revokeObjectURL(url)
   
-  ElMessage.success('转换历史已导出！')
+  ElMessage.success(t('pages.unitConverter.messages.historyExported'))
 }
 
 // 初始化
@@ -702,6 +719,8 @@ selectType('length')
   margin-bottom: 24px;
   padding-bottom: 16px;
   border-bottom: 1px solid #e2e8f0;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .selector-icon,
@@ -722,6 +741,8 @@ selectType('length')
   font-weight: 600;
   color: #1f2937;
   flex: 1;
+  min-width: 0;
+  word-break: break-word;
 }
 
 .selector-description,
@@ -731,12 +752,16 @@ selectType('length')
   font-size: 14px;
   color: #6b7280;
   margin-left: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
 }
 
 /* 类型选择 */
 .type-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 16px;
 }
 
@@ -772,11 +797,16 @@ selectType('length')
   font-weight: 600;
   color: #1f2937;
   margin-bottom: 4px;
+  text-align: center;
+  word-break: break-word;
 }
 
 .type-description {
   font-size: 12px;
   color: #6b7280;
+  text-align: center;
+  word-break: break-word;
+  line-height: 1.4;
 }
 
 /* 转换器 */
@@ -819,11 +849,18 @@ selectType('length')
 
 .value-input {
   flex: 1;
+  min-width: 200px;
 }
 
 .value-input :deep(.el-input__wrapper) {
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
   font-size: 16px;
+  border: 1px solid #dcdfe6;
+  background-color: #ffffff;
+}
+
+.value-input :deep(.el-input__inner) {
+  color: #606266;
 }
 
 .result-input :deep(.el-input__wrapper) {
@@ -866,6 +903,7 @@ selectType('length')
   background: #f8fafc;
   border-radius: 12px;
   border: 1px solid #e2e8f0;
+  overflow: hidden;
 }
 
 .quick-title {
@@ -877,7 +915,7 @@ selectType('length')
 
 .quick-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 12px;
 }
 
@@ -905,6 +943,10 @@ selectType('length')
   font-size: 14px;
   font-weight: 500;
   color: #374151;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100px;
 }
 
 .quick-arrow {
@@ -1078,6 +1120,17 @@ selectType('length')
   .history-card,
   .usage-card {
     padding: 20px 16px;
+  }
+  
+  .selector-description,
+  .converter-description,
+  .history-description,
+  .usage-description {
+    margin-left: 0;
+    max-width: none;
+    white-space: normal;
+    text-overflow: unset;
+    overflow: visible;
   }
   
   .type-grid {

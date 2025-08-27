@@ -6,8 +6,8 @@
         <div class="hero-icon">
           <el-icon><Box /></el-icon>
         </div>
-        <h1 class="hero-title">Docker 常用命令</h1>
-        <p class="hero-description">Docker容器化技术常用命令和最佳实践，助您高效管理容器和镜像</p>
+        <h1 class="hero-title">{{ t('menu.dockerCommands') }}</h1>
+        <p class="hero-description">{{ t('pages.dockerCommands.description') }}</p>
       </div>
     </div>
 
@@ -376,6 +376,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import {
   Box,
   Search,
@@ -393,6 +394,7 @@ import {
   Files
 } from '@element-plus/icons-vue'
 
+const { t } = useI18n()
 const searchQuery = ref('')
 const activeCategory = ref('all')
 const navCollapsed = ref(false)

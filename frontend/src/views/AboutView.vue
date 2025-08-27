@@ -5,8 +5,8 @@
         <el-icon :size="64" color="#409EFF">
           <Tools />
         </el-icon>
-        <h1 class="page-title">关于 WG-Tools</h1>
-        <p class="page-subtitle">为开发者提供便捷、高效的在线工具服务</p>
+        <h1 class="page-title">{{ t('pages.about.title') }}</h1>
+        <p class="page-subtitle">{{ t('pages.about.subtitle') }}</p>
       </div>
 
       <div class="about-content">
@@ -195,6 +195,9 @@ import {
   // Link,
   // VideoCamera
 } from '@element-plus/icons-vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 </script>
 
 <style scoped>
